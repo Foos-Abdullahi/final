@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2024 at 12:28 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Generation Time: Mar 26, 2024 at 12:29 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -90,18 +90,26 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (26, 'Can change projects', 7, 'change_projects'),
 (27, 'Can delete projects', 7, 'delete_projects'),
 (28, 'Can view projects', 7, 'view_projects'),
-(29, 'Can add projects', 8, 'add_projects'),
-(30, 'Can change projects', 8, 'change_projects'),
-(31, 'Can delete projects', 8, 'delete_projects'),
-(32, 'Can view projects', 8, 'view_projects'),
-(33, 'Can add client', 8, 'add_client'),
-(34, 'Can change client', 8, 'change_client'),
-(35, 'Can delete client', 8, 'delete_client'),
-(36, 'Can view client', 8, 'view_client'),
-(37, 'Can add employee', 9, 'add_employee'),
-(38, 'Can change employee', 9, 'change_employee'),
-(39, 'Can delete employee', 9, 'delete_employee'),
-(40, 'Can view employee', 9, 'view_employee');
+(29, 'Can add client', 8, 'add_client'),
+(30, 'Can change client', 8, 'change_client'),
+(31, 'Can delete client', 8, 'delete_client'),
+(32, 'Can view client', 8, 'view_client'),
+(33, 'Can add employee', 9, 'add_employee'),
+(34, 'Can change employee', 9, 'change_employee'),
+(35, 'Can delete employee', 9, 'delete_employee'),
+(36, 'Can view employee', 9, 'view_employee'),
+(37, 'Can add damiin', 10, 'add_damiin'),
+(38, 'Can change damiin', 10, 'change_damiin'),
+(39, 'Can delete damiin', 10, 'delete_damiin'),
+(40, 'Can view damiin', 10, 'view_damiin'),
+(41, 'Can add expense', 11, 'add_expense'),
+(42, 'Can change expense', 11, 'change_expense'),
+(43, 'Can delete expense', 11, 'delete_expense'),
+(44, 'Can view expense', 11, 'view_expense'),
+(45, 'Can add user', 12, 'add_user'),
+(46, 'Can change user', 12, 'change_user'),
+(47, 'Can delete user', 12, 'delete_user'),
+(48, 'Can view user', 12, 'view_user');
 
 -- --------------------------------------------------------
 
@@ -160,13 +168,24 @@ CREATE TABLE `client_client` (
   `issue_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `client_client`
+-- Table structure for table `damiin_damiin`
 --
 
-INSERT INTO `client_client` (`id`, `client_name`, `phone`, `issue_date`) VALUES
-(1, 'Dirie Abdirahman', '615326526', '2024-03-25'),
-(3, 'Dirie Abdirahman', '615326526', '2024-03-24');
+CREATE TABLE `damiin_damiin` (
+  `id` bigint(20) NOT NULL,
+  `Name` varchar(200) NOT NULL,
+  `Document` mediumtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `damiin_damiin`
+--
+
+INSERT INTO `damiin_damiin` (`id`, `Name`, `Document`) VALUES
+(1, 'Stadium', 'In Progress');
 
 -- --------------------------------------------------------
 
@@ -208,9 +227,12 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (4, 'auth', 'user'),
 (8, 'Client', 'client'),
 (5, 'contenttypes', 'contenttype'),
+(10, 'damiin', 'damiin'),
 (9, 'Employee', 'employee'),
+(11, 'expense', 'expense'),
 (7, 'Projects', 'projects'),
-(6, 'sessions', 'session');
+(6, 'sessions', 'session'),
+(12, 'user', 'user');
 
 -- --------------------------------------------------------
 
@@ -249,10 +271,13 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (17, 'auth', '0011_update_proxy_permissions', '2024-03-25 07:09:07.878059'),
 (18, 'auth', '0012_alter_user_first_name_max_length', '2024-03-25 07:09:07.941449'),
 (19, 'sessions', '0001_initial', '2024-03-25 07:09:08.033511'),
-(20, 'Client', '0001_initial', '2024-03-25 08:42:23.011584'),
-(21, 'Client', '0002_rename_projects_client', '2024-03-25 08:45:35.710109'),
-(22, 'Employee', '0001_initial', '2024-03-25 09:16:49.007066'),
-(23, 'Projects', '0002_projects_issue_date', '2024-03-25 09:55:28.067773');
+(20, 'Client', '0001_initial', '2024-03-25 10:17:38.719552'),
+(21, 'Employee', '0001_initial', '2024-03-25 10:17:38.737173'),
+(22, 'damiin', '0001_initial', '2024-03-25 10:17:38.750766'),
+(23, 'expense', '0001_initial', '2024-03-25 10:30:27.500249'),
+(24, 'user', '0001_initial', '2024-03-25 10:30:36.096688'),
+(25, 'Projects', '0002_projects_issue_date', '2024-03-25 13:51:26.141044'),
+(26, 'expense', '0002_rename_project_id_expense_project', '2024-03-26 03:53:47.468247');
 
 -- --------------------------------------------------------
 
@@ -280,13 +305,19 @@ CREATE TABLE `employee_employee` (
   `issue_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `employee_employee`
+-- Table structure for table `expense_expense`
 --
 
-INSERT INTO `employee_employee` (`id`, `employee_name`, `position`, `phone`, `issue_date`) VALUES
-(1, 'Abdifitah', 'Engineer', '613643267', '2024-03-23'),
-(3, 'Abdifitah', 'Manager', '613643267', '2024-03-23');
+CREATE TABLE `expense_expense` (
+  `id` bigint(20) NOT NULL,
+  `expense_description` varchar(100) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `expense_date` date NOT NULL,
+  `project_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -312,6 +343,19 @@ INSERT INTO `projects_projects` (`id`, `project_name`, `status`, `budget`, `star
 (1, 'Stadium', 'In Progress', 50000, '2024-03-01', '2024-03-31', '2024-03-25'),
 (3, 'Street build', 'Completed', 65000, '2024-01-01', '2024-02-29', '2024-03-25'),
 (4, 'Home build', 'Completed', 70000, '2024-02-01', '2024-02-29', '2024-03-25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_user`
+--
+
+CREATE TABLE `user_user` (
+  `id` bigint(20) NOT NULL,
+  `UserName` varchar(100) NOT NULL,
+  `Password` varchar(100) NOT NULL,
+  `employee_id_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -369,6 +413,12 @@ ALTER TABLE `client_client`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `damiin_damiin`
+--
+ALTER TABLE `damiin_damiin`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
@@ -403,10 +453,24 @@ ALTER TABLE `employee_employee`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `expense_expense`
+--
+ALTER TABLE `expense_expense`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `expense_expense_project_id_cfd2ea59_fk_Projects_projects_id` (`project_id`);
+
+--
 -- Indexes for table `projects_projects`
 --
 ALTER TABLE `projects_projects`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user_user`
+--
+ALTER TABLE `user_user`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_user_employee_id_id_13b55493_fk_Employee_employee_id` (`employee_id_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -428,7 +492,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `auth_user`
@@ -452,7 +516,13 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT for table `client_client`
 --
 ALTER TABLE `client_client`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `damiin_damiin`
+--
+ALTER TABLE `damiin_damiin`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `django_admin_log`
@@ -464,25 +534,37 @@ ALTER TABLE `django_admin_log`
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `employee_employee`
 --
 ALTER TABLE `employee_employee`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `expense_expense`
+--
+ALTER TABLE `expense_expense`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `projects_projects`
 --
 ALTER TABLE `projects_projects`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `user_user`
+--
+ALTER TABLE `user_user`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -521,6 +603,18 @@ ALTER TABLE `auth_user_user_permissions`
 ALTER TABLE `django_admin_log`
   ADD CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   ADD CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+
+--
+-- Constraints for table `expense_expense`
+--
+ALTER TABLE `expense_expense`
+  ADD CONSTRAINT `expense_expense_project_id_cfd2ea59_fk_Projects_projects_id` FOREIGN KEY (`project_id`) REFERENCES `projects_projects` (`id`);
+
+--
+-- Constraints for table `user_user`
+--
+ALTER TABLE `user_user`
+  ADD CONSTRAINT `user_user_employee_id_id_13b55493_fk_Employee_employee_id` FOREIGN KEY (`employee_id_id`) REFERENCES `employee_employee` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
