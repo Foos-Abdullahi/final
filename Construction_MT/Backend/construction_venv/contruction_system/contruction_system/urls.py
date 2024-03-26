@@ -26,6 +26,7 @@ urlpatterns = [
     path('damiin/',include("damiin.urls")),
     path('user/',include("user.urls")),
     path('Payments/',include('Payments.urls')),
-    path('Tasks/',include('Tasks.urls'))
+    path('Tasks/',include('Tasks.urls')),
+    path('Material/',include('Material.urls')),
 ]
 

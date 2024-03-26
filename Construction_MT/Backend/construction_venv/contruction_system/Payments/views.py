@@ -1,20 +1,20 @@
-from django.shortcuts import render
-from rest_framework.decorators import  api_view
-from rest_framework.response import Response
-from .serializers import PaymentSerializers
-from .models  import Payments
+from rest_framework.decorators import api_view
+from rest_framework.response import  Response
+from .serializers import PaymentSerializer
+from  .models import Payments
+
 # Create your views here.
 #getAll
 @api_view(["GET"])
 def getAll(request):
     payments = Payments.objects.all()
-    serializer= PaymentSerializers(payments , many=True)
+    serializer= PaymentSerializer(payments , many=True)
     return Response(serializer.data)
 #get by id
 @api_view(["GET"])
 def getById(request,id):
    payment= Payments.objects.get(id=id)
-   serializer=PaymentSerializers(payment,many=False)
+   serializer=PaymentSerializer(payment,many=False)
    return  Response(serializer.data)    
 
  #delete
@@ -27,7 +27,7 @@ def delete(request,id):
 #add new
 @api_view(['POST'])
 def addNew(request):
-    serializer = PaymentSerializers(data=request.data)
+    serializer = PaymentSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
     return Response("payment is saved")
@@ -36,7 +36,7 @@ def addNew(request):
 @api_view(['PUT'])
 def update(request,id):
      payment=Payments.objects.get(id=id)
-     serializer=PaymentSerializers(instance=payment, data=request.data)
+     serializer=PaymentSerializer(instance=payment, data=request.data)
      if serializer.is_valid():
           serializer.save()
      return  Response(serializer.data)

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'expense.apps.ExpenseConfig',
     'Payments.apps.PaymentsConfig',
     'Tasks.apps.TasksConfig',
+    'Material.apps.MaterialConfig',
     'rest_framework',
 ]
 
