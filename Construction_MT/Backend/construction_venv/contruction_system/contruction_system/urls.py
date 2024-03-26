@@ -22,7 +22,7 @@ urlpatterns = [
     path('Projects/',include("Projects.urls")),
     path('Client/',include("Client.urls")),
     path('Employee/',include("Employee.urls")),
-    # path('expense/',include("expense.urls")),
+    path('expense/',include("expense.urls")),
     path('damiin/',include("damiin.urls")),
-    # path('user/',include("user.urls"))
+    path('user/',include("user.urls"))
 ]
