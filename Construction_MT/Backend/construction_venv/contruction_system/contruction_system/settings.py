@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'expense.apps.ExpenseConfig',
     'Role.apps.RoleConfig',
     'Payment_Methode.apps.PaymentMethodeConfig',
+    'Account.apps.AccountConfig',
 
     
     'rest_framework',
