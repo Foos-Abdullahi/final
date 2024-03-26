@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'Projects.apps.ProjectsConfig',
     'Client.apps.ClientConfig',
     'Employee.apps.EmployeeConfig',
+    'user.apps.UserConfig',
+    'damiin.apps.DamiinConfig',
+    'expense.apps.ExpenseConfig',
     'rest_framework',
 ]
 
