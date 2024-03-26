@@ -43,9 +43,17 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'damiin.apps.DamiinConfig',
     'expense.apps.ExpenseConfig',
+<<<<<<< HEAD
     'Payments.apps.PaymentsConfig',
     'Tasks.apps.TasksConfig',
     'Material.apps.MaterialConfig',
+=======
+    'Role.apps.RoleConfig',
+    'Payment_Methode.apps.PaymentMethodeConfig',
+    'Account.apps.AccountConfig',
+
+    
+>>>>>>> 04d5ef0ce2a6f04a74e8e5b161bb49717e4255af
     'rest_framework',
 ]
 
