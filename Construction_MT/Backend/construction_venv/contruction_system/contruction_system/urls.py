@@ -24,5 +24,13 @@ urlpatterns = [
     path('Employee/',include("Employee.urls")),
     path('expense/',include("expense.urls")),
     path('damiin/',include("damiin.urls")),
-    path('user/',include("user.urls"))
+    path('user/',include("user.urls")),
+<<<<<<< HEAD
+    path('Role/',include("Role.urls")),
+    path('Payment_Methode/',include("Payment_Methode.urls"))
+=======
+    path('Payments/',include('Payments.urls')),
+    path('Tasks/',include('Tasks.urls'))
+>>>>>>> b5f25ac3feb1d2e275cc505c8541ecfabdd9b6d3
 ]
+
