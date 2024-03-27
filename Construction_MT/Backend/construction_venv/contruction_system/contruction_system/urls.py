@@ -27,12 +27,9 @@ urlpatterns = [
     path('user/',include("user.urls")),
     path('Role/',include("Role.urls")),
     path('Payment_Methode/',include("Payment_Methode.urls")),
-<<<<<<< HEAD
-    path('Account/',include("Account.urls"))
-=======
+    path('Account/',include("Account.urls")),
     path('Payments/',include('Payments.urls')),
-    path('Tasks/',include('Tasks.urls'))
+    path('Tasks/',include('Tasks.urls')),
+    path('Material/',include('Material.urls')),
 ]
->>>>>>> c63d6f27fabbc8d5512ba24b766e6102373a6c5c
 
-]
