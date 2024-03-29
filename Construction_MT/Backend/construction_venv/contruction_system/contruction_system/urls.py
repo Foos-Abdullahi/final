@@ -27,7 +27,9 @@ urlpatterns = [
     path('user/',include("user.urls")),
     path('Role/',include("Role.urls")),
     path('Payment_Methode/',include("Payment_Methode.urls")),
+    path('Account/',include("Account.urls")),
     path('Payments/',include('Payments.urls')),
-    path('Tasks/',include('Tasks.urls'))
+    path('Tasks/',include('Tasks.urls')),
+    path('Material/',include('Material.urls')),
 ]
 

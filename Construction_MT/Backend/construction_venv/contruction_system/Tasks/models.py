@@ -1,6 +1,6 @@
-from django.db import models
-from Projects.models import  Projects
-from Employee.models  import Employee
+from django.db import  models
+from Projects.models import Projects
+from Employee.models import Employee
 # Create your models here.
 class Tasks(models.Model):
    project=models.ForeignKey(Projects,on_delete=models.CASCADE,default=None)

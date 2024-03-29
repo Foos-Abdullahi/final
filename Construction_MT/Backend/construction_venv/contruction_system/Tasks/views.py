@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework.response import  Response
 from .serializer import TaskSerializer
 from .models import Tasks
 # Create your views here.
