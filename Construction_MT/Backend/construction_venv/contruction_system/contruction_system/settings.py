@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'Client.apps.ClientConfig',
     'Employee.apps.EmployeeConfig',
     'user.apps.UserConfig',
-    'damiin.apps.DamiinConfig',
     'expense.apps.ExpenseConfig',
     'Payments.apps.PaymentsConfig',
     'Tasks.apps.TasksConfig',
