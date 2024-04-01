@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'Role.apps.RoleConfig',
     'Payment_Methode.apps.PaymentMethodeConfig',
     'Account.apps.AccountConfig',
+    'temporary_employee.apps.TemporaryEmployeeConfig',
+    'temporary_salary.apps.TemporarySalaryConfig',
+    'Budget.apps.BudgetConfig',
     'rest_framework',
 ]
 
