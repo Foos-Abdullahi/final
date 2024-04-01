@@ -5,7 +5,7 @@ from temporary_employee.models import Temporary_Employee
 class TemporarySalary(models.Model):
    Temporary_employee_id=models.ForeignKey(Temporary_Employee,on_delete=models.CASCADE)
    rate=models.CharField(max_length=100)
-   hour=models.DecimalField()
-   subtotal=models.DecimalField()
+   hour=models.DecimalField(max_digits=20, decimal_places=2)
+   subtotal=models.DecimalField(max_digits=20, decimal_places=2)
    register_date=models.DateTimeField()
    
