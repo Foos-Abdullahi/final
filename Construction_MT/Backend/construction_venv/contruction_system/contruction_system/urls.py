@@ -33,5 +33,6 @@ urlpatterns = [
     path('temporary_employee/',include('temporary_employee.urls')),
     path('temporary_salary/',include('temporary_salary.urls')),
     path('Budget/',include("Budget.urls")),
+    path('Config_Invoice/',include("Config_Invoice.urls")),
 ]
 
