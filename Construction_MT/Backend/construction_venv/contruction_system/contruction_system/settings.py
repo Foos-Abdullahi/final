@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'Account.apps.AccountConfig',
     'temporary_employee.apps.TemporaryEmployeeConfig',
     'temporary_salary.apps.TemporarySalaryConfig',
+    'Budget.apps.BudgetConfig',
+    'Config_Invoice.apps.ConfigInvoiceConfig',
     'rest_framework',
 ]
 
