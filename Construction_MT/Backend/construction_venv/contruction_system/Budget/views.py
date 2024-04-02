@@ -15,11 +15,13 @@ def get_by_id(request,id):
     budget= Budget.objects.get(id=id)
     serializer=BudgetSerializer(budget,many=False)
     return Response(serializer.data)
+
 # delete 
 @api_view(["DELETE"])
 def delete_item(request,id):
     budget = Budget.objects.filter(id=id).delete()
     return Response("Item is deleted")
+
 #create 
 @api_view(["POST"])
 def create_item(request):
