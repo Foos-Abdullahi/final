@@ -4,3 +4,4 @@ from django.db import models
 
 class Payment_Methode(models.Model):
     Py_method_name = models.CharField(max_length=100)
+    issue_date = models.DateField()

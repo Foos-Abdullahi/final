@@ -5,3 +5,4 @@ from django.db import models
 class Account(models.Model):
     account_number= models.CharField(max_length=100)
     account_type = models.CharField(max_length=100)
+    issue_date = models.DateField()

@@ -7,5 +7,5 @@ class TemporarySalary(models.Model):
    rate=models.CharField(max_length=100)
    hour=models.DecimalField(max_digits=5, decimal_places=2)
    subtotal=models.DecimalField(max_digits=5, decimal_places=2)
-   register_date=models.DateTimeField()
+   issue_date=models.DateTimeField()
    
