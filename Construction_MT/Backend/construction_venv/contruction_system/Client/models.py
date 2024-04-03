@@ -4,7 +4,9 @@ from django.db import models
 
 class Client(models.Model):
     client_name = models.CharField(max_length=100)
+    contact_person = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
+    document = models.CharField(max_length=100)
     issue_date = models.DateField()
 
 

@@ -6,4 +6,5 @@ class Material(models.Model):
      material_name=models.CharField(max_length=100)
      quantity = models.IntegerField()
      unit_price=models.DecimalField(max_digits=5, decimal_places=2) 
+     sub_total=models.DecimalField(max_digits=5, decimal_places=2) 
      issue_date = models.DateField()

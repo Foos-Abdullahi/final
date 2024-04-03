@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'contruction_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',        
-        'NAME': 'construction_db',
+        'NAME': 'construction_system_db',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',   # Set to your MySQL host, usually 'localhost'
