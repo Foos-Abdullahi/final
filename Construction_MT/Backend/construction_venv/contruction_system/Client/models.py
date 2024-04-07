@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 # Create your models here.
 
 class Client(models.Model):
@@ -7,6 +7,6 @@ class Client(models.Model):
     contact_person = models.CharField(max_length=100, default="Unknown")
     phone = models.CharField(max_length=100)
     document = models.CharField(max_length=100,default="Unknown")
-    issue_date = models.DateField()
+    issue_date = models.DateField(default=datetime.date.today)
 
 

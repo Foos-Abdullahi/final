@@ -7,7 +7,6 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Budget', '0004_budget_issue_date'),
         ('Client', '0002_client_contact_person_client_document'),
         ('Projects', '0002_projects_issue_date'),
     ]
@@ -22,10 +21,5 @@ class Migration(migrations.Migration):
             model_name='projects',
             name='client',
             field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='Client.client'),
-        ),
-        migrations.AlterField(
-            model_name='projects',
-            name='budget',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='Budget.budget'),
         ),
     ]

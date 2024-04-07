@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('Payment_Methode', '0001_initial'),
-        ('Payments', '0001_initial'),
+        ('invoice_reciept', '0001_initial'),
     ]
 
     operations = [

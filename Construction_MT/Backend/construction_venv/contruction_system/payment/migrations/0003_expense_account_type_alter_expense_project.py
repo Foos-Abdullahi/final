@@ -7,17 +7,11 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Account', '0002_account_balance_account_issue_date'),
         ('Projects', '0003_projects_nootaayo_projects_client_and_more'),
-        ('expense', '0002_rename_project_id_expense_project'),
+        ('payment', '0002_rename_project_id_expense_project'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='expense',
-            name='account_type',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='Account.account'),
-        ),
         migrations.AlterField(
             model_name='expense',
             name='project',

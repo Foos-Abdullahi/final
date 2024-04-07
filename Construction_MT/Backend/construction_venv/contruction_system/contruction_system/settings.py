@@ -41,17 +41,13 @@ INSTALLED_APPS = [
     'Client.apps.ClientConfig',
     'Employee.apps.EmployeeConfig',
     'user.apps.UserConfig',
-    'expense.apps.ExpenseConfig',
-    'Payments.apps.PaymentsConfig',
+    'payment.apps.ExpenseConfig',
+    'invoice_reciept.apps.PaymentsConfig',
     'Tasks.apps.TasksConfig',
     'Material.apps.MaterialConfig',
     'Role.apps.RoleConfig',
     'Payment_Methode.apps.PaymentMethodeConfig',
-    'Account.apps.AccountConfig',
-    'temporary_employee.apps.TemporaryEmployeeConfig',
-    'temporary_salary.apps.TemporarySalaryConfig',
-    'Budget.apps.BudgetConfig',
-    'Config_Invoice.apps.ConfigInvoiceConfig',
+    'Design.apps.DesignConfig',
     'rest_framework',
 ]
 
@@ -92,7 +88,7 @@ WSGI_APPLICATION = 'contruction_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',        
-        'NAME': 'construction_system_db',
+        'NAME': 'construction_db',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',   # Set to your MySQL host, usually 'localhost'

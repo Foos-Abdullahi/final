@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 # Create your models here.
 
 class Employee(models.Model):
@@ -7,4 +7,4 @@ class Employee(models.Model):
     position = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     salary = models.DecimalField(max_digits=10, decimal_places=2,default=0)
-    issue_date = models.DateField()
+    issue_date = models.DateField(default=datetime.date.today)
