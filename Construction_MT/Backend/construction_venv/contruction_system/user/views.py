@@ -20,7 +20,7 @@ def getById(request,id):
 @api_view(['POST'])
 def create(request):
     searilizer = UserSearilizer(data=request.data)
-    if searilizer.is_valid:
+    if searilizer.is_valid():
         searilizer.save()
     return Response("Saved")
 
