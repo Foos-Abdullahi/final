@@ -1,8 +1,9 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import React, { useState, useEffect } from 'react';
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
@@ -61,6 +62,22 @@ const Employee = () => {
   return (
     <Box m="20px">
       <Header title="Employee" subtitle="List of Employee Balances" />
+      <Box
+        display="flex"
+        justifyContent="end"
+        mt="20px"
+      >
+      <Button
+        type="submit"
+        color="secondary"
+        variant="contained"
+        component={Link}
+        to="/employee/form"
+      >
+        Create New Employee
+      </Button>
+    </Box>
+
       <Box
         m="40px 0 0 0"
         height="75vh"

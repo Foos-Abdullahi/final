@@ -1,8 +1,10 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
+import Employee from "../employee";
 
 const Design = () => {
   const theme = useTheme();
@@ -45,6 +47,23 @@ const Design = () => {
   return (
     <Box m="20px">
       <Header title="INVOICES" subtitle="List of Invoice Balances" />
+      
+    <Box
+        display="flex"
+        justifyContent="end"
+        mt="20px"
+      >
+      <Button
+        type="submit"
+        color="secondary"
+        variant="contained"
+        component={Link}
+        to="/design/form"
+      >
+        Create New Design
+      </Button>
+    </Box>
+
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -74,7 +93,7 @@ const Design = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        <DataGrid checkboxSelection rows={Employee} columns={columns} />
       </Box>
     </Box>
   );

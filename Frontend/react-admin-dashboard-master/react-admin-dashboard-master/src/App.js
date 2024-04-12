@@ -28,6 +28,9 @@ import Employee from "./scenes/employee";
 import Task from "./scenes/task";
 import User from "./scenes/user";
 import Role from "./scenes/role";
+import EmployeeForm from "./scenes/employee/form";
+import DesignForm from "./scenes/design/form";
+
 
 
 function App() {
@@ -52,7 +55,9 @@ function App() {
               <Route path="/material" element={<Material />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/design" element={<Design />} />
+              <Route path="/design/form" element={<DesignForm />} />
               <Route path="/employee" element={<Employee />} />
+              <Route path="/employee/form"  element={<EmployeeForm />} />
               <Route path="/task" element={<Task />} />
               <Route path="/user" element={<User />} />
               <Route path="/role" element={<Role />} />
@@ -67,6 +72,7 @@ function App() {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/geography" element={<Geography />} />
+              
             </Routes>
           </main>
         </div>
