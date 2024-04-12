@@ -1,31 +1,69 @@
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
-import * as yup from "yup";
+// import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import React, { useState } from 'react';
+import { BrowserRouter } from "react-router-dom";
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [emp_name,setemp_name] = useState("");
+  const [position,setposition] = useState("");
+  const [phone,setphone] = useState("");
+  const [salary,setsalary] = useState("");
+  const [issue_date,setissue_date] = useState(new Date().toISOString().substr(0, 10));
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
-  };
+  // const handleFormSubmit = (values) => {
+  //   console.log(values);
+  // };
+    const AddEmployee = async (e) => {
+        e.preventDefault();
+        // fetch('http://127.0.0.1:8000/user/')
+    
+        const res = await fetch("http://127.0.0.1:8000/Employee/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                employee_name:emp_name,
+                position:position,
+                phone:phone,
+                salary:salary,
+                issue_date:issue_date,
+            }),
+        });
+        if (!res.ok) {
+            console.log(`Request failed with status ${res.status}`);
+        }
+        alert(emp_name)
+        alert(position)
+        alert(phone)
+        alert(salary)
+        alert(issue_date)
+        const data = await res.json();
+        alert("succesfully")
+        window.location.href = "/employee";
+        console.log("Response data:", data);
+        
+    };
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="CREATE Employee" subtitle="Create a New Employee Profile" />
 
       <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={checkoutSchema}
+        onSubmit={AddEmployee}
+        // initialValues={initialValues}
+        // validationSchema={checkoutSchema}
       >
         {({
-          values,
+          // values,
           errors,
           touched,
           handleBlur,
-          handleChange,
+          // handleChange,
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
@@ -41,84 +79,76 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label="Employee Name"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
+                // onChange={handleChange}
+                onChange={(e)=>{setemp_name(e.target.value)}}
+                value={emp_name}
+                name="emp_name"
+                error={!!touched.emp_name && !!errors.emp_name}
+                helperText={touched.emp_name && errors.emp_name}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Last Name"
+                label="Position"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
+                // onChange={handleChange}
+                onChange={(e)=>{setposition(e.target.value)}}
+                value={position}
+                name="position"
+                error={!!touched.position && !!errors.position}
+                helperText={touched.position && errors.position}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Email"
+                label="phone Number"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
+                // onChange={handleChange}
+                onChange={(e)=>{setphone(e.target.value)}}
+                value={phone}
+                name="phone"
+                error={!!touched.phone && !!errors.phone}
+                helperText={touched.phone && errors.phone}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
-                label="Contact Number"
+                type="number"
+                label="Salary"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
+                // onChange={handleChange}
+                onChange={(e)=>{setsalary(e.target.value)}}
+                value={salary}
+                name="salary"
+                error={!!touched.salary && !!errors.salary}
+                helperText={touched.salary && errors.salary}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
-                label="Address 1"
+                type="date"
+                label="issue Date"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 2"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={!!touched.address2 && !!errors.address2}
-                helperText={touched.address2 && errors.address2}
+                // onChange={handleChange}
+                onChange={(e)=>{setissue_date(e.target.value)}}
+                value={issue_date}
+                name="issue_date"
+                error={!!touched.issue_date && !!errors.issue_date}
+                helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Create New Employee
               </Button>
             </Box>
           </form>
@@ -128,27 +158,5 @@ const Form = () => {
   );
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
-const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  contact: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  address1: yup.string().required("required"),
-  address2: yup.string().required("required"),
-});
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  contact: "",
-  address1: "",
-  address2: "",
-};
 
 export default Form;
