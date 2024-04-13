@@ -30,6 +30,7 @@ import User from "./scenes/user";
 import Role from "./scenes/role";
 import EmployeeForm from "./scenes/employee/form";
 import DesignForm from "./scenes/design/form";
+import ClientForm from "./scenes/client/form";
 
 
 
@@ -65,6 +66,7 @@ function App() {
               <Route path="/invoiceReciept" element={<InvoiceReciept />} />
               <Route path="/invoice" element={<Invoice />} />
               <Route path="/client" element={<Client />} />
+              <Route path="/client/form" element={<ClientForm />} />
               <Route path="/paymentType" element={<PaymentType />} />
               <Route path="/bar" element={<Bar />} />
               <Route path="/pie" element={<Pie />} />

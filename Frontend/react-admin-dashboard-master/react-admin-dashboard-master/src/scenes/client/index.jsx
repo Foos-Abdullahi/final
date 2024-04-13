@@ -1,16 +1,33 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
 
 const Client = () => {
+  const [Clients, setClients] = useState([]);
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  const fetchClients = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Client/'); 
+      const data = await response.json();
+      setClients(data);
+    } catch (error) {
+      console.error('Error fetching Clients:', error);
+    }
+  };
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "name",
+      field: "client_name",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
@@ -21,30 +38,46 @@ const Client = () => {
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "document",
+      headerName: "document",
       flex: 1,
     },
+    // {
+    //   field: "contact_person",
+    //   headerName: "contact_person",
+    //   flex: 1,
+    //   renderCell: (params) => (
+    //     <Typography color={colors.greenAccent[500]}>
+    //       ${params.row.contact_person}
+    //     </Typography>
+    //   ),
+    // },
     {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
-        </Typography>
-      ),
-    },
-    {
-      field: "date",
-      headerName: "Date",
+      field: "issue_date",
+      headerName: "Issue Date",
       flex: 1,
     },
   ];
 
   return (
     <Box m="20px">
-      <Header title="INVOICES" subtitle="List of Invoice Balances" />
+      <Header title="Client" subtitle="List of Client Balances" />
+      <Box
+        display="flex"
+        justifyContent="end"
+        mt="20px"
+      >
+      <Button
+        type="submit"
+        color="secondary"
+        variant="contained"
+        component={Link}
+        to="/Client/form"
+      >
+        Create New Client
+      </Button>
+    </Box>
+
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -74,7 +107,7 @@ const Client = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        <DataGrid checkboxSelection rows={Clients} columns={columns} />
       </Box>
     </Box>
   );
