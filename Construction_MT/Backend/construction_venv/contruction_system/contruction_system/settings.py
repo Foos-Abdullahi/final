@@ -68,19 +68,6 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',  # Replace with your React app's URL
 ]
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-    'OPTIONS'
-]
-
-CORS_ALLOW_HEADERS = [
-    'Authorization',
-    'Content-Type',
-]
-
 ROOT_URLCONF = 'contruction_system.urls'
 
 TEMPLATES = [

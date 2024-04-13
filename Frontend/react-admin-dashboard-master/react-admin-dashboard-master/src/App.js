@@ -30,7 +30,14 @@ import User from "./scenes/user";
 import Role from "./scenes/role";
 import EmployeeForm from "./scenes/employee/form";
 import DesignForm from "./scenes/design/form";
+<<<<<<< HEAD
 import ClientForm from "./scenes/client/form";
+=======
+import CreateUser from "./scenes/user/create";
+import InvoiceForm from "./scenes/invoice/form";
+import CreateProjects from "./scenes/project/form";
+import CreatePayment from "./scenes/payment/create";
+>>>>>>> 9cbdb415afbcf1210ed545b7a9f4b67955106add
 
 
 
@@ -53,18 +60,22 @@ function App() {
               <Route path="/invoices" element={<Invoices />} />
               <Route path="/form" element={<Form />} />
               <Route path="/project" element={<Project />} />
+              <Route path="/project/form" element={<CreateProjects />} />
               <Route path="/material" element={<Material />} />
               <Route path="/payment" element={<Payment />} />
+              <Route path="/payment/create" element={<CreatePayment />} />
               <Route path="/design" element={<Design />} />
               <Route path="/design/form" element={<DesignForm />} />
               <Route path="/employee" element={<Employee />} />
               <Route path="/employee/form"  element={<EmployeeForm />} />
               <Route path="/task" element={<Task />} />
               <Route path="/user" element={<User />} />
+              <Route path="/user/create" element={<CreateUser />} />
               <Route path="/role" element={<Role />} />
               <Route path="/paymentMethod" element={<PaymentMethod />} />
               <Route path="/invoiceReciept" element={<InvoiceReciept />} />
               <Route path="/invoice" element={<Invoice />} />
+              <Route path="/invoice/form" element={<InvoiceForm />} />
               <Route path="/client" element={<Client />} />
               <Route path="/client/form" element={<ClientForm />} />
               <Route path="/paymentType" element={<PaymentType />} />
