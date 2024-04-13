@@ -68,6 +68,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',  # Replace with your React app's URL
 ]
+
 ROOT_URLCONF = 'contruction_system.urls'
 
 TEMPLATES = [
