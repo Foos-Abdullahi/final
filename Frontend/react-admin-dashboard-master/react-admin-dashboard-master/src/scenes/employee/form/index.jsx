@@ -1,48 +1,85 @@
-import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
+import React, { useState, useEffect } from "react";
 
 const EmployeeForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [employeeName, setEmployeeName] = useState("");
+  const [position, setPosition] = useState("");
+  const [phone, setPhone] = useState("");
+  const [salary, setSalary] = useState("");
+  const [issueDate, setIssueDate] = useState("");
 
-  const handleFormSubmit = async (values) => {
-    setIsSubmitting(true);
-
+  const fetchEmployeeOptions = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/Employee/create/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      if (response.ok) {
-        console.log("Employee created successfully");
-
-      } else {
-        console.log("Failed to create employee");
+      const response = await fetch("http://127.0.0.1:8000/Employee/create/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch employee options");
       }
+      const data = await response.json();
+      // Process data if needed
     } catch (error) {
-      console.log("API call failed:", error);
+      console.error("Error fetching employee options:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployeeOptions();
+  }, []);
+
+  const sendForm = async () => {
+    const res = await fetch("http://127.0.0.1:8000/Employee/create/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        employee_name: employeeName,
+        position: position,
+        phone: phone,
+        salary: salary,
+        issue_date: issueDate,
+      }),
+    });
+
+    if (!res.ok) {
+      console.log(`Request failed with status ${res.status}`);
     }
 
-    setIsSubmitting(false);
+    const data = await res.json();
+    console.log("Response data:", data);
   };
+
+  const handleFormSubmit = () => {
+    sendForm();
+  };
+
+  // const validationSchema = yup.object().shape({
+  //   employee_name: yup.string().required("Employee name is required"),
+  //   position: yup.string().required("Position is required"),
+  //   phone: yup.string().required("Phone number is required"),
+  //   salary: yup.number().required("Salary is required"),
+  //   issue_date: yup.string().required("Issue date is required"),
+  // });
 
   return (
     <Box m="20px">
-      <Header title="CREATE EMPLOYEE" subtitle="Create a New Employee Profile" />
+      <Header title="CREATE EMPLOYEE" subtitle="Create a New Employee" />
 
       <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={checkoutSchema}
+        onSubmit={sendForm}
+        initialValues={{
+          employee_name: "",
+          position: "",
+          phone: "",
+          salary: "",
+          issue_date: "",
+        }}
+        // validationSchema={validationSchema}
       >
         {({
           values,
@@ -65,29 +102,14 @@ const EmployeeForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Name"
+                label="Employee Name"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.name}
-                name="name"
-                error={!!touched.name && !!errors.name}
-                helperText={touched.name && errors.name}
-                sx={{ gridColumn: "span 2" }}
-              />
-            
-             
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Phone Number"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.phone}
-                name="phone"
-                error={!!touched.phone && !!errors.phone}
-                helperText={touched.phone && errors.phone}
-                sx={{ gridColumn: "span 2" }}
+                onChange={(e) => setEmployeeName(e.target.value)}
+                value={employeeName}
+                name="employee_name"
+                error={!!touched.employee_name && !!errors.employee_name}
+                helperText={touched.employee_name && errors.employee_name}
+                sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
@@ -95,8 +117,8 @@ const EmployeeForm = () => {
                 type="text"
                 label="Position"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.position}
+                onChange={(e) => setPosition(e.target.value)}
+                value={position}
                 name="position"
                 error={!!touched.position && !!errors.position}
                 helperText={touched.position && errors.position}
@@ -105,11 +127,24 @@ const EmployeeForm = () => {
               <TextField
                 fullWidth
                 variant="filled"
+                type="tel"
+                label="Phone"
+                onBlur={handleBlur}
+                onChange={(e) => setPhone(e.target.value)}
+                value={phone}
+                name="phone"
+                error={!!touched.phone && !!errors.phone}
+                helperText={touched.phone && errors.phone}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
                 type="number"
                 label="Salary"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.salary}
+                onChange={(e) => setSalary(e.target.value)}
+                value={salary}
                 name="salary"
                 error={!!touched.salary && !!errors.salary}
                 helperText={touched.salary && errors.salary}
@@ -121,23 +156,17 @@ const EmployeeForm = () => {
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.issueDate}
-                name="issueDate"
-                error={!!touched.issueDate && !!errors.issueDate}
-                helperText={touched.issueDate && errors.issueDate}
+                onChange={(e) => setIssueDate(e.target.value)}
+                value={issueDate}
+                name="issue_date"
+                error={!!touched.issue_date && !!errors.issue_date}
+                helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
-            
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button
-                type="submit"
-                color="secondary"
-                variant="contained"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Creating..." : "Create New User"}
+              <Button type="submit" color="secondary" variant="contained">
+                Create Employee
               </Button>
             </Box>
           </form>
@@ -145,28 +174,6 @@ const EmployeeForm = () => {
       </Formik>
     </Box>
   );
-};
-
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
-const checkoutSchema = yup.object().shape({
-  name: yup.string().required("Required"),
-  phone: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("Required"),
-  position: yup.string().required("Required"),
-  salary: yup.string().required("Required"),
-  issueDate: yup.string().required("Required"),
-});
-
-const initialValues = {
-  name: "",
-  phone: "",
-  position: "",
-  salary: "",
-  issueDate: "",
 };
 
 export default EmployeeForm;

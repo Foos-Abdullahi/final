@@ -1,59 +1,86 @@
-import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Header from "../../../components/Header";
+import React, { useState, useEffect } from "react";
 
 const ClientForm = () => {
+  const isNonMobile = useMediaQuery("(min-width:600px)");
+
   const [clientName, setClientName] = useState("");
-  const [phone, setPhone] = useState("");
   const [contactPerson, setContactPerson] = useState("");
+  const [phone, setPhone] = useState("");
   const [document, setDocument] = useState("");
   const [issueDate, setIssueDate] = useState("");
 
-  const handleFormSubmit = async (values) => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/Client/create/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+  useEffect(() => {
+    // Fetch client options
+    fetchClientOptions();
+  }, []);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Client created successfully:", data);
-      } else {
-        const errorData = await response.json();
-        console.error("Failed to create Client:", errorData);
+  const fetchClientOptions = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/Client/create/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch client options");
       }
+      const data = await response.json();
+      // Process data if needed
     } catch (error) {
-      console.error("An error occurred while creating Client:", error);
+      console.error("Error fetching client options:", error);
     }
   };
 
-  const validationSchema = yup.object().shape({
-    clientName: yup.string().required("Client name is required"),
-    phone: yup.string().required("Phone number is required"),
-    contactPerson: yup.string().required("Contact person is required"),
-    document: yup.string().required("Document is required"),
-    issueDate: yup.string().required("Issue Date is required"),
-  });
+  const sendForm = async () => {
+    const res = await fetch("http://127.0.0.1:8000/Client/create/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        client_name: clientName,
+        contact_person: contactPerson,
+        phone: phone,
+        document: document,
+        issue_date: issueDate,
+      }),
+    });
 
-  const initialValues = {
-    clientName: "",
-    phone: "",
-    contactPerson: "",
-    document: "",
-    issueDate: "",
+    if (!res.ok) {
+      console.log(`Request failed with status ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log("Response data:", data);
   };
+
+  const handleFormSubmit = () => {
+    sendForm();
+  };
+
+  const validationSchema = yup.object().shape({
+    client_name: yup.string().required("Client name is required"),
+    contact_person: yup.string().required("Contact person is required"),
+    phone: yup.string().required("Phone number is required"),
+    document: yup.string().required("Document is required"),
+    issue_date: yup.string().required("Issue date is required"),
+  });
 
   return (
     <Box m="20px">
+      <Header title="CREATE CLIENT" subtitle="Create a New Client" />
+
       <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
+        onSubmit={sendForm}
+        initialValues={{
+          client_name: "",
+          contact_person: "",
+          phone: "",
+          document: "",
+          issue_date: "",
+        }}
+        // validationSchema={}
       >
         {({
           values,
@@ -64,73 +91,85 @@ const ClientForm = () => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              variant="filled"
-              type="text"
-              label="Client Name"
-              onBlur={handleBlur}
-              onChange={(e) => setClientName(e.target.value)}
-              value={clientName}
-              name="clientName"
-              error={!!touched.clientName && !!errors.clientName}
-              helperText={touched.clientName && errors.clientName}
-            />
-            <TextField
-              fullWidth
-              variant="filled"
-              type="text"
-              label="Phone number"
-              onBlur={handleBlur}
-              onChange={handleChange} 
-            //   onChange={(e) => setPhone(e.target.value)}
-              value={values.phone}
-              name="phone" 
-              error={!!touched.phone && !!errors.phone}
-              helperText={touched.phone && errors.phone}
-            />
-            <TextField
-              fullWidth
-              variant="filled"
-              type="text"
-              label="Contact Person"
-              onBlur={handleBlur}
-              onChange={handleChange} 
-            //   onChange={(e) => setContactPerson(e.target.value)}
-              value={values.contactPerson}
-              name="contactPerson"
-              error={!!touched.contactPerson && !!errors.contactPerson}
-              helperText={touched.contactPerson && errors.contactPerson}
-            />
-            <TextField
-              fullWidth
-              variant="filled"
-              type="text"
-              label="Document"
-              onBlur={handleBlur}
-            //   onChange={(e) => setDocument(e.target.value)}
-              onChange={handleChange} 
-              value={values.document}
-              name="document" 
-              error={!!touched.document && !!errors.document}
-              helperText={touched.document && errors.document}
-            />
-            <TextField
-              fullWidth
-              variant="filled"
-              type="text"
-              label="Issue Date"
-              onBlur={handleBlur}
-            //   onChange={(e) => setIssueDate(e.target.value)}
-            onChange={handleChange} 
-              value={values.issueDate}
-              name="issueDate" 
-              error={!!touched.issueDate && !!errors.issueDate}
-              helperText={touched.issueDate && errors.issueDate}
-            />
-            <Button type="submit" color="secondary" variant="contained">
-              Create New Client
-            </Button>
+            <Box
+              display="grid"
+              gap="30px"
+              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              sx={{
+                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+              }}
+            >
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Client Name"
+                onBlur={handleBlur}
+                onChange={(e) => setClientName(e.target.value)}
+                value={clientName}
+                name="client_name"
+                error={!!touched.client_name && !!errors.client_name}
+                helperText={touched.client_name && errors.client_name}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Contact Person"
+                onBlur={handleBlur}
+                onChange={(e) => setContactPerson(e.target.value)}
+                value={contactPerson}
+                name="contact_person"
+                error={!!touched.contact_person && !!errors.contact_person}
+                helperText={touched.contact_person && errors.contact_person}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="tel"
+                label="Phone"
+                onBlur={handleBlur}
+                onChange={(e) => setPhone(e.target.value)}
+                value={phone}
+                name="phone"
+                error={!!touched.phone && !!errors.phone}
+                helperText={touched.phone && errors.phone}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Document"
+                onBlur={handleBlur}
+                onChange={(e) => setDocument(e.target.value)}
+                value={document}
+                name="document"
+                error={!!touched.document && !!errors.document}
+                helperText={touched.document && errors.document}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="date"
+                label="Issue Date"
+                onBlur={handleBlur}
+                onChange={(e) => setIssueDate(e.target.value)}
+                value={issueDate}
+                name="issue_date"
+                error={!!touched.issue_date && !!errors.issue_date}
+                helperText={touched.issue_date && errors.issue_date}
+                sx={{ gridColumn: "span 4" }}
+              />
+            </Box>
+            <Box display="flex" justifyContent="end" mt="20px">
+              <Button type="submit" color="secondary" variant="contained">
+                Create Client
+              </Button>
+            </Box>
           </form>
         )}
       </Formik>
