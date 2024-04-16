@@ -30,14 +30,19 @@ import User from "./scenes/user";
 import Role from "./scenes/role";
 import EmployeeForm from "./scenes/employee/form";
 import DesignForm from "./scenes/design/form";
-<<<<<<< HEAD
 import ClientForm from "./scenes/client/form";
-=======
 import CreateUser from "./scenes/user/create";
+import CreatepaymentMethode from "./scenes/paymentMethod/create";
+import UpdatepaymentMethode from "./scenes/paymentMethod/update/[id]";
+ import CreateDesign from "./scenes/design/form";
+import UpdateDesign from "./scenes/design/update/[id]";
+import CreateRole from "./scenes/role/create";
+import Createpy_type from "./scenes/paymentType/create";
+import Updatepy_type from "./scenes/paymentType/update/[id]";
+import UpdateRole from "./scenes/role/update/[id]";
 import InvoiceForm from "./scenes/invoice/form";
 import CreateProjects from "./scenes/project/form";
 import CreatePayment from "./scenes/payment/create";
->>>>>>> 9cbdb415afbcf1210ed545b7a9f4b67955106add
 
 
 
@@ -71,6 +76,14 @@ function App() {
               <Route path="/task" element={<Task />} />
               <Route path="/user" element={<User />} />
               <Route path="/user/create" element={<CreateUser />} />
+              <Route path="/paymentMethod/form" element={<CreatepaymentMethode />} />
+              <Route path="/paymentMethod/update/:id" element={<UpdatepaymentMethode />} />
+              <Route path="/role/create" element={<CreateRole />} />
+              <Route path="/role/update/:id" element={<UpdateRole />} />
+              <Route path="/paymentType/create" element={<Createpy_type />} />
+              <Route path="/design/form" element={<CreateDesign />} />
+              <Route path="/design/update/:id" element={<UpdateDesign />} />
+              <Route path="/paymentType/update/:id" element={<Updatepy_type />} />
               <Route path="/role" element={<Role />} />
               <Route path="/paymentMethod" element={<PaymentMethod />} />
               <Route path="/invoiceReciept" element={<InvoiceReciept />} />

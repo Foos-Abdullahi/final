@@ -5,23 +5,19 @@ import * as yup from "yup";
 import Header from "../../../components/Header";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const DesignForm = () => {
-  const [images, setimage] = useState("");
-  const [statuses, setstatus] = useState("");
-  const [amounts, setamount] = useState("");
+const PaymentMethodForm = () => {
+  const [paymentMethodName, setPaymentMethodName] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const sendForm = async () => {
-    const res = await fetch("http://127.0.0.1:8000/Design/create/", {
+    const res = await fetch("http://127.0.0.1:8000/Payment_Methode/create/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        image: images,
-        status: statuses,
-        amount:amounts,
+        Py_method_name: paymentMethodName,
         issue_date: issueDate,
       }),
     });
@@ -32,24 +28,24 @@ const DesignForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    console.log(images)
+    console.log(paymentMethodName)
     console.log(issueDate)
-    window.location.href = '/design';
+    window.location.href = '/paymentMethod';
   };
 
 //   const validationSchema = yup.object().shape({
-//     payment_method_name: yup.string().required("Design name is required"),
+//     payment_method_name: yup.string().required("Payment method name is required"),
 //     issue_date: yup.string().required("Issue date is required"),
 //   });
 
   return (
     <Box m="20px">
-      <Header title="CREATE Design" subtitle="Create a New Design" />
+      <Header title="CREATE PAYMENT METHOD" subtitle="Create a New Payment Method" />
 
       <Formik
         onSubmit={sendForm}
         initialValues={{
-          Designs: "",
+          payment_method_name: "",
           issue_date: "",
         }}
         // validationSchema={validationSchema}
@@ -75,39 +71,13 @@ const DesignForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Image"
+                label="Payment Method Name"
                 onBlur={handleBlur}
-                onChange={(e) => setimage(e.target.value)}
-                value={images}
-                name="Designs"
-                error={!!touched.Designs && !!errors.Designs}
-                helperText={touched.Designs && errors.Designs}
-                sx={{ gridColumn: "span 4" }}
-              />
-                 <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Status"
-                onBlur={handleBlur}
-                onChange={(e) => setstatus(e.target.value)}
-                value={statuses}
-                name="Designs"
-                error={!!touched.Designs && !!errors.Designs}
-                helperText={touched.Designs && errors.Designs}
-                sx={{ gridColumn: "span 4" }}
-              />
-                 <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Amount"
-                onBlur={handleBlur}
-                onChange={(e) => setamount(e.target.value)}
-                value={amounts}
-                name="Designs"
-                error={!!touched.Designs && !!errors.Designs}
-                helperText={touched.Designs && errors.Designs}
+                onChange={(e) => setPaymentMethodName(e.target.value)}
+                value={paymentMethodName}
+                name="payment_method_name"
+                error={!!touched.payment_method_name && !!errors.payment_method_name}
+                helperText={touched.payment_method_name && errors.payment_method_name}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -126,7 +96,7 @@ const DesignForm = () => {
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create Design
+                Create Payment Method
               </Button>
             </Box>
           </form>
@@ -136,4 +106,4 @@ const DesignForm = () => {
   );
 };
 
-export default DesignForm;
+export default PaymentMethodForm;
