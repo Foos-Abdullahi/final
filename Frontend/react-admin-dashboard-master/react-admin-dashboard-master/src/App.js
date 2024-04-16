@@ -9,7 +9,6 @@ import Contacts from "./scenes/contacts";
 import Bar from "./scenes/bar";
 import Form from "./scenes/form";
 import Project from "./scenes/project";
-import Material from './scenes/material'
 import Line from "./scenes/line";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
@@ -22,10 +21,8 @@ import Design from "./scenes/design";
 import PaymentType from "./scenes/paymentType";
 import Client from "./scenes/client";
 import Invoice from "./scenes/invoice";
-import InvoiceReciept from "./scenes/invoiceReciept";
 import PaymentMethod from "./scenes/paymentMethod";
 import Employee from "./scenes/employee";
-import Task from "./scenes/task";
 import User from "./scenes/user";
 import Role from "./scenes/role";
 import EmployeeForm from "./scenes/employee/form";
@@ -35,9 +32,24 @@ import CreateUser from "./scenes/user/create";
 import InvoiceForm from "./scenes/invoice/form";
 import CreateProjects from "./scenes/project/form";
 import CreatePayment from "./scenes/payment/create";
+<<<<<<< HEAD
 import EditUser from "./scenes/user/edit/[id]";
 import EditInvoice from "./scenes/invoice/edit/[id]";
 // import EditUser from "./scenes/user/edit/[id]";
+=======
+import MaterialForm from "./scenes/material/form";
+import MaterialEditForm from "./scenes/material/edit/[id]";
+import AllTask from "./scenes/task";
+import TaskEditForm from "./scenes/task/edit/[id]";
+import AllMaterail from "./scenes/material";
+import TaskForm from "./scenes/task/form";
+import AllinvoicerReciept from "./scenes/invoiceReciept";
+import ReciptForm from "./scenes/invoiceReciept/from";
+import RecieptEditForm from "./scenes/invoiceReciept/edit/[id]";
+
+
+
+>>>>>>> 37436ed9ddfda2a060198166c10ebeba01795475
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -58,21 +70,27 @@ function App() {
               <Route path="/form" element={<Form />} />
               <Route path="/project" element={<Project />} />
               <Route path="/project/form" element={<CreateProjects />} />
-              <Route path="/material" element={<Material />} />
+              <Route path="/material" element={<AllMaterail />} />
+              <Route path="/material/form" element={<MaterialForm/>} />
+              <Route path="/material/edit/:id" element={<MaterialEditForm/>} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/payment/create" element={<CreatePayment />} />
               <Route path="/design" element={<Design />} />
               <Route path="/design/form" element={<DesignForm />} />
               <Route path="/employee" element={<Employee />} />
               <Route path="/employee/form"  element={<EmployeeForm />} />
-              <Route path="/task" element={<Task />} />
+              <Route path="/task" element={<AllTask />} />
+              <Route path="/task/form" element={<TaskForm />} />
+              <Route path="/task/edit/:id" element={<TaskEditForm />} />
               <Route path="/user" element={<User />} />
               <Route path="/user/create" element={<CreateUser />} />
               <Route path="/user/edit/:id" element={<EditUser/>}/>
               {/* <Route path="/user/edit/:id" element={<EditUser />} /> */}
               <Route path="/role" element={<Role />} />
               <Route path="/paymentMethod" element={<PaymentMethod />} />
-              <Route path="/invoiceReciept" element={<InvoiceReciept />} />
+              <Route path="/invoiceReciept" element={< AllinvoicerReciept/>} />
+              <Route path="/invoiceReciept/from" element={< ReciptForm/>} />
+              <Route path="/invoiceReciept/edit/:id" element={< RecieptEditForm/>} />
               <Route path="/invoice" element={<Invoice />} />
               <Route path="/invoice/form" element={<InvoiceForm />} />
               <Route path="/invoice/edit/:id" element={<EditInvoice />} />

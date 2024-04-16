@@ -7,5 +7,5 @@ class Tasks(models.Model):
    start_date=models.DateField()
    end_date=models.DateField()
    status=models.CharField(max_length=100)
-   issue_date=models.DateTimeField()
+   issue_date=models.DateField()
    
