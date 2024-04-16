@@ -50,11 +50,12 @@ const User = () => {
         throw new Error('Failed to fetch users');
       }
       const data = await response.json();
-      setUsers(data.map(user => ({
-        ...user,
-        employee_name: employees.find(employee => employee.id === user.employee_id)?.employee_name || '',
-        Role_name: roles.find(role => role.id === user.role_id)?.Role_name || '',
-      })));
+      // setUsers(data.map(user => ({
+      //   ...user,
+      //   employee_name: employees.find(employee => employee.id === user.employee_id)?.employee_name || '',
+      //   Role_name: roles.find(role => role.id === user.role_id)?.Role_name || '',
+      // })));
+      setUsers(data)
 
       console.log(users);
     } catch (error) {
@@ -71,6 +72,10 @@ const User = () => {
       headerName: "Employee",
       flex: 1,
       cellClassName: "name-column--cell",
+      valueGetter: (params) => {
+        const employe = employees.find(Employee => Employee.id === params.row.employee_id);
+        return employe ? employe.employee_name : '';
+      },
     },
     {
       field: "UserName",
@@ -86,6 +91,10 @@ const User = () => {
       field: "Role_name",
       headerName: "Role",
       flex: 1,
+      valueGetter: (params) => {
+        const role = roles.find(Role => Role.id === params.row.role_id);
+        return role ? role.Role_name : '';
+      },
     },
     {
       field: "issue_date",
