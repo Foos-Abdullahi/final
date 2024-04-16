@@ -51,6 +51,7 @@ const TaskForm = () => {
       }
 
       const data = await res.json();
+      window.history.back();
       console.log("Response data:", data);
     } catch (error) {
       console.error("Error sending form:", error);

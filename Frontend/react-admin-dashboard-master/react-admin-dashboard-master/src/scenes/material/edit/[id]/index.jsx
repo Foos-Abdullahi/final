@@ -80,7 +80,7 @@ const MaterialEditForm = () => {
 
       const data = await res.json();
       console.log("Response data:", data);
-
+      window.history.back();
       // Reload data from the server after successful form submission
       fetchMaterial();
     } catch (error) {
@@ -180,7 +180,7 @@ const MaterialEditForm = () => {
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="primary" variant="contained">
+              <Button type="submit" color="secondary" variant="contained">
                 Update Material
               </Button>
             </Box>

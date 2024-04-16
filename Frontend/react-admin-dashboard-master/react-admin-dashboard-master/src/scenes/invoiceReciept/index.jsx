@@ -29,6 +29,7 @@ const AllInvoiceReceipts = () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/Projects/');
       const data = await response.json();
+      
       setProjects(data);
     } catch (error) {
       console.error('Error fetching payment methods:', error);

@@ -53,6 +53,7 @@ const MaterialForm = () => {
 
       const data = await res.json();
       console.log("Response data:", data);
+      window.history.back();
     } catch (error) {
       console.error("Error sending form:", error);
     }
