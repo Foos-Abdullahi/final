@@ -30,17 +30,14 @@ import User from "./scenes/user";
 import Role from "./scenes/role";
 import EmployeeForm from "./scenes/employee/form";
 import DesignForm from "./scenes/design/form";
-<<<<<<< HEAD
 import ClientForm from "./scenes/client/form";
-=======
 import CreateUser from "./scenes/user/create";
 import InvoiceForm from "./scenes/invoice/form";
 import CreateProjects from "./scenes/project/form";
 import CreatePayment from "./scenes/payment/create";
->>>>>>> 9cbdb415afbcf1210ed545b7a9f4b67955106add
-
-
-
+import EditUser from "./scenes/user/edit/[id]";
+import EditInvoice from "./scenes/invoice/edit/[id]";
+// import EditUser from "./scenes/user/edit/[id]";
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -71,11 +68,14 @@ function App() {
               <Route path="/task" element={<Task />} />
               <Route path="/user" element={<User />} />
               <Route path="/user/create" element={<CreateUser />} />
+              <Route path="/user/edit/:id" element={<EditUser/>}/>
+              {/* <Route path="/user/edit/:id" element={<EditUser />} /> */}
               <Route path="/role" element={<Role />} />
               <Route path="/paymentMethod" element={<PaymentMethod />} />
               <Route path="/invoiceReciept" element={<InvoiceReciept />} />
               <Route path="/invoice" element={<Invoice />} />
               <Route path="/invoice/form" element={<InvoiceForm />} />
+              <Route path="/invoice/edit/:id" element={<EditInvoice />} />
               <Route path="/client" element={<Client />} />
               <Route path="/client/form" element={<ClientForm />} />
               <Route path="/paymentType" element={<PaymentType />} />

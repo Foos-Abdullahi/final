@@ -42,6 +42,21 @@ const Invoice = () => {
       headerName: "Date",
       flex: 1,
     },
+    {
+      field: "Edit",
+      headerName: "Action",
+      width: 100,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="secondary"
+          component={Link}
+          to={`/invoice/edit/${params.row.id}`}
+        >
+          Update Invoice
+        </Button>
+      ),
+    },
   ];
 
   return (
