@@ -34,7 +34,7 @@ const Projects = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "client_id",
+      field: "client",
       headerName: "Client",
       flex: 1,
     },

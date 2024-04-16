@@ -50,7 +50,6 @@ const CreateUser = () => {
   };
 
   const sendForm = async () => {
-    alert("Foos")
     const res = await fetch("http://127.0.0.1:8000/user/create/", {
       method: "POST",
       headers: {

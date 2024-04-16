@@ -9,8 +9,10 @@ import { Link } from "react-router-dom";
 
 const Invoice = () => {
   const [invoices, setInvoices] = useState([]);
+  const [clients, setClient] = useState([]);
   useEffect(() => {
     fetchInvoices();
+    fetchClients();
   }, []);
 
   const fetchInvoices = async () => {
@@ -18,6 +20,15 @@ const Invoice = () => {
       const response = await fetch('http://127.0.0.1:8000/Invoice/'); 
       const data = await response.json();
       setInvoices(data);
+    } catch (error) {
+      console.error('Error fetching Invoice:', error);
+    }
+  };
+  const fetchClients = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Client/'); 
+      const data = await response.json();
+      setClient(data);
     } catch (error) {
       console.error('Error fetching Invoice:', error);
     }
@@ -31,6 +42,10 @@ const Invoice = () => {
       headerName: "Customer",
       flex: 1,
       // cellClassName: "name-column--cell",
+      valueGetter: (params) => {
+        const client = clients.find(Client => Client.id === params.row.client_id);
+        return client ? client.client_name : '';
+      },
     },
     {
       field: "amount",
@@ -41,6 +56,21 @@ const Invoice = () => {
       field: "issue_date",
       headerName: "Date",
       flex: 1,
+    },
+    {
+      field: "Edit",
+      headerName: "Action",
+      width: 100,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="secondary"
+          component={Link}
+          to={`/invoice/edit/${params.row.id}`}
+        >
+          Update Invoice
+        </Button>
+      ),
     },
   ];
 

@@ -39,6 +39,6 @@ def update(request,id):
      serializer=PaymentSerializer(instance=payment, data=request.data)
      if serializer.is_valid():
           serializer.save()
-     return  Response(serializer.data)
+     return  Response("The Reciept has been updated")
     
    

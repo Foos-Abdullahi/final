@@ -1,50 +1,110 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { Link} from "react-router-dom";
 import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
+const AllTask = () => {
+  const [material, setMaterial] = useState([]);
+  const [projects, setProjects] = useState([]);
 
-const Task = () => {
+  useEffect(() => {
+    fetchTask();
+    fetchProjects();
+  }, []);
+
+  const fetchTask = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Tasks/');
+      const data = await response.json();
+      setMaterial(data);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Projects/');
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error('Error fetching payment methods:', error);
+    }
+  };
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "name",
-      headerName: "Name",
+      field: "project",
+      headerName: "Project",
       flex: 1,
-      cellClassName: "name-column--cell",
+      valueGetter: (params) => {
+        const project = projects.find(Project => Project.id === params.row.project);
+        return project ? project.project_name : '';
+      },
     },
     {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
+      field: "task_name",
+      headerName: "Task Name",
       flex: 1,
     },
     {
-      field: "cost",
-      headerName: "Cost",
+      field: "start_date",
+      headerName: "Start Date",
+      flex: 1,
+    },
+    {
+      field: "end_date",
+      headerName: "End Date",
+      flex: 1,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 1,
+    },
+    {
+      field: "issue_date",
+      headerName: "Issue Date",
+      flex: 1,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
-        </Typography>
+        <Button
+          component={Link}
+          to={`/task/edit/${params.row.id}`}
+          variant="contained"
+          color="secondary"
+        >
+          Update
+        </Button>
       ),
     },
-    {
-      field: "date",
-      headerName: "Date",
-      flex: 1,
-    },
   ];
+  
 
   return (
     <Box m="20px">
-      <Header title="INVOICES" subtitle="List of Invoice Balances" />
+      <Header  title="Tasks" subtitle="List of Task Balances" />
+      <Box
+        display="flex"
+        justifyContent="end"
+        mt="-100px"
+      >
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to="/task/form"
+        >
+          Create New Task
+        </Button>
+      </Box>
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -74,10 +134,10 @@ const Task = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        <DataGrid checkboxSelection rows={material} columns={columns} />
       </Box>
     </Box>
   );
 };
 
-export default Task;
+export default AllTask;
