@@ -53,7 +53,7 @@ const EditInvoice = () => {
 
   const sendForm = async () => {
     alert(editingInvoiceId)
-    const url = `http://127.0.0.1:8000/invoice/update/${editingInvoiceId}/`;
+    const url = `http://127.0.0.1:8000/Invoice/update/${editingInvoiceId}/`;
   
     const res = await fetch(url, {
       method: "PUT",
@@ -67,6 +67,10 @@ const EditInvoice = () => {
         issue_date: issueDate || originalData.issue_date,
       }),
     });
+
+    console.log(clientID || originalData.client_id);
+    console.log(amount || originalData.amount);
+    console.log(issueDate || originalData.issue_date);
   
     if (!res.ok) {
       // Handle error

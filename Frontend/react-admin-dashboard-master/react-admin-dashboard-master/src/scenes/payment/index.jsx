@@ -4,12 +4,17 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import PaymentType from "../paymentType";
 
 const Payment = () => {
   const [payments, setPayments] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [PaymentTypes, setPaymentType] = useState([]);
 
   useEffect(() => {
     fetchPayments();
+    fetchProjects();
+    fetchPaymentType();
   }, []);
 
   const fetchPayments = async () => {
@@ -21,7 +26,25 @@ const Payment = () => {
       console.error("Error fetching payments:", error);
     }
   };
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Projects/');
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error('Error fetching payment methods:', error);
+    }
+  };
 
+  const fetchPaymentType = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Payment_Type/');
+      const data = await response.json();
+      setPaymentType(data);
+    } catch (error) {
+      console.error('Error fetching payment methods:', error);
+    }
+  };
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -31,11 +54,19 @@ const Payment = () => {
       field: "project",
       headerName: "Project",
       flex: 1,
+      valueGetter: (params) => {
+        const project = projects.find(Project => Project.id === params.row.project);
+        return project ? project.project_name : '';
+      },
     },
     {
       field: "payment_Type",
       headerName: "Payment Type",
       flex: 1,
+      valueGetter: (params) => {
+        const payment_type = PaymentTypes.find(PaymentType => PaymentType.id === params.row.payment_Type);
+        return payment_type ? payment_type.Py_Type_name : '';
+      },
     },
     {
       field: "amount",
