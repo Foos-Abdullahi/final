@@ -32,11 +32,9 @@ import CreateUser from "./scenes/user/create";
 import InvoiceForm from "./scenes/invoice/form";
 import CreateProjects from "./scenes/project/form";
 import CreatePayment from "./scenes/payment/create";
-<<<<<<< HEAD
 import EditUser from "./scenes/user/edit/[id]";
 import EditInvoice from "./scenes/invoice/edit/[id]";
 // import EditUser from "./scenes/user/edit/[id]";
-=======
 import MaterialForm from "./scenes/material/form";
 import MaterialEditForm from "./scenes/material/edit/[id]";
 import AllTask from "./scenes/task";
@@ -49,7 +47,6 @@ import RecieptEditForm from "./scenes/invoiceReciept/edit/[id]";
 
 
 
->>>>>>> 37436ed9ddfda2a060198166c10ebeba01795475
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
