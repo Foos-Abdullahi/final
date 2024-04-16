@@ -6,6 +6,13 @@ from .models import Payment_Methode
 
 # Create your views here.
 
+# views.py
+# from django.http import HttpResponse
+
+# def index(request):
+#     return HttpResponse("Hello, world! This is the root URL.")
+
+
 @api_view(['GET'])
 def getAll(request):
     pyment_methode = Payment_Methode.objects.all()
