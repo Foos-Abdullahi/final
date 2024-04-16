@@ -88,7 +88,7 @@ const AllMaterail = () => {
           component={Link}
           to={`/material/edit/${params.row.id}`} // Link to the edit form with material ID
           variant="contained"
-          color="primary"
+          color="secondary"
         >
           Update
         </Button>

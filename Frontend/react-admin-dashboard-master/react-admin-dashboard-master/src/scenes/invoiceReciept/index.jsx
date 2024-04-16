@@ -91,7 +91,7 @@ const AllInvoiceReceipts = () => {
           component={Link}
           to={`/invoiceReciept/edit/${params.row.id}`}
           variant="contained"
-          color="primary"
+          color="secondary"
         >
           Update
         </Button>

@@ -78,7 +78,7 @@ const AllTask = () => {
           component={Link}
           to={`/task/edit/${params.row.id}`}
           variant="contained"
-          color="primary"
+          color="secondary"
         >
           Update
         </Button>
