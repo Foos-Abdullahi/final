@@ -9,15 +9,16 @@ const MaterialForm = () => {
 
   const [material, setMaterial] = useState({
     project: 0, // Default project ID
-    payment_method: "", // Default payment method
-    amount: 0,
+    material_name:"",
+    quantity:0,
+    unit_price:0,
+    sub_total:0,
     issue_date: "",
+
   });
 
   const [projects, setProjects] = useState([]);
-  const [paymentMethods, setPaymentMethods] = useState([]);
-
-  const fetchProjectsAndPaymentMethods = async () => {
+  const fetchProjects = async () => {
     try {
       const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
       if (!projectResponse.ok) {
@@ -25,20 +26,14 @@ const MaterialForm = () => {
       }
       const projectData = await projectResponse.json();
       setProjects(projectData);
-
-      const paymentMethodResponse = await fetch("http://127.0.0.1:8000/PaymentMethods/");
-      if (!paymentMethodResponse.ok) {
-        throw new Error("Failed to fetch payment methods");
-      }
-      const paymentMethodData = await paymentMethodResponse.json();
-      setPaymentMethods(paymentMethodData);
+    
     } catch (error) {
-      console.error("Error fetching projects and payment methods:", error);
+      console.error("Error fetching projects:", error);
     }
   };
 
   useEffect(() => {
-    fetchProjectsAndPaymentMethods();
+    fetchProjects();
   }, []);
 
   const sendForm = async () => {
@@ -103,36 +98,51 @@ const MaterialForm = () => {
                   </MenuItem>
                 ))}
               </TextField>
+              
               <TextField
-                select
-                fullWidth
-                variant="filled"
-                label="Payment Method"
-                onBlur={handleBlur}
-                onChange={(e) => setMaterial({ ...material, payment_method: e.target.value })}
-                value={material.payment_method}
-                name="payment_method"
-                error={!!touched.payment_method && !!errors.payment_method}
-                helperText={touched.payment_method && errors.payment_method}
-                sx={{ gridColumn: "span 4" }}
-              >
-                {paymentMethods.map((method) => (
-                  <MenuItem key={method.id} value={method.id}>
-                    {method.payment_method_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              fullWidth
+              variant="filled"
+              type="text"
+              label="material name"
+              onBlur={handleBlur}
+              onChange={(e) => setMaterial({ ...material, material_name:e.target.value })}
+              value={material.material_name}
+              name="material_name"
+              error={!!touched.material_name && !!errors.material_name}
+                helperText={touched.material_name && errors.material_name}
+              sx={{ gridColumn: "span 4" }}
+              />
               <TextField
                 fullWidth
                 variant="filled"
                 type="number"
-                label="Amount"
+                label="Quantity"
                 onBlur={handleBlur}
-                onChange={(e) => setMaterial({ ...material, amount: e.target.value })}
-                value={material.amount}
-                name="amount"
-                error={!!touched.amount && !!errors.amount}
-                helperText={touched.amount && errors.amount}
+                onChange={(e) => setMaterial({...material,quantity:e.target.value})}
+                value={material.quantity}
+                name="quantity"
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="number"
+                label="Unit Price"
+                onBlur={handleBlur}
+                onChange={(e) => setMaterial({...material,unit_price:e.target.value})}
+                value={material.unit_price}
+                name="unit_price"
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="number"
+                label="Sub Total"
+                onBlur={handleBlur}
+                onChange={(e) => setMaterial({...material,sub_total:e.target.value})}
+                value={material.sub_total}
+                name="sub_total"
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -141,11 +151,9 @@ const MaterialForm = () => {
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={(e) => setMaterial({ ...material, issue_date: e.target.value })}
+                onChange={(e) => setMaterial({...material,issue_date:e.target.value})}
                 value={material.issue_date}
                 name="issue_date"
-                error={!!touched.issue_date && !!errors.issue_date}
-                helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
