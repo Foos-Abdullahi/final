@@ -1,50 +1,119 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { Link} from "react-router-dom";
 import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
+const AllMaterail = () => {
+  const [material, setMaterial] = useState([]);
+  const [projects, setProjects] = useState([]);
 
-const Material = () => {
+  useEffect(() => {
+    fetchEmployees();
+    fetchProjects();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Material/');
+      const data = await response.json();
+      setMaterial(data);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Projects/');
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error('Error fetching payment methods:', error);
+    }
+  };
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "name",
-      headerName: "Name",
+      field: "project",
+      headerName: "Project",
       flex: 1,
-      cellClassName: "name-column--cell",
+      valueGetter: (params) => {
+        const project = projects.find(Project => Project.id === params.row.project);
+        return project ? project.project_name : '';
+      },
     },
     {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
+      field: "material_name",
+      headerName: "material Name",
       flex: 1,
     },
     {
-      field: "cost",
-      headerName: "Cost",
+      field: "quantity",
+      headerName: "Quantity",
+      flex: 1,
+    },
+    {
+      field: "unit_price",
+      headerName: "Unit price",
       flex: 1,
       renderCell: (params) => (
         <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
+          ${params.row.unit_price}
         </Typography>
       ),
     },
     {
-      field: "date",
-      headerName: "Date",
+      field: "sub_total",
+      headerName: "Sub total",
       flex: 1,
+      renderCell: (params) => (
+        <Typography color={colors.greenAccent[500]}>
+          ${params.row.sub_total}
+        </Typography>
+      ),
+    },
+    {
+      field: "issue_date",
+      headerName: "Issue Date",
+      flex: 1,
+    },
+    {
+      field: "actions", // Add a new column for actions
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          component={Link}
+          to={`/material/edit/${params.row.id}`} // Link to the edit form with material ID
+          variant="contained"
+          color="secondary"
+        >
+          Update
+        </Button>
+      ),
     },
   ];
 
   return (
     <Box m="20px">
-      <Header title="INVOICES" subtitle="List of Invoice Balances" />
+      <Header  title="Material" subtitle="List of Material Balances" />
+      <Box
+        display="flex"
+        justifyContent="end"
+        mt="-100px"
+      >
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to="/material/form"
+        >
+          Create New Material
+        </Button>
+      </Box>
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -74,10 +143,10 @@ const Material = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        <DataGrid checkboxSelection rows={material} columns={columns} />
       </Box>
     </Box>
   );
 };
 
-export default Material;
+export default AllMaterail;

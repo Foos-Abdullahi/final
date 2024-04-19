@@ -1,24 +1,58 @@
+import React, { useState, useEffect } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const DesignForm = () => {
+  const [images, setimage] = useState("");
+  const [statuses, setstatus] = useState("");
+  const [amounts, setamount] = useState("");
+  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const sendForm = async () => {
+    const res = await fetch("http://127.0.0.1:8000/Design/create/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        image: images,
+        status: statuses,
+        amount:amounts,
+        issue_date: issueDate,
+      }),
+    });
+
+    if (!res.ok) {
+      console.log(`Request failed with status ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log("Response data:", data);
+    console.log(images)
+    console.log(issueDate)
+    window.location.href = '/design';
   };
+
+//   const validationSchema = yup.object().shape({
+//     payment_method_name: yup.string().required("Design name is required"),
+//     issue_date: yup.string().required("Issue date is required"),
+//   });
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="CREATE Design" subtitle="Create a New Design" />
 
       <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={checkoutSchema}
+        onSubmit={sendForm}
+        initialValues={{
+          Designs: "",
+          issue_date: "",
+        }}
+        // validationSchema={validationSchema}
       >
         {({
           values,
@@ -41,84 +75,58 @@ const DesignForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="username"
+                label="Image"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.username}
-                name="username"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
-                sx={{ gridColumn: "span 2" }}
+                onChange={(e) => setimage(e.target.value)}
+                value={images}
+                name="Designs"
+                error={!!touched.Designs && !!errors.Designs}
+                helperText={touched.Designs && errors.Designs}
+                sx={{ gridColumn: "span 4" }}
               />
-              <TextField
+                 <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="password"
+                label="Status"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.password}
-                name="password"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
-                sx={{ gridColumn: "span 2" }}
+                onChange={(e) => setstatus(e.target.value)}
+                value={statuses}
+                name="Designs"
+                error={!!touched.Designs && !!errors.Designs}
+                helperText={touched.Designs && errors.Designs}
+                sx={{ gridColumn: "span 4" }}
               />
-              <TextField
+                 <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Email"
+                label="Amount"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
+                onChange={(e) => setamount(e.target.value)}
+                value={amounts}
+                name="Designs"
+                error={!!touched.Designs && !!errors.Designs}
+                helperText={touched.Designs && errors.Designs}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
-                label="Contact Number"
+                type="date"
+                label="Issue Date"
                 onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 1"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 2"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={!!touched.address2 && !!errors.address2}
-                helperText={touched.address2 && errors.address2}
+                onChange={(e) => setIssueDate(e.target.value)}
+                value={issueDate}
+                name="issue_date"
+                error={!!touched.issue_date && !!errors.issue_date}
+                helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Create Design
               </Button>
             </Box>
           </form>
@@ -126,29 +134,6 @@ const DesignForm = () => {
       </Formik>
     </Box>
   );
-};
-
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
-const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  contact: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  address1: yup.string().required("required"),
-  address2: yup.string().required("required"),
-});
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  contact: "",
-  address1: "",
-  address2: "",
 };
 
 export default DesignForm;
