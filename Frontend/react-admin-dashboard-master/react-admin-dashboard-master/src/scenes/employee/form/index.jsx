@@ -8,12 +8,14 @@ import React, { useState, useEffect } from "react";
 const EmployeeForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  const [editingEmployeeId, setEditingEmployeeId] = useState(null);
   const [employeeName, setEmployeeName] = useState("");
   const [position, setPosition] = useState("");
   const [phone, setPhone] = useState("");
   const [salary, setSalary] = useState("");
-  const [issueDate, setIssueDate] = useState("");
-
+  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
+  
+//previous
   const fetchEmployeeOptions = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Employee/create/");
@@ -21,6 +23,7 @@ const EmployeeForm = () => {
         throw new Error("Failed to fetch employee options");
       }
       const data = await response.json();
+      
       // Process data if needed
     } catch (error) {
       console.error("Error fetching employee options:", error);
@@ -31,6 +34,7 @@ const EmployeeForm = () => {
     fetchEmployeeOptions();
   }, []);
 
+// previous
   const sendForm = async () => {
     const res = await fetch("http://127.0.0.1:8000/Employee/create/", {
       method: "POST",
@@ -52,10 +56,7 @@ const EmployeeForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-  };
-
-  const handleFormSubmit = () => {
-    sendForm();
+    window.location.href = '/employee';
   };
 
   // const validationSchema = yup.object().shape({
@@ -79,7 +80,7 @@ const EmployeeForm = () => {
           salary: "",
           issue_date: "",
         }}
-        // validationSchema={validationSchema}
+        //  validationSchema={validationSchema}
       >
         {({
           values,
@@ -100,6 +101,7 @@ const EmployeeForm = () => {
             >
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Employee Name"
@@ -113,6 +115,7 @@ const EmployeeForm = () => {
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Position"
@@ -126,6 +129,7 @@ const EmployeeForm = () => {
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="tel"
                 label="Phone"
@@ -139,6 +143,7 @@ const EmployeeForm = () => {
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="number"
                 label="Salary"
@@ -152,6 +157,7 @@ const EmployeeForm = () => {
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="date"
                 label="Issue Date"

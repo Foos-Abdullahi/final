@@ -1,0 +1,97 @@
+Construction Database Tables-----
+1.project
+2.client
+3.employee
+4.invoice reciept
+5.tasks
+6.material
+7.payment
+8.invoice
+9.user
+10.role
+11.Design
+12.payment method 
+13.payment Type
+
+1. Project:
+   - project_id 
+   - client_id 
+   - project_name
+   - start_date
+   - end_date
+   - Nootaayo
+   - status
+
+2. Client:
+   - client_id
+   - client_name
+   - contact_person
+   - phone
+   - license
+
+3. Employee:
+   - employee_id 
+   - employee_name
+   - position
+   - phone
+   - salary
+
+4. invoice reciept:
+   - inv_reciept_id
+   - project_id
+   - client_id
+   - amount
+   - payment_method_id
+
+5. Tasks:
+   - task_id
+   - project_id
+   - task_name
+   - start_date
+   - end_date
+   - status
+
+6. Material:
+   - material_id 
+   - project_id
+   - material_name
+   - quantity
+   - unit_price
+
+7. payment:
+   - payment_id  
+   - project_id
+   - payment_type_id
+   - amount
+   - payment_date
+
+8. User:
+   - user_id 
+   - username
+   - password
+   - email
+   - role_id
+   - employee_id
+
+9. Role:
+    - role_id 
+    - role_name
+
+11. invoice:
+    - invoice_id
+    - client_id
+    - amount
+
+11. Payment TYpe:
+    - payment_type_id
+    - payment_type
+
+12. Payment Method:
+    - payment_method_id
+    - payment_method_name
+
+13. Design:
+   - design_id 
+   - image
+   - status
+   - amount

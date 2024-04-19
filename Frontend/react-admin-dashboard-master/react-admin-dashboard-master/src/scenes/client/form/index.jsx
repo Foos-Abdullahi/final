@@ -12,8 +12,7 @@ const ClientForm = () => {
   const [contactPerson, setContactPerson] = useState("");
   const [phone, setPhone] = useState("");
   const [document, setDocument] = useState("");
-  const [issueDate, setIssueDate] = useState("");
-
+  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   useEffect(() => {
     // Fetch client options
     fetchClientOptions();
@@ -53,6 +52,7 @@ const ClientForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
+    window.location.href = '/client';
   };
 
   const handleFormSubmit = () => {
@@ -101,6 +101,7 @@ const ClientForm = () => {
             >
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Client Name"
@@ -114,6 +115,7 @@ const ClientForm = () => {
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Contact Person"
@@ -127,6 +129,7 @@ const ClientForm = () => {
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="tel"
                 label="Phone"
@@ -140,6 +143,7 @@ const ClientForm = () => {
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Document"
@@ -153,6 +157,7 @@ const ClientForm = () => {
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="date"
                 label="Issue Date"

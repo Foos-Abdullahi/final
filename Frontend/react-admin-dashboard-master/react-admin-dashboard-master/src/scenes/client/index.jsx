@@ -57,6 +57,21 @@ const Client = () => {
       headerName: "Issue Date",
       flex: 1,
     },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to={`/client/edit/${params.row.id}`}
+        >
+          Update Client
+        </Button>
+      ),
+    },
   ];
 
   return (

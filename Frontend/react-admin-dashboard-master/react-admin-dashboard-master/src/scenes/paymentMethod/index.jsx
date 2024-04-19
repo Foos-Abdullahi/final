@@ -1,51 +1,82 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button , useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
+import { Link } from "react-router-dom";
+// import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
+import React, { useState, useEffect } from "react";
 
-const PaymentMethod = () => {
+const PaymentMethode = () => {
+
+  const [PaymentMethodes, setpaymentMothode] = useState([]);
+
+  useEffect(() => {
+    fetchPymentMothode();
+  }, []);
+
+  const fetchPymentMothode = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Payment_Methode/'); 
+      const data = await response.json();
+      setpaymentMothode(data);
+    } catch (error) {
+      console.error('Error fetching payment_methode:', error);
+    }
+  };
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "name",
-      headerName: "Name",
+      field: "Py_method_name",
+      headerName: "Payment Methode",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
-        </Typography>
-      ),
-    },
-    {
-      field: "date",
+      field: "issue_date",
       headerName: "Date",
       flex: 1,
     },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to={`/paymentMethod/edit/${params.row.id}`}
+        >
+          Update payment Method
+        </Button>
+      ),
+    },
+   
   ];
 
   return (
+    
     <Box m="20px">
-      <Header title="INVOICES" subtitle="List of Invoice Balances" />
+      <Header title="Payment Methode" subtitle="List of Payment Methode" />
       <Box
+        display="flex"
+        justifyContent="end"
+        mt="20px"
+      >
+      <Button
+        type="submit"
+        color="secondary"
+        variant="contained"
+        component={Link}
+        to="/paymentMethod/create"
+      >
+        Create New PaymentMethode
+      </Button>
+    </Box>
+    <Box
         m="40px 0 0 0"
         height="75vh"
         sx={{
@@ -74,10 +105,10 @@ const PaymentMethod = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        <DataGrid checkboxSelection rows={PaymentMethodes} columns={columns} />
       </Box>
     </Box>
   );
 };
 
-export default PaymentMethod;
+export default PaymentMethode;

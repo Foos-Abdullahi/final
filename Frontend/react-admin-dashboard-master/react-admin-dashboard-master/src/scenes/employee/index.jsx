@@ -14,11 +14,11 @@ const Employee = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/Employee/'); 
+      const response = await fetch("http://127.0.0.1:8000/Employee/");
       const data = await response.json();
       setEmployees(data);
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error("Error fetching employees:", error);
     }
   };
 
@@ -57,26 +57,37 @@ const Employee = () => {
       headerName: "Issue Date",
       flex: 1,
     },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to={`/employee/edit/${params.row.id}`}
+        >
+          Update Employee
+        </Button>
+      ),
+    },
   ];
 
   return (
     <Box m="20px">
       <Header title="Employee" subtitle="List of Employee Balances" />
-      <Box
-        display="flex"
-        justifyContent="end"
-        mt="20px"
-      >
-      <Button
-        type="submit"
-        color="secondary"
-        variant="contained"
-        component={Link}
-        to="/employee/form"
-      >
-        Create New Employee
-      </Button>
-    </Box>
+      <Box display="flex" justifyContent="end" mt="20px">
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to="/employee/form"
+        >
+          Create New Employee
+        </Button>
+      </Box>
 
       <Box
         m="40px 0 0 0"

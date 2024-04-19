@@ -9,8 +9,8 @@ class Projects(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     status = models.CharField(max_length=100)
     Nootaayo = models.CharField(max_length=100)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     issue_date = models.DateField(default=datetime.date.today)
     
 

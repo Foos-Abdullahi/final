@@ -5,17 +5,17 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
 import React, { useState, useEffect } from "react";
 
-const CreateProjects = () => {
+const CreateProject = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [projectName, setProjectName] = useState("");
-  const [status, setStatus] = useState("");
   const [clientOptions, setClientOptions] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
+  const [status, setStatus] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [nootaayo, setNootaayo] = useState("");
-  const [issueDate, setIssueDate] = useState("");
+  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
 
   useEffect(() => {
     // Fetch client options
@@ -36,8 +36,6 @@ const CreateProjects = () => {
   };
 
   const sendForm = async () => {
-    alert("Submitting Form");
-
     const res = await fetch("http://127.0.0.1:8000/Projects/create/", {
       method: "POST",
       headers: {
@@ -45,11 +43,11 @@ const CreateProjects = () => {
       },
       body: JSON.stringify({
         project_name: projectName,
+        client: selectedClient,
         status: status,
-        client_id: selectedClient,
         start_date: startDate,
         end_date: endDate,
-        nootaayo: nootaayo,
+        Nootaayo: nootaayo,
         issue_date: issueDate,
       }),
     });
@@ -60,11 +58,10 @@ const CreateProjects = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
+    window.location.href = '/project';
   };
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
-    // Call the sendForm function here
+  const handleFormSubmit = () => {
     sendForm();
   };
 
@@ -73,14 +70,19 @@ const CreateProjects = () => {
       <Header title="CREATE PROJECT" subtitle="Create a New Project" />
 
       <Formik
-        onSubmit={sendForm}
-        initialValues={initialValues}
-        // validationSchema={checkoutSchema}
+        onSubmit={handleFormSubmit}
+        initialValues={{
+          project_name: "",
+          client: "",
+          status: "",
+          start_date: "",
+          end_date: "",
+          Nootaayo: "",
+          issue_date: "",
+        }}
       >
         {({
           values,
-          errors,
-          touched,
           handleBlur,
           handleChange,
           handleSubmit,
@@ -96,28 +98,26 @@ const CreateProjects = () => {
             >
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Project Name"
                 onBlur={handleBlur}
                 onChange={(e) => setProjectName(e.target.value)}
                 value={projectName}
-                name="projectName"
-                error={!!touched.projectName && !!errors.projectName}
-                helperText={touched.projectName && errors.projectName}
+                name="project_name"
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
-                variant="filled"
+                required
                 select
-                label="Client ID"
+                variant="filled"
+                label="Client"
                 onBlur={handleBlur}
                 onChange={(e) => setSelectedClient(e.target.value)}
                 value={selectedClient}
-                name="selectedClient"
-                error={!!touched.selectedClient && !!errors.selectedClient}
-                helperText={touched.selectedClient && errors.selectedClient}
+                name="client"
                 sx={{ gridColumn: "span 4" }}
               >
                 {clientOptions.map((option) => (
@@ -128,6 +128,7 @@ const CreateProjects = () => {
               </TextField>
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Status"
@@ -135,60 +136,54 @@ const CreateProjects = () => {
                 onChange={(e) => setStatus(e.target.value)}
                 value={status}
                 name="status"
-                error={!!touched.status && !!errors.status}
-                helperText={touched.status && errors.status}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="date"
                 label="Start Date"
                 onBlur={handleBlur}
                 onChange={(e) => setStartDate(e.target.value)}
                 value={startDate}
-                name="startDate"
-                error={!!touched.startDate && !!errors.startDate}
-                helperText={touched.startDate && errors.startDate}
-                sx={{ gridColumn: "span 2" }}
+                name="start_date"
+                sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="date"
                 label="End Date"
                 onBlur={handleBlur}
                 onChange={(e) => setEndDate(e.target.value)}
                 value={endDate}
-                name="endDate"
-                error={!!touched.endDate && !!errors.endDate}
-                helperText={touched.endDate && errors.endDate}
-                sx={{ gridColumn: "span 2" }}
+                name="end_date"
+                sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Nootaayo"
                 onBlur={handleBlur}
                 onChange={(e) => setNootaayo(e.target.value)}
                 value={nootaayo}
-                name="nootaayo"
-                error={!!touched.nootaayo && !!errors.nootaayo}
-                helperText={touched.nootaayo && errors.nootaayo}
+                name="Nootaayo"
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
                 onChange={(e) => setIssueDate(e.target.value)}
                 value={issueDate}
-                name="issueDate"
-                error={!!touched.issueDate && !!errors.issueDate}
-                helperText={touched.issueDate && errors.issueDate}
+                name="issue_date"
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
@@ -204,14 +199,4 @@ const CreateProjects = () => {
   );
 };
 
-const initialValues = {
-  projectName: "",
-  status: "",
-  selectedClient: "",
-  startDate: "",
-  endDate: "",
-  nootaayo: "",
-  issueDate: "",
-};
-
-export default CreateProjects;
+export default CreateProject;

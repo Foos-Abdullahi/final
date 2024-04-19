@@ -30,14 +30,20 @@ import User from "./scenes/user";
 import Role from "./scenes/role";
 import EmployeeForm from "./scenes/employee/form";
 import DesignForm from "./scenes/design/form";
-<<<<<<< HEAD
 import ClientForm from "./scenes/client/form";
-=======
 import CreateUser from "./scenes/user/create";
 import InvoiceForm from "./scenes/invoice/form";
 import CreateProjects from "./scenes/project/form";
 import CreatePayment from "./scenes/payment/create";
->>>>>>> 9cbdb415afbcf1210ed545b7a9f4b67955106add
+import EmployeeEdit from "./scenes/employee/edit/[id]";
+import ClientEdit from "./scenes/client/edit/[id]";
+import ProjectEdit from "./scenes/project/edit/[id]";
+import PaymentMethodForm from "./scenes/paymentMethod/create";
+import PayMethodEdit from "./scenes/paymentMethod/eidt/[id]";
+
+
+// ...
+
 
 
 
@@ -61,6 +67,7 @@ function App() {
               <Route path="/form" element={<Form />} />
               <Route path="/project" element={<Project />} />
               <Route path="/project/form" element={<CreateProjects />} />
+              <Route path="/project/edit/:id" element={<ProjectEdit />} />
               <Route path="/material" element={<Material />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/payment/create" element={<CreatePayment />} />
@@ -68,16 +75,20 @@ function App() {
               <Route path="/design/form" element={<DesignForm />} />
               <Route path="/employee" element={<Employee />} />
               <Route path="/employee/form"  element={<EmployeeForm />} />
+              <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
               <Route path="/task" element={<Task />} />
               <Route path="/user" element={<User />} />
               <Route path="/user/create" element={<CreateUser />} />
               <Route path="/role" element={<Role />} />
               <Route path="/paymentMethod" element={<PaymentMethod />} />
+              <Route path="/paymentMethod/create" element={<PaymentMethodForm />} />
+              <Route path="/paymentMethod/edit/:id" element={<PayMethodEdit />} />
               <Route path="/invoiceReciept" element={<InvoiceReciept />} />
               <Route path="/invoice" element={<Invoice />} />
               <Route path="/invoice/form" element={<InvoiceForm />} />
               <Route path="/client" element={<Client />} />
               <Route path="/client/form" element={<ClientForm />} />
+              <Route path="/client/edit/:id" element={<ClientEdit />} />
               <Route path="/paymentType" element={<PaymentType />} />
               <Route path="/bar" element={<Bar />} />
               <Route path="/pie" element={<Pie />} />
