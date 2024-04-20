@@ -281,9 +281,22 @@ const MaterialEditForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    let subTotal = ((material.quantity) * (material.unit_price));
+    // If the changed field is not quantity or unit_price, update directly
+    if (name !== 'quantity' && name !== 'unit_price') {
+      setMaterial({ ...material, [name]: value });
+      return;
+    }
+  
+    // Calculate subTotal using the updated value
+    let subTotal = material.sub_total;
+    if (name === 'quantity') {
+      subTotal = value * material.unit_price;
+    } else if (name === 'unit_price') {
+      subTotal = material.quantity * value;
+    }
+  
     setMaterial({ ...material, [name]: value, sub_total: subTotal });
-    };
+  };
 
   return (
     <Box m="20px">

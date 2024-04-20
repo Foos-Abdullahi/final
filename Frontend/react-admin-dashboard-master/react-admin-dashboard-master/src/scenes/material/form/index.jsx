@@ -44,7 +44,7 @@ const MaterialForm = () => {
         return;
       }
       const data = await res.json();
-      console.log("Response data material :", material);
+      console.log("Response data material :", data);
       window.history.back();
     } catch (error) {
       console.error("Error sending form:", error);
@@ -52,9 +52,23 @@ const MaterialForm = () => {
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    let subTotal = ((material.quantity) * (material.unit_price));
+    // If the changed field is not quantity or unit_price, update directly
+    if (name !== 'quantity' && name !== 'unit_price') {
+      setMaterial({ ...material, [name]: value });
+      return;
+    }
+  
+    // Calculate subTotal using the updated value
+    let subTotal = material.sub_total;
+    if (name === 'quantity') {
+      subTotal = value * material.unit_price;
+    } else if (name === 'unit_price') {
+      subTotal = material.quantity * value;
+    }
+  
     setMaterial({ ...material, [name]: value, sub_total: subTotal });
   };
+  
   return (
     <Box m="20px">
       <Header title="CREATE MATERIAL" subtitle="Create a New Material" />
