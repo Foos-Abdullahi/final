@@ -3,10 +3,8 @@ import { Formik } from "formik";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
 import React, { useState, useEffect } from "react";
-
 const MaterialForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
   const [material, setMaterial] = useState({
     project: 0, // Default project ID
     material_name:"",
@@ -14,28 +12,24 @@ const MaterialForm = () => {
     unit_price:0,
     sub_total:0,
     issue_date: "",
-
   });
-
   const [projects, setProjects] = useState([]);
-  const fetchProjects = async () => {
-    try {
-      const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
-      if (!projectResponse.ok) {
-        throw new Error("Failed to fetch projects");
-      }
-      const projectData = await projectResponse.json();
-      setProjects(projectData);
-    
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-    }
-  };
-
+  
   useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
+        if (!projectResponse.ok) {
+          throw new Error("Failed to fetch projects");
+        }
+        const projectData = await projectResponse.json();
+        setProjects(projectData);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
     fetchProjects();
   }, []);
-
   const sendForm = async () => {
     try {
       const res = await fetch("http://127.0.0.1:8000/Material/create/", {
@@ -45,24 +39,25 @@ const MaterialForm = () => {
         },
         body: JSON.stringify(material),
       });
-
       if (!res.ok) {
         console.log(`Request failed with status ${res.status}`);
         return;
       }
-
       const data = await res.json();
-      console.log("Response data:", data);
+      console.log("Response data material :", material);
       window.history.back();
     } catch (error) {
       console.error("Error sending form:", error);
     }
   };
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    let subTotal = ((material.quantity) * (material.unit_price));
+    setMaterial({ ...material, [name]: value, sub_total: subTotal });
+  };
   return (
     <Box m="20px">
       <Header title="CREATE MATERIAL" subtitle="Create a New Material" />
-
       <Formik onSubmit={sendForm} initialValues={material}>
         {({
           values,
@@ -86,7 +81,7 @@ const MaterialForm = () => {
                 variant="filled"
                 label="Project"
                 onBlur={handleBlur}
-                onChange={(e) => setMaterial({ ...material, project: e.target.value })}
+                onChange={handleInputChange}
                 value={material.project}
                 name="project"
                 error={!!touched.project && !!errors.project}
@@ -99,14 +94,13 @@ const MaterialForm = () => {
                   </MenuItem>
                 ))}
               </TextField>
-              
               <TextField
               fullWidth
               variant="filled"
               type="text"
               label="material name"
               onBlur={handleBlur}
-              onChange={(e) => setMaterial({ ...material, material_name:e.target.value })}
+              onChange={handleInputChange}              
               value={material.material_name}
               name="material_name"
               error={!!touched.material_name && !!errors.material_name}
@@ -119,7 +113,7 @@ const MaterialForm = () => {
                 type="number"
                 label="Quantity"
                 onBlur={handleBlur}
-                onChange={(e) => setMaterial({...material,quantity:e.target.value})}
+                onChange={handleInputChange}                
                 value={material.quantity}
                 name="quantity"
                 sx={{ gridColumn: "span 4" }}
@@ -130,7 +124,7 @@ const MaterialForm = () => {
                 type="number"
                 label="Unit Price"
                 onBlur={handleBlur}
-                onChange={(e) => setMaterial({...material,unit_price:e.target.value})}
+                onChange={handleInputChange}                
                 value={material.unit_price}
                 name="unit_price"
                 sx={{ gridColumn: "span 4" }}
@@ -141,7 +135,7 @@ const MaterialForm = () => {
                 type="number"
                 label="Sub Total"
                 onBlur={handleBlur}
-                onChange={(e) => setMaterial({...material,sub_total:e.target.value})}
+                onChange={handleInputChange}                
                 value={material.sub_total}
                 name="sub_total"
                 sx={{ gridColumn: "span 4" }}
@@ -152,7 +146,7 @@ const MaterialForm = () => {
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={(e) => setMaterial({...material,issue_date:e.target.value})}
+                onChange={handleInputChange}                
                 value={material.issue_date}
                 name="issue_date"
                 sx={{ gridColumn: "span 4" }}
@@ -169,5 +163,4 @@ const MaterialForm = () => {
     </Box>
   );
 };
-
 export default MaterialForm;

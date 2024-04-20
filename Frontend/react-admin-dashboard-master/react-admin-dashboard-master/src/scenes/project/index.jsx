@@ -48,13 +48,10 @@ const Projects = () => {
       cellClassName: "name-column--cell",
     },
     {
-<<<<<<< HEAD
       field: "client_name",
       headerName: "Client Name",
-=======
       field: "client",
       headerName: "Client",
->>>>>>> f43842c53a36c8531c9d3781693b6f82ded91fc0
       flex: 1,
       valueGetter: (params) => {
         const client = clients.find(Client => Client.id === params.row.client);

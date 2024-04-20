@@ -1,8 +1,9 @@
-<<<<<<< HEAD
+
 import { Box, Button , useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
 // import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
@@ -22,32 +23,10 @@ const PaymentMethode = () => {
       setpaymentMothode(data);
     } catch (error) {
       console.error('Error fetching payment_methode:', error);
-=======
-import React, { useState, useEffect } from "react";
-import { Box, Button, useTheme } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { Link } from "react-router-dom";
-import Header from "../../components/Header";
-import EditIcon from '@mui/icons-material/Edit';
-
-const PaymentMethode = () => {
-  const [paymentMethodes, setPaymentMethodes] = useState([]);
-
-  useEffect(() => {
-    fetchPaymentMethodes();
-  }, []);
-
-  const fetchPaymentMethodes = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/Payment_Methode/');
-      const data = await response.json();
-      setPaymentMethodes(data);
-    } catch (error) {
-      console.error('Error fetching payment methodes:', error);
->>>>>>> f43842c53a36c8531c9d3781693b6f82ded91fc0
     }
   };
+
+
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -58,10 +37,9 @@ const PaymentMethode = () => {
       field: "Py_method_name",
       headerName: "Payment Methode",
       flex: 1,
-<<<<<<< HEAD
+
       cellClassName: "name-column--cell",
-=======
->>>>>>> f43842c53a36c8531c9d3781693b6f82ded91fc0
+
     },
     {
       field: "issue_date",
@@ -69,7 +47,6 @@ const PaymentMethode = () => {
       flex: 1,
     },
     {
-<<<<<<< HEAD
       field: "actions",
       headerName: "Actions",
       flex: 1,
@@ -84,8 +61,7 @@ const PaymentMethode = () => {
         </Button>
       ),
     },
-   
-=======
+    {
       field: "Edit",
       headerName: "Action",
       width: 100,
@@ -101,15 +77,12 @@ const PaymentMethode = () => {
         </Button>
       ),
     }
->>>>>>> f43842c53a36c8531c9d3781693b6f82ded91fc0
   ];
 
   return (
     
     <Box m="20px">
       <Header title="Payment Methode" subtitle="List of Payment Methode" />
-<<<<<<< HEAD
-=======
       <Box display="flex" justifyContent="end" mt="20px">
         <Button
           type="submit"
@@ -121,7 +94,6 @@ const PaymentMethode = () => {
           Create New Payment Method
         </Button>
         </Box>
->>>>>>> f43842c53a36c8531c9d3781693b6f82ded91fc0
       <Box
         display="flex"
         justifyContent="end"
@@ -166,18 +138,9 @@ const PaymentMethode = () => {
           },
         }}
       >
-<<<<<<< HEAD
         <DataGrid checkboxSelection rows={PaymentMethodes} columns={columns} />
-=======
-      <DataGrid checkboxSelection rows={paymentMethodes} columns={columns} />
->>>>>>> f43842c53a36c8531c9d3781693b6f82ded91fc0
       </Box>
     </Box>
   );
 };
-
-<<<<<<< HEAD
 export default PaymentMethode;
-=======
-export default PaymentMethode;
->>>>>>> f43842c53a36c8531c9d3781693b6f82ded91fc0
