@@ -8,12 +8,14 @@ import React, { useState, useEffect } from "react";
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [clients, setClients] = useState([]);
+  const [designs, setDesigns] = useState([]);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     fetchProjects();
     fetchClients();
+    fetchdesigns();
   }, []);
 
   const fetchProjects = async () => {
@@ -38,7 +40,16 @@ const Projects = () => {
       console.error("Error fetching clients:", error);
     }
   };
-
+  const fetchdesigns = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/Design/");
+      const data = await response.json();
+      setDesigns(data);
+      console.log("xogta ",data);
+    } catch (error) {
+      console.error("Error fetching Design:", error);
+    }
+  };
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -50,8 +61,8 @@ const Projects = () => {
     {
       field: "client_name",
       headerName: "Client Name",
-      field: "client",
-      headerName: "Client",
+      // field: "client",
+      // headerName: "Client",
       flex: 1,
       valueGetter: (params) => {
         const client = clients.find(Client => Client.id === params.row.client);
@@ -59,8 +70,29 @@ const Projects = () => {
       },
     },
     {
+      field: "image",
+      headerName: "Image",
+      // field: "design",
+      // headerName: "design",
+      flex: 1,
+      valueGetter: (params) => {
+        const Design = designs.find(design => design.id === params.row.design);
+        return Design ? Design.image: '';
+      },
+    },
+    {
       field: "status",
       headerName: "Status",
+      flex: 1,
+    },
+    {
+      field: "Agreements",
+      headerName: "Agreements",
+      flex: 1,
+    },
+    {
+      field: "budget",
+      headerName: "budget",
       flex: 1,
     },
     {
@@ -71,11 +103,6 @@ const Projects = () => {
     {
       field: "end_date",
       headerName: "End Date",
-      flex: 1,
-    },
-    {
-      field: "Nootaayo",
-      headerName: "Nootaayo",
       flex: 1,
     },
     {

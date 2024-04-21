@@ -10,16 +10,20 @@ const CreateProject = () => {
 
   const [projectName, setProjectName] = useState("");
   const [clientOptions, setClientOptions] = useState([]);
+  const [designOptions, setdesignOptions] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
+  const [selecteddesigns,setSelectedDesigns]=useState("");
   const [status, setStatus] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [agreements, setAgreements] = useState("");
+  const [budgets, setBudgets] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
 
   useEffect(() => {
     // Fetch client options
     fetchClientOptions();
+    fetchdesignOptions();
   }, []);
 
   const fetchClientOptions = async () => {
@@ -35,6 +39,18 @@ const CreateProject = () => {
     }
   };
 
+  const fetchdesignOptions = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/Design/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch Design options");
+      }
+      const data = await response.json();
+      setdesignOptions(data);
+    } catch (error) {
+      console.error("Error fetching Design options:", error);
+    }
+  };
   const sendForm = async () => {
     const res = await fetch("http://127.0.0.1:8000/Projects/create/", {
       method: "POST",
@@ -44,10 +60,12 @@ const CreateProject = () => {
       body: JSON.stringify({
         project_name: projectName,
         client: selectedClient,
+        design:selecteddesigns,
         status: status,
         start_date: startDate,
         end_date: endDate,
         Agreements: agreements,
+        budget: budgets,
         issue_date: issueDate,
       }),
     });
@@ -58,7 +76,9 @@ const CreateProject = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    window.location.href = '/project';
+    //  window.location.href = '/project';
+     window.history.back();
+
   };
 
   const handleFormSubmit = () => {
@@ -74,10 +94,12 @@ const CreateProject = () => {
         initialValues={{
           project_name: "",
           client: "",
+          design: "",
           status: "",
+          Agreements: "",
+          budget:"",
           start_date: "",
           end_date: "",
-          Nootaayo: "",
           issue_date: "",
         }}
       >
@@ -129,6 +151,24 @@ const CreateProject = () => {
               <TextField
                 fullWidth
                 required
+                select
+                variant="filled"
+                label="design"
+                onBlur={handleBlur}
+                onChange={(e) => setSelectedDesigns(e.target.value)}
+                value={selecteddesigns}
+                name="design"
+                sx={{ gridColumn: "span 4" }}
+              >
+                {designOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.image}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                fullWidth
+                required
                 variant="filled"
                 type="text"
                 label="Status"
@@ -136,6 +176,30 @@ const CreateProject = () => {
                 onChange={(e) => setStatus(e.target.value)}
                 value={status}
                 name="status"
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                required
+                variant="filled"
+                type="text"
+                label="agreements"
+                onBlur={handleBlur}
+                onChange={(e) => setAgreements(e.target.value)}
+                value={agreements}
+                name="agreements"
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                required
+                variant="filled"
+                type="number"
+                label="budget"
+                onBlur={handleBlur}
+                onChange={(e) => setBudgets(e.target.value)}
+                value={budgets}
+                name="Nootaayo"
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -160,18 +224,6 @@ const CreateProject = () => {
                 onChange={(e) => setEndDate(e.target.value)}
                 value={endDate}
                 name="end_date"
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                required
-                variant="filled"
-                type="text"
-                label="Nootaayo"
-                onBlur={handleBlur}
-                onChange={(e) => setAgreements(e.target.value)}
-                value={agreements}
-                name="Nootaayo"
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField

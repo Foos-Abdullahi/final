@@ -12,12 +12,15 @@ const ProjectEdit = () => {
   const [editingProjectId, setEditingProjectId] = useState('');
   const [projectName, setProjectName] = useState("");
   const [status, setStatus] = useState("");
-  const [nootaayo, setNootaayo] = useState("");
+  const [agreements, setAgreements] = useState("");
+  const [budgets, setBudgets] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [issueDate, setIssueDate] = useState("");
   const [clientOptions, setClientOptions] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
+  const [designOptions, setDesignOptions] = useState([]);
+  const [selecteddesign, setSelectedDesign] = useState("");
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -34,6 +37,7 @@ const ProjectEdit = () => {
         setOriginalData(data);
         setEditingProjectId(id)
         setSelectedClient(data.client || "")
+        setSelectedDesign(data.design || "");
         console.log(data.client );
         console.log('Data view:', data);
       } catch (error) {
@@ -56,9 +60,23 @@ const ProjectEdit = () => {
       console.error("Error fetching client options:", error);
     }
   };
+  const fetchdesignOptions = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/Design/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch design options");
+      }
+      const data = await response.json();
+      setDesignOptions(data);
+      console.log("wakaas", data);
+    } catch (error) {
+      console.error("Error fetching design options:", error);
+    }
+  };
   useEffect(() => {
     // Fetch client options
     fetchClientOptions();
+    fetchdesignOptions();
   }, []);
   
   const updateProject = async () => {
@@ -72,8 +90,10 @@ const ProjectEdit = () => {
         body: JSON.stringify({
           project_name: projectName || originalData.project_name,
           client: selectedClient || originalData.client,
+          design:selecteddesign ||  originalData.design,
           status: status || originalData.status,
-          Nootaayo: nootaayo || originalData.Nootaayo,
+          Agreements: agreements || originalData.Agreements,
+          budget: budgets || originalData.budget,
           start_date: startDate || originalData.start_date,
           end_date: endDate || originalData.end_date,
           issue_date: issueDate || originalData.issue_date,
@@ -82,13 +102,14 @@ const ProjectEdit = () => {
       console.log(projectName || originalData.project_name);
       console.log(selectedClient || originalData.client);
       console.log(status || originalData.status);
-      console.log(nootaayo || originalData.Nootaayo);
+      console.log(agreements || originalData.Nootaayo);
       console.log(startDate || originalData.start_date);
       console.log(endDate || originalData.end_date);
       console.log(issueDate || originalData.issue_date);
       if (response.ok) {
         console.log('Project updated successfully');
-        window.location.href = '/project';
+        // window.location.href = '/project';
+        window.history.back();
       } else {
         console.error('Failed to update project');
         alert('Failed to update the project. Please try again.');
@@ -144,18 +165,24 @@ const ProjectEdit = () => {
                 ))}
               </TextField> 
               
-              {/* <TextField
+              <TextField
                 fullWidth
+                select
                 variant="filled"
-                type="text"
-                label="Client"
+                required
+                label= "design"
                 onBlur={handleBlur}
-                onChange={(e) => setClient(e.target.value)}
-                value={client || originalData.client}
-                name="client"
-                error={touched.client && !!errors.client}
-                helperText={touched.client && errors.client}
-              /> */}
+                onChange={(e) => setSelectedDesign(e.target.value)}
+                value={selecteddesign}
+                name="design"
+                sx={{ gridColumn: "span 4" }}
+              >
+                {designOptions.map((options) => (
+                  <MenuItem key={options.id} value={options.id} >
+                    {options.image}
+                  </MenuItem>
+                ))}
+              </TextField> 
               <TextField
                 fullWidth
                 variant="filled"
@@ -173,14 +200,27 @@ const ProjectEdit = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Nootaayo"
+                label="Agreements"
                 required
                 onBlur={handleBlur}
-                onChange={(e) => setNootaayo(e.target.value)}
-                value={nootaayo || originalData.Nootaayo}
-                name="nootaayo"
-                error={touched.nootaayo && !!errors.nootaayo}
-                helperText={touched.nootaayo && errors.nootaayo}
+                onChange={(e) => setAgreements(e.target.value)}
+                value={agreements || originalData.Agreements}
+                name="Agreements"
+                error={touched.Agreements && !!errors.Agreements}
+                helperText={touched.Agreements && errors.Agreements}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="number"
+                label="budget"
+                required
+                onBlur={handleBlur}
+                onChange={(e) => setBudgets(e.target.value)}
+                value={budgets || originalData.budget}
+                name="budgets"
+                error={touched.budget && !!errors.budget}
+                helperText={touched.budget && errors.budget}
               />
               <TextField
                 fullWidth
