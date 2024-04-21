@@ -4,7 +4,6 @@ import datetime
 
 class Client(models.Model):
     client_name = models.CharField(max_length=100)
-    contact_person = models.CharField(max_length=100, default="Unknown")
     phone = models.CharField(max_length=100)
     document = models.CharField(max_length=100,default="Unknown")
     issue_date = models.DateField(default=datetime.date.today)

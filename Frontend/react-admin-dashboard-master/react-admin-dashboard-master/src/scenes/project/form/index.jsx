@@ -14,7 +14,7 @@ const CreateProject = () => {
   const [status, setStatus] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [nootaayo, setNootaayo] = useState("");
+  const [agreements, setAgreements] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const CreateProject = () => {
         status: status,
         start_date: startDate,
         end_date: endDate,
-        Nootaayo: nootaayo,
+        Agreements: agreements,
         issue_date: issueDate,
       }),
     });
@@ -169,8 +169,8 @@ const CreateProject = () => {
                 type="text"
                 label="Nootaayo"
                 onBlur={handleBlur}
-                onChange={(e) => setNootaayo(e.target.value)}
-                value={nootaayo}
+                onChange={(e) => setAgreements(e.target.value)}
+                value={agreements}
                 name="Nootaayo"
                 sx={{ gridColumn: "span 4" }}
               />

@@ -9,7 +9,6 @@ const ClientForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [clientName, setClientName] = useState("");
-  const [contactPerson, setContactPerson] = useState("");
   const [phone, setPhone] = useState("");
   const [document, setDocument] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
@@ -39,7 +38,6 @@ const ClientForm = () => {
       },
       body: JSON.stringify({
         client_name: clientName,
-        contact_person: contactPerson,
         phone: phone,
         document: document,
         issue_date: issueDate,
@@ -111,20 +109,6 @@ const ClientForm = () => {
                 name="client_name"
                 error={!!touched.client_name && !!errors.client_name}
                 helperText={touched.client_name && errors.client_name}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                required
-                variant="filled"
-                type="text"
-                label="Contact Person"
-                onBlur={handleBlur}
-                onChange={(e) => setContactPerson(e.target.value)}
-                value={contactPerson}
-                name="contact_person"
-                error={!!touched.contact_person && !!errors.contact_person}
-                helperText={touched.contact_person && errors.contact_person}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField

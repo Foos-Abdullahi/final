@@ -205,17 +205,17 @@ const RecieptEditForm = () => {
     amount: 0,
     issue_date: "",
   });
-  const [projects, setProjects] = useState([]);
+  const [clients, setClients] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/Projects/");
+      const response = await fetch("http://127.0.0.1:8000/Client/");
       if (!response.ok) {
         throw new Error("Failed to fetch projects");
       }
       const data = await response.json();
-      setProjects(data); // Assuming data is an array of projects with IDs and names
+      setClients(data); // Assuming data is an array of projects with IDs and names
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
@@ -314,9 +314,9 @@ const RecieptEditForm = () => {
                 name="project"
                 sx={{ gridColumn: "span 4" }}
               >
-                {projects.map((project) => (
-                  <MenuItem key={project.id} value={project.id}>
-                    {project.project_name}
+                {clients.map((client) => (
+                  <MenuItem key={client.id} value={client.id}>
+                    {client.client_name}
                   </MenuItem>
                 ))}
               </TextField>
