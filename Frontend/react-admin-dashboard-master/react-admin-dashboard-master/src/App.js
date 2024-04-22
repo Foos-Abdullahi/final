@@ -59,6 +59,7 @@ import TaskEditForm from "./scenes/task/edit/[id]";
 import AllinvoicerReciept from "./scenes/invoiceReciept";
 import ReciptForm from "./scenes/invoiceReciept/from";
 import RecieptEditForm from "./scenes/invoiceReciept/edit/[id]";
+import ClientDetailsView from "./scenes/client/details/[id]";
 // foof ciro tables================================;
 
 
@@ -115,6 +116,8 @@ function App() {
               <Route path="/client" element={<Client />} />
               <Route path="/client/form" element={<ClientForm />} />
               <Route path="/client/edit/:id" element={<ClientEdit />} />
+              <Route path="/client/details/:id" element={<ClientDetailsView />} />
+              {/* <Route path="/client/view/:id" element={<ViewFileContents />} /> */}
               <Route path="/paymentType" element={<PaymentType />} />
               <Route path="/bar" element={<Bar />} />
               <Route path="/pie" element={<Pie />} />

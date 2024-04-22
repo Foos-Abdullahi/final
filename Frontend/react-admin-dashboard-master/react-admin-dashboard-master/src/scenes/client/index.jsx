@@ -66,12 +66,27 @@ const Client = () => {
           color="secondary"
           variant="contained"
           component={Link}
-          to={`/client/edit/${params.row.id}`}
+          to={`/client/details/${params.row.id}`}
         >
           Update Client
         </Button>
       ),
     },
+    // {
+    //   field: "actions",
+    //   headerName: "Actions",
+    //   flex: 1,
+    //   renderCell: (params) => (
+    //     <Button
+    //       color="secondary"
+    //       variant="contained"
+    //       component={Link}
+    //       to={`/client/ssview/${params.row.id}`}
+    //     >
+    //       View Content
+    //     </Button>
+    //   ),
+    // },
   ];
 
   return (

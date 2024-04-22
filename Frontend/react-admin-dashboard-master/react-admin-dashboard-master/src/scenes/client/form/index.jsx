@@ -10,12 +10,15 @@ const ClientForm = () => {
 
   const [clientName, setClientName] = useState("");
   const [phone, setPhone] = useState("");
-  const [document, setDocument] = useState("");
+  const [document, setDocument] = useState(null);
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   useEffect(() => {
     // Fetch client options
     fetchClientOptions();
   }, []);
+  // const handleFileChange = (e) => {
+  //   setDocument(e.target.files[0]);
+  // };
 
   const fetchClientOptions = async () => {
     try {
@@ -39,7 +42,7 @@ const ClientForm = () => {
       body: JSON.stringify({
         client_name: clientName,
         phone: phone,
-        document: document,
+        document: document.name,
         issue_date: issueDate,
       }),
     });
@@ -50,12 +53,16 @@ const ClientForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    window.location.href = '/client';
+    console.log("Client:", clientName);
+    console.log("Tell:", phone);
+    console.log("Document :", document.name);
+    console.log("Issue date:", issueDate);
+    // window.location.href = '/client';
   };
 
-  const handleFormSubmit = () => {
-    sendForm();
-  };
+  // const handleFormSubmit = () => {
+  //   sendForm();
+  // };
 
   const validationSchema = yup.object().shape({
     client_name: yup.string().required("Client name is required"),
@@ -85,7 +92,7 @@ const ClientForm = () => {
           errors,
           touched,
           handleBlur,
-          handleChange,
+          // handleChange,
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
@@ -129,11 +136,11 @@ const ClientForm = () => {
                 fullWidth
                 required
                 variant="filled"
-                type="text"
+                type="file"
                 label="Document"
                 onBlur={handleBlur}
-                onChange={(e) => setDocument(e.target.value)}
-                value={document}
+                onChange={(e) => setDocument(e.target.files[0])}
+                // value={document}
                 name="document"
                 error={!!touched.document && !!errors.document}
                 helperText={touched.document && errors.document}
