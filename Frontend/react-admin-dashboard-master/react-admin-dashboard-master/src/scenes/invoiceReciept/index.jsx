@@ -8,7 +8,7 @@ import Header from "../../components/Header";
 const AllInvoiceReceipts = () => {
   const [invoiceReceipts, setInvoiceReceipts] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
-  const [projects, setProjects] = useState([]);
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     fetchInvoiceReceipts();
@@ -27,12 +27,12 @@ const AllInvoiceReceipts = () => {
   };
   const fetchProjects = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/Projects/');
+      const response = await fetch('http://127.0.0.1:8000/Client/');
       const data = await response.json();
       
-      setProjects(data);
+      setClients(data);
     } catch (error) {
-      console.error('Error fetching payment methods:', error);
+      console.error('Error fetching client:', error);
     }
   };
 
@@ -51,12 +51,12 @@ const AllInvoiceReceipts = () => {
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "project",
-      headerName: "Project",
+      field: "client",
+      headerName: "Client_name",
       flex: 1,
       valueGetter: (params) => {
-        const project = projects.find(Project => Project.id === params.row.project);
-        return project ? project.project_name : '';
+        const project = clients.find(Client => Client.id === params.row.client);
+        return project ? project.client_name : '';
       },
     },
     {

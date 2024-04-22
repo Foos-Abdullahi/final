@@ -8,7 +8,7 @@ const ReciptForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [reciept, setReciept] = useState({
-    project: 0, // Default project ID
+    client: "", // Default project ID
     payment_method: "", // Default payment method
     amount: 0,
     issue_date: "",
@@ -25,6 +25,7 @@ const ReciptForm = () => {
       }
       const ClientData = await ClientResponse.json();
       setClients(ClientData);
+      console.log("wakaas",ClientData);
 
       const paymentMethodResponse = await fetch("http://127.0.0.1:8000/Payment_Methode/");
       if (!paymentMethodResponse.ok) {
@@ -66,7 +67,7 @@ const ReciptForm = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE MATERIAL" subtitle="Create a New Material" />
+      <Header title="Invoice Receipts" subtitle="List of Invoice Receipts" />
 
       <Formik onSubmit={sendForm} initialValues={reciept}>
         {({
@@ -89,13 +90,13 @@ const ReciptForm = () => {
                 select
                 fullWidth
                 variant="filled"
-                label="Project"
+                label="client"
                 onBlur={handleBlur}
-                onChange={(e) => setReciept({ ...reciept, project: e.target.value })}
-                value={reciept.project}
-                name="project"
-                error={!!touched.project && !!errors.project}
-                helperText={touched.project && errors.project}
+                onChange={(e) => setReciept({ ...reciept, client: e.target.value })}
+                value={reciept.client}
+                name="client"
+                error={!!touched.client && !!errors.client}
+                helperText={touched.client && errors.client}
                 sx={{ gridColumn: "span 4" }}
               >
                 {clients.map((Client) => (
