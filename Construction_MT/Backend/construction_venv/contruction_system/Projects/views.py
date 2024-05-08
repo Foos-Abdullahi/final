@@ -2,6 +2,46 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import ProjectsSerializers
 from .models import Projects
+from django.db.models import Q
+from django.utils import timezone
+
+# Create your views here.
+@api_view(['GET'])
+def search_dates_between(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    if not start_date or not end_date:
+        return Response("Both start_date and end_date parameters are required.")
+
+    try:
+        start_date = timezone.datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date = timezone.datetime.strptime(end_date, '%Y-%m-%d').date()
+    except ValueError:
+        return Response("Invalid date format. Please use YYYY-MM-DD format.")
+
+    projects = Projects.objects.filter(issue_date__range=[start_date, end_date])
+    serializer = ProjectsSerializers(projects, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def searchProjectNo(request):
+    query_param = request.GET.get('prNo', '')
+    project = Projects.objects.filter(
+        Q(project_No__icontains=query_param)
+    )
+    serializer = ProjectsSerializers(project, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    project = Projects.objects.filter(
+        Q(issue_date__icontains=query_param)
+    )
+    serializer = ProjectsSerializers(project, many=True)
+    return Response(serializer.data)
 
 
 # Create your views here.

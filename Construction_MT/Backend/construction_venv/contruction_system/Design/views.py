@@ -3,7 +3,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import DesignSerializer
 from .models import Design
+from django.db.models import Q
+from django.utils.dateparse import parse_date
 
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    design = Design.objects.filter(
+        Q(issue_date__icontains=query_param) 
+    )
+    serializer = DesignSerializer(design, many=True)
+    return Response(serializer.data)
 # Create your views here.
 
 @api_view(['GET'])

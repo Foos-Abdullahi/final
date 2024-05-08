@@ -1,6 +1,5 @@
 import { Box, Button, TextField, MenuItem } from "@mui/material";
 import { Formik } from "formik";
-import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
 import React, { useState, useEffect } from "react";
@@ -10,20 +9,22 @@ const CreateProject = () => {
 
   const [projectName, setProjectName] = useState("");
   const [clientOptions, setClientOptions] = useState([]);
-  const [designOptions, setdesignOptions] = useState([]);
+  const [designOptions, setDesignOptions] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
-  const [selecteddesigns,setSelectedDesigns]=useState("");
+  const [selectedDesign, setSelectedDesign] = useState("");
   const [status, setStatus] = useState("");
+  const [agreements, setAgreements] = useState("");
+  const [budget, setBudget] = useState("");
+  const [budgetRemain, setBudgetRemain] = useState("");
+  const [projectNo, setProjectNo] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [agreements, setAgreements] = useState("");
-  const [budgets, setBudgets] = useState("");
-  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
+  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
 
   useEffect(() => {
-    // Fetch client options
+    // Fetch client and design options
     fetchClientOptions();
-    fetchdesignOptions();
+    fetchDesignOptions();
   }, []);
 
   const fetchClientOptions = async () => {
@@ -39,18 +40,19 @@ const CreateProject = () => {
     }
   };
 
-  const fetchdesignOptions = async () => {
+  const fetchDesignOptions = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Design/");
       if (!response.ok) {
-        throw new Error("Failed to fetch Design options");
+        throw new Error("Failed to fetch design options");
       }
       const data = await response.json();
-      setdesignOptions(data);
+      setDesignOptions(data);
     } catch (error) {
-      console.error("Error fetching Design options:", error);
+      console.error("Error fetching design options:", error);
     }
   };
+
   const sendForm = async () => {
     const res = await fetch("http://127.0.0.1:8000/Projects/create/", {
       method: "POST",
@@ -60,12 +62,14 @@ const CreateProject = () => {
       body: JSON.stringify({
         project_name: projectName,
         client: selectedClient,
-        design:selecteddesigns,
+        design: selectedDesign,
         status: status,
         start_date: startDate,
         end_date: endDate,
         Agreements: agreements,
-        budget: budgets,
+        budget: budget,
+        BudgetRemain: budgetRemain,
+        project_No: projectNo,
         issue_date: issueDate,
       }),
     });
@@ -76,9 +80,7 @@ const CreateProject = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    //  window.location.href = '/project';
-     window.history.back();
-
+    window.history.back();
   };
 
   const handleFormSubmit = () => {
@@ -97,7 +99,9 @@ const CreateProject = () => {
           design: "",
           status: "",
           Agreements: "",
-          budget:"",
+          budget: "",
+          BudgetRemain: "",
+          project_No: "",
           start_date: "",
           end_date: "",
           issue_date: "",
@@ -153,10 +157,10 @@ const CreateProject = () => {
                 required
                 select
                 variant="filled"
-                label="design"
+                label="Design"
                 onBlur={handleBlur}
-                onChange={(e) => setSelectedDesigns(e.target.value)}
-                value={selecteddesigns}
+                onChange={(e) => setSelectedDesign(e.target.value)}
+                value={selectedDesign}
                 name="design"
                 sx={{ gridColumn: "span 4" }}
               >
@@ -183,7 +187,7 @@ const CreateProject = () => {
                 required
                 variant="filled"
                 type="text"
-                label="agreements"
+                label="Agreements"
                 onBlur={handleBlur}
                 onChange={(e) => setAgreements(e.target.value)}
                 value={agreements}
@@ -195,11 +199,35 @@ const CreateProject = () => {
                 required
                 variant="filled"
                 type="number"
-                label="budget"
+                label="Budget"
                 onBlur={handleBlur}
-                onChange={(e) => setBudgets(e.target.value)}
-                value={budgets}
-                name="Nootaayo"
+                onChange={(e) => setBudget(e.target.value)}
+                value={budget}
+                name="budget"
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                required
+                variant="filled"
+                type="number"
+                label="Budget Remain"
+                onBlur={handleBlur}
+                onChange={(e) => setBudgetRemain(e.target.value)}
+                value={budgetRemain}
+                name="budgetRemain"
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                required
+                variant="filled"
+                type="text"
+                label="Project No"
+                onBlur={handleBlur}
+                onChange={(e) => setProjectNo(e.target.value)}
+                value={projectNo}
+                name="projectNo"
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField

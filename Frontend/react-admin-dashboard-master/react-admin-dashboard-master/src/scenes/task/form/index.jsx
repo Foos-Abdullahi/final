@@ -13,7 +13,8 @@ const TaskForm = () => {
     start_date: "",
     end_date: "",
     status: "",
-    issue_date: "",
+    issue_date: new Date().toISOString().substr(0, 10),
+    task_image: "", // Added task_image attribute
   });
 
   const [projects, setProjects] = useState([]);
@@ -69,6 +70,7 @@ const TaskForm = () => {
           touched,
           handleBlur,
           handleSubmit,
+          setFieldValue, // Added setFieldValue for handling file upload
         }) => (
           <form onSubmit={handleSubmit}>
             <Box
@@ -157,10 +159,21 @@ const TaskForm = () => {
                 label="Issue Date"
                 onBlur={handleBlur}
                 onChange={(e) => setTask({ ...task, issue_date: e.target.value })}
-                value={setTask.issue_date}
+                value={task.issue_date}
                 name="issue_date"
                 error={!!touched.issue_date && !!errors.issue_date}
                 helperText={touched.issue_date && errors.issue_date}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="file"
+                label="Task Image"
+                onBlur={handleBlur}
+                onChange={(e) => setFieldValue("task_image", e.target.files[0])}
+                error={!!touched.task_image && !!errors.task_image}
+                helperText={touched.task_image && errors.task_image}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>

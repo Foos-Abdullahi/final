@@ -1,53 +1,31 @@
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
-import React, { useState, useEffect } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import React, { useState } from "react";
 
 const EmployeeForm = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-
-  const [editingEmployeeId, setEditingEmployeeId] = useState(null);
   const [employeeName, setEmployeeName] = useState("");
   const [position, setPosition] = useState("");
   const [phone, setPhone] = useState("");
   const [salary, setSalary] = useState("");
-  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
-  
-//previous
-  const fetchEmployeeOptions = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/Employee/create/");
-      if (!response.ok) {
-        throw new Error("Failed to fetch employee options");
-      }
-      const data = await response.json();
-      
-      // Process data if needed
-    } catch (error) {
-      console.error("Error fetching employee options:", error);
-    }
-  };
+  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
+  const [employeeImage, setEmployeeImage] = useState(null);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  useEffect(() => {
-    fetchEmployeeOptions();
-  }, []);
-
-// previous
   const sendForm = async () => {
+    const formData = new FormData(); 
+    formData.append("employee_Image", employeeImage); 
+    formData.append("employee_name", employeeName);
+    formData.append("position", position);
+    formData.append("phone", phone);
+    formData.append("salary", salary);
+    formData.append("issue_date", issueDate);
+
     const res = await fetch("http://127.0.0.1:8000/Employee/create/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        employee_name: employeeName,
-        position: position,
-        phone: phone,
-        salary: salary,
-        issue_date: issueDate,
-      }),
+      body: formData, 
     });
 
     if (!res.ok) {
@@ -56,16 +34,10 @@ const EmployeeForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    window.location.href = '/employee';
+    console.log(employeeName);
+    console.log(issueDate);
+    // window.location.href = "/employee";
   };
-
-  // const validationSchema = yup.object().shape({
-  //   employee_name: yup.string().required("Employee name is required"),
-  //   position: yup.string().required("Position is required"),
-  //   phone: yup.string().required("Phone number is required"),
-  //   salary: yup.number().required("Salary is required"),
-  //   issue_date: yup.string().required("Issue date is required"),
-  // });
 
   return (
     <Box m="20px">
@@ -80,7 +52,6 @@ const EmployeeForm = () => {
           salary: "",
           issue_date: "",
         }}
-        //  validationSchema={validationSchema}
       >
         {({
           values,
@@ -101,7 +72,6 @@ const EmployeeForm = () => {
             >
               <TextField
                 fullWidth
-                required
                 variant="filled"
                 type="text"
                 label="Employee Name"
@@ -115,7 +85,6 @@ const EmployeeForm = () => {
               />
               <TextField
                 fullWidth
-                required
                 variant="filled"
                 type="text"
                 label="Position"
@@ -129,9 +98,8 @@ const EmployeeForm = () => {
               />
               <TextField
                 fullWidth
-                required
                 variant="filled"
-                type="tel"
+                type="text"
                 label="Phone"
                 onBlur={handleBlur}
                 onChange={(e) => setPhone(e.target.value)}
@@ -143,7 +111,6 @@ const EmployeeForm = () => {
               />
               <TextField
                 fullWidth
-                required
                 variant="filled"
                 type="number"
                 label="Salary"
@@ -157,7 +124,6 @@ const EmployeeForm = () => {
               />
               <TextField
                 fullWidth
-                required
                 variant="filled"
                 type="date"
                 label="Issue Date"
@@ -169,8 +135,18 @@ const EmployeeForm = () => {
                 helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
+              {/* Input field for uploading image */}
+              <input
+                type="file"
+                onChange={(e) => setEmployeeImage(e.target.files[0])}
+                accept="image/*"
+                style={{ gridColumn: "span 4" }}
+              />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+              <Button color="primary" variant="contained" onClick={() => window.location.href = "/employee"}>
+                Back
+              </Button>
               <Button type="submit" color="secondary" variant="contained">
                 Create Employee
               </Button>

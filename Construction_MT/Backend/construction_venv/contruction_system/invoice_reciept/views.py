@@ -2,9 +2,29 @@ from rest_framework.decorators import api_view
 from rest_framework.response import  Response
 from .serializers import PaymentSerializer
 from  .models import Payments
+from django.db.models import Q
 
 # Create your views here.
-#getAll
+
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    payment = Payments.objects.filter(
+        Q(issue_date__icontains=query_param)
+    )
+    serializer = PaymentSerializer(payment, many=True)
+    return Response(serializer.data)
+@api_view(["GET"])
+def get_invoices_by_ProjectNO(request):
+    phone_number = request.query_params.get('prNo', None)
+    if phone_number:
+        invoices = Payments.objects.filter(project__project_No=phone_number)
+        serialized_invoices = PaymentSerializer(invoices, many=True)
+        return Response(serialized_invoices.data)
+    else:
+        return Response({"error": "Phone number not provided"}, status=400)
+
+# #getAll
 @api_view(["GET"])
 def getAll(request):
     payments = Payments.objects.all()

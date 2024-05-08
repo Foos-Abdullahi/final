@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'Payment_Methode.apps.PaymentMethodeConfig',
     'Design.apps.DesignConfig',
     'Payment_Type.apps.PaymentTypeConfig',
-    'Invoice.apps.InvoiceConfig',
+    # 'Invoice.apps.InvoiceConfig',
     'rest_framework',
     'corsheaders'
     
@@ -155,3 +155,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'

@@ -5,5 +5,6 @@ urlpatterns = [
     path('detils/<int:id>/',views.get_task_by_id),
     path('delete/<int:id>/',views.delete_task),
     path('addnew/',views.Addnew),
-    path('update/<int:id>/',views.Update_task)
+    path('update/<int:id>/',views.Update_task),
+    path('search/', views.search)
     ]

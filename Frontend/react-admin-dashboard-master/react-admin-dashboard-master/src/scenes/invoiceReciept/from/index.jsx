@@ -8,20 +8,20 @@ const ReciptForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [reciept, setReciept] = useState({
-    project: 0, // Default project ID
+    client: 0, // Default client ID
     payment_method: "", // Default payment method
     amount: 0,
-    issue_date: "",
+    issue_date: new Date().toISOString().substr(0, 10),
   });
 
   const [clients, setClients] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
 
-  const fetchProjectsAndPaymentMethods = async () => {
+  const fetchclientsAndPaymentMethods = async () => {
     try {
       const ClientResponse = await fetch("http://127.0.0.1:8000/Client/");
       if (!ClientResponse.ok) {
-        throw new Error("Failed to fetch projects");
+        throw new Error("Failed to fetch clients");
       }
       const ClientData = await ClientResponse.json();
       setClients(ClientData);
@@ -33,12 +33,12 @@ const ReciptForm = () => {
       const paymentMethodData = await paymentMethodResponse.json();
       setPaymentMethods(paymentMethodData);
     } catch (error) {
-      console.error("Error fetching projects and payment methods:", error);
+      console.error("Error fetching clients and payment methods:", error);
     }
   };
 
   useEffect(() => {
-    fetchProjectsAndPaymentMethods();
+    fetchclientsAndPaymentMethods();
   }, []);
 
   const sendForm = async () => {
@@ -89,13 +89,13 @@ const ReciptForm = () => {
                 select
                 fullWidth
                 variant="filled"
-                label="Project"
+                label="Client"
                 onBlur={handleBlur}
-                onChange={(e) => setReciept({ ...reciept, project: e.target.value })}
-                value={reciept.project}
-                name="project"
-                error={!!touched.project && !!errors.project}
-                helperText={touched.project && errors.project}
+                onChange={(e) => setReciept({ ...reciept, client: e.target.value })}
+                value={reciept.client}
+                name="client"
+                error={!!touched.client && !!errors.client}
+                helperText={touched.client && errors.client}
                 sx={{ gridColumn: "span 4" }}
               >
                 {clients.map((Client) => (

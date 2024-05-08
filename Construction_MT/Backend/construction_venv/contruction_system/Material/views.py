@@ -2,6 +2,38 @@ from rest_framework.decorators import api_view
 from rest_framework.response import  Response
 from .serializer import MaterialSerializer
 from .models import Material
+from django.db.models import Q
+# from Projects.models import Projects
+# from Tasks.models import Tasks
+
+# @api_view(['GET'])
+# def get_projects_by_Name(request):
+#     query_param = request.GET.get('query', '')
+#     projects = Projects.objects.filter(project_name__icontains=query_param)
+#     materials = Material.objects.filter(project__in=projects)
+#     tasks = Tasks.objects.filter(project__in=projects)
+#     material_serializer = MaterialSerializer(materials, many=True)
+#     task_serializer = TasksSerializer(tasks, many=True)
+#     return Response({'materials': material_serializer.data, 'tasks': task_serializer.data})
+@api_view(["GET"])
+def get_projects_by_Name(request):
+    projectName = request.query_params.get('prId', None)
+    if projectName:
+        material = Material.objects.filter(project__id=projectName)
+        serialized_Material = MaterialSerializer(material, many=True)
+        return Response(serialized_Material.data)
+    else:
+        return Response({"error": "Project Name not provided"}, status=400)
+
+
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    material = Material.objects.filter(
+        Q(issue_date__icontains=query_param) 
+    )
+    serializer = MaterialSerializer(material, many=True)
+    return Response(serializer.data)
 
 # Create your views here.
 #get all

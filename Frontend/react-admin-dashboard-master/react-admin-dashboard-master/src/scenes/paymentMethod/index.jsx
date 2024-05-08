@@ -1,20 +1,23 @@
-
-import { Box, Button , useTheme } from "@mui/material";
+import { Box, Button, useTheme, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
-// import { mockDataInvoices } from "../../data/mockData";
+import AddIcon from '@mui/icons-material/Add';
 import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
 
 const PaymentMethode = () => {
 
   const [PaymentMethodes, setpaymentMothode] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchPymentMothode();
-  }, []);
+    fetchSearch();
+  }, [searchQuery]);
 
   const fetchPymentMothode = async () => {
     try {
@@ -25,7 +28,19 @@ const PaymentMethode = () => {
       console.error('Error fetching payment_methode:', error);
     }
   };
-
+  
+  const fetchSearch = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/Payment_Methode/search?query=${searchQuery}`);
+      const data = await response.json();
+      setpaymentMothode(data);
+    } catch (error) {
+      console.error('Error fetching Clients:', error);
+    }
+  };
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
 
   const theme = useTheme();
@@ -35,81 +50,84 @@ const PaymentMethode = () => {
     { field: "id", headerName: "ID" },
     {
       field: "Py_method_name",
-      headerName: "Payment Methode",
+      headerName: "Payment Method",
       flex: 1,
-
       cellClassName: "name-column--cell",
-
+    },
+    {
+      field: "pay_method_image",
+      headerName: "Image",
+      width: 120,
+      renderCell: (params) => (
+        <img
+          src={`/assets/payment-method/${params.value}`}
+          alt="Payment Method"
+          style={{ width: 100, height: 60 }}
+        />
+      ),
     },
     {
       field: "issue_date",
       headerName: "Date",
       flex: 1,
     },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 1,
-      renderCell: (params) => (
-        <Button
-          color="secondary"
-          variant="contained"
-          component={Link}
-          to={`/paymentMethod/edit/${params.row.id}`}
-        >
-          Update payment Method
-        </Button>
-      ),
-    },
+   
     {
       field: "Edit",
       headerName: "Action",
       width: 100,
       renderCell: (params) => (
-        <Button
-          variant="contained"
+        <IconButton
           color="secondary"
           component={Link}
           to={`/paymentMethod/update/${params.row.id}`}
-          startIcon={<EditIcon />}
         >
-          Edit
-        </Button>
+          <EditIcon />
+        </IconButton>
       ),
     }
   ];
 
   return (
-    
     <Box m="20px">
       <Header title="Payment Methode" subtitle="List of Payment Methode" />
-      <Box display="flex" justifyContent="end" mt="20px">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="20px"
+      >
+        <Box
+          backgroundColor={colors.primary[400]}
+          borderRadius="10px"
+          display="flex"
+          alignItems="center"
+          pl={1}
+        >
+          <InputBase
+            sx={{ ml: 2, flex: 1 }}
+            placeholder="Search"
+            type="date"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <IconButton type="button" sx={{ p: 1 }}>
+            {/* <SearchIcon /> */}
+          </IconButton>
+        </Box>
         <Button
           type="submit"
           color="secondary"
           variant="contained"
           component={Link}
           to="/paymentMethod/create"
+          startIcon={<AddIcon />}
         >
-          Create New Payment Method
+          Add New
         </Button>
-        </Box>
+      </Box>
+  
       <Box
-        display="flex"
-        justifyContent="end"
-        mt="20px"
-      >
-      <Button
-        type="submit"
-        color="secondary"
-        variant="contained"
-        component={Link}
-        to="/paymentMethod/create"
-      >
-        Create New PaymentMethode
-      </Button>
-    </Box>
-    <Box
         m="40px 0 0 0"
         height="75vh"
         sx={{
@@ -142,5 +160,6 @@ const PaymentMethode = () => {
       </Box>
     </Box>
   );
+  
 };
 export default PaymentMethode;

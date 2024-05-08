@@ -5,6 +5,8 @@ import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
 
 
 const Invoice = () => {

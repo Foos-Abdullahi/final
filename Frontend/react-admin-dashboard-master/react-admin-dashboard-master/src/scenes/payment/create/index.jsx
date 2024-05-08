@@ -13,7 +13,7 @@ const CreatePayment = () => {
   const [selectedPaymentType, setSelectedPaymentType] = useState("");
   const [projectOptions, setProjectOptions] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
-  const [expenseDate, setExpenseDate] = useState("");
+  const [expenseDate, setExpenseDate] = useState(new Date().toISOString().substr(0, 10));
 
   useEffect(() => {
     // Fetch payment type options

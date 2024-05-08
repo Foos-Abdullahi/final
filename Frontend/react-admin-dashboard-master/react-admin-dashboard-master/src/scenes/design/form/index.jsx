@@ -6,24 +6,25 @@ import Header from "../../../components/Header";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const DesignForm = () => {
-  const [images, setimage] = useState("");
+  const [images, setImage] = useState(null);
   const [statuses, setstatus] = useState("");
   const [amounts, setamount] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const sendForm = async () => {
+    const imageName = images.name;
+    const formData = new FormData();
+    formData.append("image", images); 
+
+    formData.append("status", statuses);
+    formData.append("amount", amounts);
+    formData.append("issue_date", issueDate);
+
     const res = await fetch("http://127.0.0.1:8000/Design/create/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        image: images,
-        status: statuses,
-        amount:amounts,
-        issue_date: issueDate,
-      }),
+    //  
+      body: formData,
     });
 
     if (!res.ok) {
@@ -32,9 +33,11 @@ const DesignForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    console.log(images)
+    console.log(imageName)
+    console.log(statuses)
+    console.log(amounts)
     console.log(issueDate)
-    window.location.href = '/design';
+    // window.location.href = '/design';
   };
 
 //   const validationSchema = yup.object().shape({
@@ -74,11 +77,11 @@ const DesignForm = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
+                type="file"
                 label="Image"
                 onBlur={handleBlur}
-                onChange={(e) => setimage(e.target.value)}
-                value={images}
+                onChange={(e) => setImage(e.target.files[0])}
+                // value={images}
                 name="Designs"
                 error={!!touched.Designs && !!errors.Designs}
                 helperText={touched.Designs && errors.Designs}

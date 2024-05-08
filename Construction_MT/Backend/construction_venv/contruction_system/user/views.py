@@ -2,8 +2,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .searilizer import UserSearilizer
 from .models import User
+from django.db.models import Q
 
-# Create your views here.
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    user = User.objects.filter(
+        Q(issue_date__icontains=query_param)
+    )
+    serializer = UserSearilizer(user, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 def getAll(request):

@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, InputBase,Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-const AllMaterail = () => {
+import SearchIcon from "@mui/icons-material/Search";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+
+const AllMaterial = () => {
   const [material, setMaterial] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchEmployees();
     fetchProjects();
-  }, []);
+    fetchSearch();
+  }, [searchQuery]);
 
   const fetchEmployees = async () => {
     try {
@@ -22,6 +28,7 @@ const AllMaterail = () => {
       console.error('Error fetching employees:', error);
     }
   };
+  
   const fetchProjects = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/Projects/');
@@ -31,8 +38,24 @@ const AllMaterail = () => {
       console.error('Error fetching payment methods:', error);
     }
   };
+
+  const fetchSearch = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/Material/search?query=${searchQuery}`);
+      const data = await response.json();
+      setMaterial(data);
+    } catch (error) {
+      console.error('Error fetching Clients:', error);
+    }
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -80,30 +103,48 @@ const AllMaterail = () => {
       flex: 1,
     },
     {
-      field: "actions", // Add a new column for actions
+      field: "actions", 
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <Button
+        <IconButton
           component={Link}
-          to={`/material/edit/${params.row.id}`} // Link to the edit form with material ID
-          variant="contained"
+          to={`/material/edit/${params.row.id}`} 
           color="secondary"
         >
-          Update
-        </Button>
+          <EditIcon />
+        </IconButton>
       ),
     },
   ];
 
   return (
     <Box m="20px">
-      <Header  title="Material" subtitle="List of Material Balances" />
+      <Header title="Material" subtitle="List of Materials" />
       <Box
         display="flex"
-        justifyContent="end"
-        mt="-100px"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="20px"
       >
+        <Box
+          backgroundColor={colors.primary[400]}
+          borderRadius="3px"
+          display="flex"
+          alignItems="center"
+          pl={1}
+        >
+          <InputBase
+            sx={{ ml: 2, flex: 1 }}
+            type="date"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <IconButton type="submit" sx={{ p: 1 }}>
+            <SearchIcon />
+          </IconButton>
+        </Box>
         <Button
           type="submit"
           color="secondary"
@@ -111,9 +152,11 @@ const AllMaterail = () => {
           component={Link}
           to="/material/form"
         >
-          Create New Material
+          <AddIcon />
+          Add New
         </Button>
       </Box>
+
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -149,4 +192,4 @@ const AllMaterail = () => {
   );
 };
 
-export default AllMaterail;
+export default AllMaterial;

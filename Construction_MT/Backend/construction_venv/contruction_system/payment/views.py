@@ -2,8 +2,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .searilizer import ExpenseSearilizer
 from .models import Expense
+from django.db.models import Q
 
-# Create your views here.
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    expense = Expense.objects.filter(
+        Q(expense_date__icontains=query_param)
+    )
+    serializer = ExpenseSearilizer(expense, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getAll(request):

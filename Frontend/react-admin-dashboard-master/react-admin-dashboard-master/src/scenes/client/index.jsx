@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme, TextField, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
 
 const Client = () => {
   const [Clients, setClients] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchClients();
-  }, []);
+    fetchSearch();
+  }, [searchQuery]);
 
   const fetchClients = async () => {
     try {
@@ -20,6 +26,18 @@ const Client = () => {
     } catch (error) {
       console.error('Error fetching Clients:', error);
     }
+  };
+  const fetchSearch = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/Client/search?query=${searchQuery}`);
+      const data = await response.json();
+      setClients(data);
+    } catch (error) {
+      console.error('Error fetching Clients:', error);
+    }
+  };
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   const theme = useTheme();
@@ -38,17 +56,41 @@ const Client = () => {
       flex: 1,
     },
     {
-      field: "document",
-      headerName: "document",
+      field: "client_image",
+      headerName: "Client Image",
+      flex: 1,
+      renderCell: (params) => (
+        <img
+          src={`/assets/client/${params.value}`} 
+          alt="ClientImage"
+          style={{ width: 100, height: 60 }} 
+        />
+      ),
+    },
+    {
+      field: "password",
+      headerName: "Password",
       flex: 1,
     },
+    {
+      field: "document_image",
+      headerName: "Document",
+      flex: 1,
+      renderCell: (params) => (
+        <img
+          src={`/assets/${params.value}`} 
+          alt="DocumentImage"
+          style={{ width: 100, height: 60 }} 
+        />
+      ),
+    },
     // {
-    //   field: "contact_person",
-    //   headerName: "contact_person",
+    //   field: "balance",
+    //   headerName: "Balance",
     //   flex: 1,
     //   renderCell: (params) => (
     //     <Typography color={colors.greenAccent[500]}>
-    //       ${params.row.contact_person}
+    //       ${params.row.balance}
     //     </Typography>
     //   ),
     // },
@@ -62,52 +104,57 @@ const Client = () => {
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <Button
-          color="secondary"
-          variant="contained"
-          component={Link}
-          to={`/client/details/${params.row.id}`}
-        >
-          Update Client
-        </Button>
+        <>
+          <IconButton
+            color="secondary"
+            component={Link}
+            to={`/client/edit/${params.row.id}`}
+          >
+            <EditIcon />
+          </IconButton>
+        </>
       ),
     },
-    // {
-    //   field: "actions",
-    //   headerName: "Actions",
-    //   flex: 1,
-    //   renderCell: (params) => (
-    //     <Button
-    //       color="secondary"
-    //       variant="contained"
-    //       component={Link}
-    //       to={`/client/ssview/${params.row.id}`}
-    //     >
-    //       View Content
-    //     </Button>
-    //   ),
-    // },
   ];
 
   return (
     <Box m="20px">
-      <Header title="Client" subtitle="List of Client Balances" />
+      <Header title="Client" subtitle="List of Clients" />
       <Box
         display="flex"
-        justifyContent="end"
-        mt="20px"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="20px"
       >
-      <Button
-        type="submit"
-        color="secondary"
-        variant="contained"
-        component={Link}
-        to="/Client/form"
-      >
-        Create New Client
-      </Button>
-    </Box>
-
+        <Box
+          backgroundColor={colors.primary[400]}
+          borderRadius="3px"
+          display="flex"
+          alignItems="center"
+          pl={1}
+        >
+          <InputBase
+            sx={{ ml: 2, flex: 1 }}
+            placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <IconButton type="button" sx={{ p: 1 }}>
+            <SearchIcon />
+          </IconButton>
+        </Box>
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to="/Client/form"
+        >
+          <AddIcon />
+          Add New
+        </Button>
+      </Box>
+  
       <Box
         m="40px 0 0 0"
         height="75vh"

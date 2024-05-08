@@ -1,19 +1,23 @@
-import { Box, Button , useTheme } from "@mui/material";
+import { Box, IconButton, useTheme,Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
-// import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
 import EditIcon from '@mui/icons-material/Edit';
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+import AddIcon from '@mui/icons-material/Add';
 
 const PymentTaype = () => {
 
   const [payment_types, setpayment_types] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchPy_types();
-  }, []);
+    fetchSearch();
+  }, [searchQuery]);
 
   const fetchPy_types = async () => {
     try {
@@ -23,6 +27,18 @@ const PymentTaype = () => {
     } catch (error) {
       console.error('Error fetching paymentTypes:', error);
     }
+  };
+  const fetchSearch = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/Payment_Type/search?query=${searchQuery}`);
+      const data = await response.json();
+      setpayment_types(data);
+    } catch (error) {
+      console.error('Error fetching Clients:', error);
+    }
+  };
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   const theme = useTheme();
@@ -44,39 +60,55 @@ const PymentTaype = () => {
       headerName: "Action",
       width: 100,
       renderCell: (params) => (
-        <Button
-          variant="contained"
+        <IconButton
           color="secondary"
           component={Link}
           to={`/paymentType/update/${params.row.id}`}
-          startIcon={<EditIcon />}
         >
-          Edit
-        </Button>
+          <EditIcon />
+        </IconButton>
       ),
     }
-    
   ];
-
   return (
-    
     <Box m="20px">
-      <Header title="User" subtitle="List of Users" />
+      <Header title="Client" subtitle="List of Client Balances" />
       <Box
         display="flex"
-        justifyContent="end"
-        mt="20px"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="20px"
       >
-      <Button
-        type="submit"
-        color="secondary"
-        variant="contained"
-        component={Link}
-        to="/paymentType/create"
-      >
-        Create New PaymentType
-      </Button>
-    </Box>
+        <Box
+          backgroundColor={colors.primary[400]}
+          borderRadius="3px"
+          display="flex"
+          alignItems="center"
+          pl={1}
+        >
+          <InputBase
+            sx={{ ml: 2, flex: 1 }}
+            placeholder="Search"
+            type="date"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <IconButton type="button" sx={{ p: 1 }}>
+            <SearchIcon />
+          </IconButton>
+        </Box>
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to="/paymentType/create"
+          startIcon={<AddIcon />}
+        >
+          Add New
+        </Button>
+      </Box>
+  
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -110,6 +142,6 @@ const PymentTaype = () => {
       </Box>
     </Box>
   );
+  
 };
-
-export default PymentTaype;
+export default PymentTaype; 

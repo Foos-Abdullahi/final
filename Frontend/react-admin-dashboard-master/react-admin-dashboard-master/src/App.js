@@ -60,6 +60,14 @@ import AllinvoicerReciept from "./scenes/invoiceReciept";
 import ReciptForm from "./scenes/invoiceReciept/from";
 import RecieptEditForm from "./scenes/invoiceReciept/edit/[id]";
 import ClientDetailsView from "./scenes/client/details/[id]";
+import ReceiptPage from "./scenes/invoiceReciept/reciept/[id]";
+import ClientReport from "./scenes/Report/clientReport";
+// import ProjectReport from "./scenes/Report/prReport";
+// import ProjectReportByDate from "./scenes/Report/projectByDate";
+import ProjectList from "./scenes/Report/projectReport";
+import ProjecTDetail from "./scenes/Report/prReport/[id]";
+import Profile from "./scenes/user/profile/[id]";
+// import DetailProject from "./scenes/project/details/[id]";
 // foof ciro tables================================;
 
 
@@ -86,6 +94,7 @@ function App() {
               <Route path="/project" element={<Project />} />
               <Route path="/project/form" element={<CreateProjects />} />
               <Route path="/project/edit/:id" element={<ProjectEdit />} />
+              {/* <Route path="/project/details/:id" element={<DetailProject />} /> */}
               <Route path="/payment" element={<Payment />} />
               <Route path="/payment/create" element={<CreatePayment />} />
               <Route path="/design" element={<Design />} />
@@ -96,6 +105,7 @@ function App() {
               {/* <Route path="/task" element={<Task />} /> */}
               <Route path="/user" element={<User />} />
               <Route path="/user/create" element={<CreateUser />} />
+              <Route path="/user/profile/:id" element={<Profile />} />
               <Route path="/paymentMethod/form" element={<CreatepaymentMethode />} />
               <Route path="/paymentMethod/update/:id" element={<UpdatepaymentMethode />} />
               <Route path="/role/create" element={<CreateRole />} />
@@ -107,6 +117,11 @@ function App() {
               <Route path="/user/edit/:id" element={<EditUser/>}/>
               {/* <Route path="/user/edit/:id" element={<EditUser />} /> */}
               <Route path="/role" element={<Role />} />
+              <Route path="/Report" element={<ClientReport />} />
+              <Route path="/Report/prReport/:id" element={<ProjecTDetail />} />
+              <Route path="/Report/clientReport" element={<ClientReport />} />
+              {/* <Route path="/Report/projectReport" element={<ProjectReportByDate />} /> */}
+              <Route path="/Report/projectReport" element={<ProjectList />} />
               <Route path="/paymentMethod" element={<PaymentMethod />} />
               <Route path="/paymentMethod/create" element={<PaymentMethodForm />} />
               <Route path="/paymentMethod/edit/:id" element={<PayMethodEdit />} />
@@ -135,6 +150,7 @@ function App() {
               <Route path="/invoiceReciept" element={< AllinvoicerReciept/>} />
               <Route path="/invoiceReciept/from" element={< ReciptForm/>} />
               <Route path="/invoiceReciept/edit/:id" element={< RecieptEditForm/>} />
+              <Route path="/invoiceReciept/reciept/:id" element={< ReceiptPage/>} />
               {/* foof ciro tables================================; */}
             </Routes>
           </main>

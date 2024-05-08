@@ -11,9 +11,10 @@ const ClientEdit = () => {
   const [originalClientData, setOriginalClientData] = useState({});
   const [editingClientId, setEditingClientId] = useState('');
   const [clientName, setClientName] = useState('');
-  const [contactPerson, setContactPerson] = useState('');
+  const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
-  const [document, setDocument] = useState('');
+  const [documentImage, setDocumentImage] = useState(null);
+  const [clientImage, setClientImage] = useState(null);
   const [issueDate, setIssueDate] = useState('');
 
   useEffect(() => {
@@ -40,26 +41,19 @@ const ClientEdit = () => {
   }, []);
 
   const updateClient = async () => {
-    //alert(editingClientId);
     try {
+      const formData = new FormData();
+      formData.append('document_image', documentImage);
+      formData.append('client_image', clientImage);
+      formData.append('client_name', clientName || originalClientData.client_name);
+      formData.append('password', password || originalClientData.password);
+      formData.append('phone', phone || originalClientData.phone);
+      formData.append('issue_date', issueDate || originalClientData.issue_date);
+
       const response = await fetch(`http://127.0.0.1:8000/Client/update/${editingClientId}/`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          client_name: clientName || originalClientData.client_name,
-          contact_person: contactPerson || originalClientData.contact_person,
-          phone: phone || originalClientData.phone,
-          document: document || originalClientData.document,
-          issue_date: issueDate || originalClientData.issue_date,
-        }),
+        body: formData,
       });
-      console.log(clientName || originalClientData.client_name);
-      console.log(contactPerson || originalClientData.contact_person);
-      console.log(phone || originalClientData.phone);
-      console.log(document || originalClientData.document);
-      console.log(issueDate || originalClientData.issue_date);
       if (response.ok) {
         console.log('Client updated successfully');
         window.location.href = '/client';
@@ -73,8 +67,7 @@ const ClientEdit = () => {
     }
   };
 
-  const handleFormSubmit = (values) => {
-    setClientData(values);
+  const handleFormSubmit = () => {
     updateClient();
   };
 
@@ -103,14 +96,14 @@ const ClientEdit = () => {
                 fullWidth
                 required
                 variant="filled"
-                type="text"
-                label="Contact Person"
+                type="password"
+                label="Password"
                 onBlur={handleBlur}
-                onChange={(e) => setContactPerson(e.target.value)}
-                value={contactPerson || originalClientData.contact_person}
-                name="contact_person"
-                error={touched.contact_person && !!errors.contact_person}
-                helperText={touched.contact_person && errors.contact_person}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password || originalClientData.password}
+                name="password"
+                error={touched.password && !!errors.password}
+                helperText={touched.password && errors.password}
               />
               <TextField
                 fullWidth
@@ -129,14 +122,25 @@ const ClientEdit = () => {
                 fullWidth
                 required
                 variant="filled"
-                type="text"
-                label="Document"
+                type="file"
+                label="Document Image"
                 onBlur={handleBlur}
-                onChange={(e) => setDocument(e.target.value)}
-                value={document || originalClientData.document}
-                name="document"
-                error={touched.document && !!errors.document}
-                helperText={touched.document && errors.document}
+                onChange={(e) => setDocumentImage(e.target.files[0])}
+                name="document_image"
+                error={touched.document_image && !!errors.document_image}
+                helperText={touched.document_image && errors.document_image}
+              />
+              <TextField
+                fullWidth
+                required
+                variant="filled"
+                type="file"
+                label="Client Image"
+                onBlur={handleBlur}
+                onChange={(e) => setClientImage(e.target.files[0])}
+                name="client_image"
+                error={touched.client_image && !!errors.client_image}
+                helperText={touched.client_image && errors.client_image}
               />
               <TextField
                 fullWidth
@@ -150,7 +154,6 @@ const ClientEdit = () => {
                 name="issue_date"
                 error={touched.issue_date && !!errors.issue_date}
                 helperText={touched.issue_date && errors.issue_date}
-                sx={{ gridColumn: 'span 4' }}
               />
             </div>
             <Box display="flex" justifyContent="end" mt="20px">

@@ -1,26 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, useTheme, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
 
 const Role = () => {
-  const [Role, setRole] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    fetchRole();
-  }, []);
+    fetchRoles();
+    fetchSearch();
+  }, [searchQuery]);
 
-  const fetchRole = async () => {
+  const fetchRoles = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/Role/');
+      const response = await fetch("http://127.0.0.1:8000/Role/");
       const data = await response.json();
-      setRole(data);
+      setRoles(data);
     } catch (error) {
-      console.error('Error fetching Role:', error);
+      console.error("Error fetching roles:", error);
     }
+  };
+
+  const fetchSearch = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/Role/search?query=${searchQuery}`);
+      const data = await response.json();
+      setRoles(data);
+    } catch (error) {
+      console.error('Error fetching Roles:', error);
+    }
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   const theme = useTheme();
@@ -39,37 +58,62 @@ const Role = () => {
       flex: 1,
     },
     {
-      field: "Edit",
-      headerName: "Action",
-      width: 100,
+      field: "actions",
+      headerName: "Actions",
+      width: 200,
       renderCell: (params) => (
-        <Button
-          variant="contained"
-          color="secondary"
-          component={Link}
-          to={`/role/update/${params.row.id}`}
-          startIcon={<EditIcon />}
-        >
-          Edit
-        </Button>
+        <Box>
+          <IconButton
+            color="secondary"
+            component={Link}
+            to={`/role/update/${params.row.id}`}
+          >
+            <EditIcon />
+          </IconButton>
+        </Box>
       ),
-    }
+    },
   ];
 
   return (
     <Box m="20px">
-      <Header title="Role" subtitle="List of Roles" />
-      <Box display="flex" justifyContent="end" mt="20px">
+      <Header title="Roles" subtitle="List of Roles" />
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="20px"
+      >
+        <Box
+          backgroundColor={colors.primary[400]}
+          borderRadius="3px"
+          display="flex"
+          alignItems="center"
+          pl={1}
+        >
+          <InputBase
+            sx={{ ml: 2, flex: 1 }}
+            placeholder="Search"
+            type="date"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <IconButton type="button" sx={{ p: 1 }}>
+            <SearchIcon />
+          </IconButton>
+        </Box>
         <Button
           type="submit"
           color="secondary"
           variant="contained"
           component={Link}
           to="/role/create"
+          startIcon={<AddIcon />}
         >
-          Create New Role
+          Add New
         </Button>
-        </Box>
+      </Box>
+
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -99,7 +143,7 @@ const Role = () => {
           },
         }}
       >
-      <DataGrid checkboxSelection rows={Role} columns={columns} />
+        <DataGrid checkboxSelection rows={roles} columns={columns} />
       </Box>
     </Box>
   );

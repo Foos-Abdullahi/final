@@ -14,7 +14,7 @@ const CreateUser = () => {
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [roleOptions, setRoleOptions] = useState([]);
   const [selectedRole, setSelectedRole] = useState("");
-  const [issue_date, setIssueDate] = useState("");
+  const [issue_date, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
 
   useEffect(() => {
     // Fetch employee options

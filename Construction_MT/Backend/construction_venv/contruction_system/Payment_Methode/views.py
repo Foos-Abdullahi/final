@@ -3,15 +3,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import Py_MethodeSerializer
 from .models import Payment_Methode
+from django.db.models import Q
 
 # Create your views here.
-
-# views.py
-# from django.http import HttpResponse
-
-# def index(request):
-#     return HttpResponse("Hello, world! This is the root URL.")
-
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    py_method = Payment_Methode.objects.filter(
+        Q(issue_date__icontains=query_param)
+    )
+    serializer = Py_MethodeSerializer(py_method, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getAll(request):

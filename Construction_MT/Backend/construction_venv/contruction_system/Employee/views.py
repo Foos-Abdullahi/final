@@ -2,6 +2,26 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import EmployeeSerializers
 from .models import Employee
+from django.db.models import Q
+
+# @api_view(['GET'])
+# def searchUserId(request):
+#     query_param = request.GET.get('query', '')
+#     employee = Employee.objects.filter(
+#         Q(phone__icontains=query_param)
+#     )
+#     serializer = EmployeeSerializers(employee, many=True)
+#     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    employee = Employee.objects.filter(
+        Q(phone__icontains=query_param)
+    )
+    serializer = EmployeeSerializers(employee, many=True)
+    return Response(serializer.data)
 
 # Create your views here.
 #get all

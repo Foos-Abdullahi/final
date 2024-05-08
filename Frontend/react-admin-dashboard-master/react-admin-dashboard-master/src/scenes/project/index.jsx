@@ -1,30 +1,34 @@
-import { Box, Button, useTheme } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, IconButton, useTheme, InputBase } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import React, { useState, useEffect } from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import AddIcon from "@mui/icons-material/Add";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [clients, setClients] = useState([]);
   const [designs, setDesigns] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     fetchProjects();
     fetchClients();
-    fetchdesigns();
-  }, []);
+    fetchDesigns();
+    fetchSearch();
+  }, [searchQuery]);
 
   const fetchProjects = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Projects/");
       const data = await response.json();
-      
-      
-      
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -40,29 +44,42 @@ const Projects = () => {
       console.error("Error fetching clients:", error);
     }
   };
-  const fetchdesigns = async () => {
+
+  const fetchDesigns = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Design/");
       const data = await response.json();
+      // const design = designs.find(design => design.id === projects.design);
+      // console.log("before",designs);
       setDesigns(data);
-      console.log("xogta ",data);
+      // console.log("after",designs[0][0]);
+      
     } catch (error) {
-      console.error("Error fetching Design:", error);
+      console.error("Error fetching designs:", error);
     }
   };
+
+  const fetchSearch = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/Projects/search?query=${searchQuery}`);
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   const columns = [
     { field: "id", headerName: "ID" },
-    {
-      field: "project_name",
-      headerName: "Project Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
+    { field: "project_No", headerName: "Project No", flex: 1 },
+    { field: "project_name", headerName: "Project Name", flex: 1 },
     {
       field: "client_name",
       headerName: "Client Name",
-      // field: "client",
-      // headerName: "Client",
       flex: 1,
       valueGetter: (params) => {
         const client = clients.find(Client => Client.id === params.row.client);
@@ -70,77 +87,91 @@ const Projects = () => {
       },
     },
     {
-      field: "image",
+      field: "design",
       headerName: "Image",
-      // field: "design",
-      // headerName: "design",
       flex: 1,
-      valueGetter: (params) => {
-        const Design = designs.find(design => design.id === params.row.design);
-        return Design ? Design.image: '';
+      renderCell: (params) => {
+        const design = designs.find((design) => design.id === params.row.design);
+        return (
+          <img
+            src={`/assets/design/${design ? design.architecture : 'placeholder.jpg'}`}
+            alt="Design"
+            style={{ width: 90, height: 60 }}
+          />
+        );
       },
     },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-    },
-    {
-      field: "Agreements",
-      headerName: "Agreements",
-      flex: 1,
-    },
-    {
-      field: "budget",
-      headerName: "budget",
-      flex: 1,
-    },
-    {
-      field: "start_date",
-      headerName: "Start Date",
-      flex: 1,
-    },
-    {
-      field: "end_date",
-      headerName: "End Date",
-      flex: 1,
-    },
-    {
-      field: "issue_date",
-      headerName: "Date",
-      flex: 1,
-    },
+    
+    { field: "status", headerName: "Status", flex: 1 },
+    { field: "Agreements", headerName: "Agreements", flex: 1 },
+    { field: "budget", headerName: "Budget", flex: 1 },
+    { field: "BudgetRemain", headerName: "Budget Remain", flex: 1 },
+    { field: "start_date", headerName: "Start Date", flex: 1 },
+    { field: "end_date", headerName: "End Date", flex: 1 },
+    { field: "issue_date", headerName: "Date", flex: 1 },
     {
       field: "actions",
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <Button
-          color="secondary"
-          variant="contained"
-          component={Link}
-          to={`/project/edit/${params.row.id}`}
-        >
-          Edit Project
-        </Button>
+        <Box>
+          <IconButton component={Link} to={`/project/edit/${params.row.id}`}>
+            <EditIcon />
+          </IconButton>
+          <IconButton component={Link} to={`/project/details/${params.row.id}`}>
+            <VisibilityIcon />
+          </IconButton>
+        </Box>
       ),
     },
   ];
 
   return (
     <Box m="20px">
-      <Header title="Projects" subtitle="List of Projects" />
-      <Box display="flex" justifyContent="end" mt="20px">
+      <Header title="Client" subtitle="List of Client Balances" />
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="20px"
+      >
+        <Box
+          backgroundColor={colors.primary[400]}
+          borderRadius="3px"
+          display="flex"
+          alignItems="center"
+          pl={1}
+        >
+          <InputBase
+            sx={{ ml: 2, flex: 1 }}
+            placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <IconButton type="button" sx={{ p: 1 }}>
+            <SearchIcon />
+          </IconButton>
+        </Box>
         <Button
+          color="secondary"
+          component={Link}
+          to="/project/form"
+        >
+          <AddIcon />
+          Add New
+        </Button>
+        {/* <Button
           type="submit"
           color="secondary"
           variant="contained"
           component={Link}
-          to="/project/form"
+          to="/Client/form"
         >
-          Create New Project
-        </Button>
+          <AddIcon />
+          Add New
+        </Button> */}
       </Box>
+
       <Box
         m="40px 0 0 0"
         height="75vh"

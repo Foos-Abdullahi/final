@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -9,13 +9,22 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import ReportIcon from "@mui/icons-material/Report";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import ProjectIcon from "@mui/icons-material/Engineering";
+import MaterialIcon from "@mui/icons-material/WorkOutline";
+import ClientIcon from "@mui/icons-material/PeopleAltOutlined";
+import InvoiceReceiptIcon from "@mui/icons-material/ReceiptOutlined";
+import InvoiceIcon from "@mui/icons-material/DescriptionOutlined";
+import PaymentIcon from "@mui/icons-material/MonetizationOnOutlined";
+import PaymentMethodIcon from "@mui/icons-material/PaymentOutlined";
+import PaymentTypeIcon from "@mui/icons-material/LocalAtmOutlined";
+import DesignIcon from "@mui/icons-material/DesignServicesOutlined";
+import TaskIcon from "@mui/icons-material/AssignmentOutlined";
+import EmployeeIcon from "@mui/icons-material/PersonOutline";
+import UserIcon from "@mui/icons-material/PersonOutline";
+import RoleIcon from "@mui/icons-material/SupervisedUserCircleOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -38,6 +47,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  let session = window.sessionStorage;
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
@@ -96,7 +106,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  src={`/assets/employee/${session.getItem('EmployeeImage')}`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -107,10 +117,11 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Ed Roh
+                  {/* {session.getItem('EmployeeName')} */}
+                  {session.getItem('UserName')}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
+                  {session.getItem('UserRole')}
                 </Typography>
               </Box>
             </Box>
@@ -119,7 +130,7 @@ const Sidebar = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
-              to="/"
+              to="/Dashboard"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -168,148 +179,116 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
-              title="project"
+             {/* Add icons for other titles */}
+            <Item
+              title="Project"
               to="/project"
-              icon={<PersonOutlinedIcon />}
+              icon={<ProjectIcon />}
               selected={selected}
               setSelected={setSelected}
             />
              <Item
-              title="material"
+              title="Material"
               to="/material"
-              icon={<PersonOutlinedIcon />}
+              icon={<MaterialIcon />}
               selected={selected}
               setSelected={setSelected}
             />
              <Item
-              title="client"
+              title="Client"
               to="/client"
-              icon={<PersonOutlinedIcon />}
+              icon={<ClientIcon />}
               selected={selected}
               setSelected={setSelected}
             />
              <Item
-              title="invoiceReciept"
+              title="Invoice Receipt"
               to="/invoiceReciept"
-              icon={<PersonOutlinedIcon />}
+              icon={<InvoiceReceiptIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
-              title="invoice"
+             {/* <Item
+              title="Invoice"
               to="/invoice"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-             <Item
-              title="payment"
-              to="/payment"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-             <Item
-              title="paymentMethod"
-              to="/paymentMethod"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-             <Item
-              title="paymentType"
-              to="/paymentType"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-             <Item
-              title="design"
-              to="/design"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-             <Item
-              title="task"
-              to="/task"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-             <Item
-              title="employee"
-              to="/employee"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-             <Item
-              title="user"
-              to="/user"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-             <Item
-              title="role"
-              to="/role"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-          
-            {/* <Item
-              title="Calendar"
-              to="/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="FAQ Page"
-              to="/faq"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Charts
-            </Typography>
-            <Item
-              title="Bar Chart"
-              to="/bar"
-              icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Pie Chart"
-              to="/pie"
-              icon={<PieChartOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Line Chart"
-              to="/line"
-              icon={<TimelineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Geography Chart"
-              to="/geography"
-              icon={<MapOutlinedIcon />}
+              icon={<InvoiceIcon />}
               selected={selected}
               setSelected={setSelected}
             /> */}
+             <Item
+              title="Expense"
+              to="/payment"
+              icon={<PaymentIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Payment Method"
+              to="/paymentMethod"
+              icon={<PaymentMethodIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Payment Type"
+              to="/paymentType"
+              icon={<PaymentTypeIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Design"
+              to="/design"
+              icon={<DesignIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Task"
+              to="/task"
+              icon={<TaskIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Employee"
+              to="/employee"
+              icon={<EmployeeIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="User"
+              to="/user"
+              icon={<UserIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Role"
+              to="/role"
+              icon={<RoleIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            {/* Create a submenu for Report */}
+            <SubMenu
+              title="Report"
+              icon={<ReportIcon />}
+            >
+              <MenuItem>
+                <Typography>Client Report</Typography>
+                <Link to="/Report/clientReport" />
+              </MenuItem>
+              <MenuItem>
+                <Typography>Project Report</Typography>
+                <Link to="/Report/projectReport" />
+              </MenuItem>
+              {/* <MenuItem>
+                <Typography>Project by Date</Typography>
+                <Link to="/Report/projectByDate" />
+              </MenuItem> */}
+            </SubMenu>
           </Box>
         </Menu>
       </ProSidebar>

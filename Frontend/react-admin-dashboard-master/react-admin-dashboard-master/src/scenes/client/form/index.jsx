@@ -1,50 +1,34 @@
+import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
-import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
-import React, { useState, useEffect } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ClientForm = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-
+  const [documentImage, setDocumentImage] = useState(null);
   const [clientName, setClientName] = useState("");
   const [phone, setPhone] = useState("");
-  const [document, setDocument] = useState(null);
-  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
-  useEffect(() => {
-    // Fetch client options
-    fetchClientOptions();
-  }, []);
-  // const handleFileChange = (e) => {
-  //   setDocument(e.target.files[0]);
-  // };
-
-  const fetchClientOptions = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/Client/create/");
-      if (!response.ok) {
-        throw new Error("Failed to fetch client options");
-      }
-      const data = await response.json();
-      // Process data if needed
-    } catch (error) {
-      console.error("Error fetching client options:", error);
-    }
-  };
+  const [password, setPassword] = useState("");
+  const [clientImage, setClientImage] = useState(null);
+  const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
+  const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const sendForm = async () => {
+    const documentImageName = documentImage.name;
+    const ClientImageName = clientImage.name;
+    const fileName = documentImage.name.split('.')[0];
+    const formData = new FormData();
+    
+    formData.append("document_image", documentImage)
+    formData.append("client_image", documentImage)
+    formData.append("client_name", clientName);
+    formData.append("phone", phone);
+    formData.append("password", password);
+    formData.append("issue_date", issueDate);
+
     const res = await fetch("http://127.0.0.1:8000/Client/create/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        client_name: clientName,
-        phone: phone,
-        document: document.name,
-        issue_date: issueDate,
-      }),
+      body: formData,
     });
 
     if (!res.ok) {
@@ -53,46 +37,31 @@ const ClientForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    console.log("Client:", clientName);
-    console.log("Tell:", phone);
-    console.log("Document :", document.name);
-    console.log("Issue date:", issueDate);
-    // window.location.href = '/client';
+    console.log(documentImageName);
+    console.log(documentImage);
+    console.log(clientName);
+    console.log(phone);
+    console.log(issueDate);
   };
-
-  // const handleFormSubmit = () => {
-  //   sendForm();
-  // };
-
-  const validationSchema = yup.object().shape({
-    client_name: yup.string().required("Client name is required"),
-    contact_person: yup.string().required("Contact person is required"),
-    phone: yup.string().required("Phone number is required"),
-    document: yup.string().required("Document is required"),
-    issue_date: yup.string().required("Issue date is required"),
-  });
 
   return (
     <Box m="20px">
-      <Header title="CREATE CLIENT" subtitle="Create a New Client" />
+      <Header title="CREATE Client" subtitle="Create a New Client" />
 
       <Formik
         onSubmit={sendForm}
         initialValues={{
           client_name: "",
-          contact_person: "",
           phone: "",
-          document: "",
           issue_date: "",
         }}
-        // validationSchema={}
       >
         {({
           values,
           errors,
           touched,
           handleBlur,
-          // handleChange,
+          handleChange,
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
@@ -106,58 +75,68 @@ const ClientForm = () => {
             >
               <TextField
                 fullWidth
-                required
+                variant="filled"
+                type="file"
+                label="Document Image"
+                onBlur={handleBlur}
+                onChange={(e) => setDocumentImage(e.target.files[0])}
+                error={!!touched.document_image && !!errors.document_image}
+                helperText={touched.document_image && errors.document_image}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="file"
+                label="Client Image"
+                onBlur={handleBlur}
+                onChange={(e) => setClientImage(e.target.files[0])}
+                error={!!touched.clientImage && !!errors.clientImage}
+                helperText={touched.clientImage && errors.clientImage}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
                 variant="filled"
                 type="text"
                 label="Client Name"
                 onBlur={handleBlur}
                 onChange={(e) => setClientName(e.target.value)}
                 value={clientName}
-                name="client_name"
-                error={!!touched.client_name && !!errors.client_name}
-                helperText={touched.client_name && errors.client_name}
+                required
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
-                required
                 variant="filled"
-                type="tel"
+                type="text"
                 label="Phone"
                 onBlur={handleBlur}
                 onChange={(e) => setPhone(e.target.value)}
                 value={phone}
-                name="phone"
-                error={!!touched.phone && !!errors.phone}
-                helperText={touched.phone && errors.phone}
+                required
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
-                required
                 variant="filled"
-                type="file"
-                label="Document"
+                type="text"
+                label="Password"
                 onBlur={handleBlur}
-                onChange={(e) => setDocument(e.target.files[0])}
-                // value={document}
-                name="document"
-                error={!!touched.document && !!errors.document}
-                helperText={touched.document && errors.document}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
-                required
                 variant="filled"
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
                 onChange={(e) => setIssueDate(e.target.value)}
                 value={issueDate}
-                name="issue_date"
-                error={!!touched.issue_date && !!errors.issue_date}
-                helperText={touched.issue_date && errors.issue_date}
+                required
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>

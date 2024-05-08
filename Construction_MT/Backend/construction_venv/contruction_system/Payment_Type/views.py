@@ -3,6 +3,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import PaymentTypeSerializer
 from .models import Payment_Type
+from django.db.models import Q
+
+@api_view(['GET'])
+def search(request):
+    query_param = request.GET.get('query', '')
+    pyType = Payment_Type.objects.filter(
+        Q(issue_date__icontains=query_param)
+    )
+    serializer = PaymentTypeSerializer(pyType, many=True)
+    return Response(serializer.data)
+
 
 # Create your views here.
 

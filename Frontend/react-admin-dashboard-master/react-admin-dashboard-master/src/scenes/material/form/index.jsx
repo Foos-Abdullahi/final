@@ -11,7 +11,7 @@ const MaterialForm = () => {
     quantity:0,
     unit_price:0,
     sub_total:0,
-    issue_date: "",
+    issue_date: new Date().toISOString().substr(0, 10),
   });
   const [projects, setProjects] = useState([]);
   
