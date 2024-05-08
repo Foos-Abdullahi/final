@@ -8,11 +8,7 @@ const ReciptForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [reciept, setReciept] = useState({
-<<<<<<< HEAD
     client: 0, // Default client ID
-=======
-    client: "", // Default project ID
->>>>>>> 39c29b173afc3d9e1585bd4ccb1e3424759222be
     payment_method: "", // Default payment method
     amount: 0,
     issue_date: new Date().toISOString().substr(0, 10),
@@ -29,7 +25,6 @@ const ReciptForm = () => {
       }
       const ClientData = await ClientResponse.json();
       setClients(ClientData);
-      console.log("wakaas",ClientData);
 
       const paymentMethodResponse = await fetch("http://127.0.0.1:8000/Payment_Methode/");
       if (!paymentMethodResponse.ok) {
@@ -71,7 +66,7 @@ const ReciptForm = () => {
 
   return (
     <Box m="20px">
-      <Header title="Invoice Receipts" subtitle="List of Invoice Receipts" />
+      <Header title="CREATE MATERIAL" subtitle="Create a New Material" />
 
       <Formik onSubmit={sendForm} initialValues={reciept}>
         {({
@@ -94,11 +89,7 @@ const ReciptForm = () => {
                 select
                 fullWidth
                 variant="filled"
-<<<<<<< HEAD
                 label="Client"
-=======
-                label="client"
->>>>>>> 39c29b173afc3d9e1585bd4ccb1e3424759222be
                 onBlur={handleBlur}
                 onChange={(e) => setReciept({ ...reciept, client: e.target.value })}
                 value={reciept.client}
