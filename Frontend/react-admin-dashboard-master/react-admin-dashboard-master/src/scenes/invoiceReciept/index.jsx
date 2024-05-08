@@ -12,8 +12,12 @@ import AddIcon from '@mui/icons-material/Add';
 const AllInvoiceReceipts = () => {
   const [invoiceReceipts, setInvoiceReceipts] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
+<<<<<<< HEAD
   const [clients, SetClients] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+=======
+  const [clients, setClients] = useState([]);
+>>>>>>> 39c29b173afc3d9e1585bd4ccb1e3424759222be
 
   useEffect(() => {
     fetchProjects();
@@ -33,12 +37,21 @@ const AllInvoiceReceipts = () => {
   };
   const fetchProjects = async () => {
     try {
+<<<<<<< HEAD
       const response = await fetch("http://127.0.0.1:8000/Client/");
       const data = await response.json();
 
       SetClients(data);
     } catch (error) {
       console.error("Error fetching payment methods:", error);
+=======
+      const response = await fetch('http://127.0.0.1:8000/Client/');
+      const data = await response.json();
+      
+      setClients(data);
+    } catch (error) {
+      console.error('Error fetching client:', error);
+>>>>>>> 39c29b173afc3d9e1585bd4ccb1e3424759222be
     }
   };
 
@@ -69,6 +82,7 @@ const AllInvoiceReceipts = () => {
   const columns = [
     { field: "id", headerName: "ID" },
     {
+<<<<<<< HEAD
       field: "clients",
       headerName: "Client",
       flex: 1,
@@ -76,6 +90,14 @@ const AllInvoiceReceipts = () => {
         const client = clients.find((Client) => Client.id === params.row.client);
         console.log(client);
         return client ? client.client_name : "";
+=======
+      field: "client",
+      headerName: "Client_name",
+      flex: 1,
+      valueGetter: (params) => {
+        const project = clients.find(Client => Client.id === params.row.client);
+        return project ? project.client_name : '';
+>>>>>>> 39c29b173afc3d9e1585bd4ccb1e3424759222be
       },
     },
     {

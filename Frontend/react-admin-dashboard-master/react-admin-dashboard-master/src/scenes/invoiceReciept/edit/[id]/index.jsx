@@ -208,7 +208,7 @@ const RecieptEditForm = () => {
   const [clients, setClients] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
 
-  const fetchProjects = async () => {
+  const fetchClient = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Client/");
       if (!response.ok) {
@@ -243,7 +243,7 @@ const RecieptEditForm = () => {
       const data = await response.json();
       console.log("Fetched task data:", data);
       setReciept({
-        project: data.project,
+        client: data.project,
         payment_method: data.payment_method,
         amount: data.amount,
         issue_date: data.issue_date,
@@ -253,7 +253,7 @@ const RecieptEditForm = () => {
     }
   };
   useEffect(() => {
-    fetchProjects();
+    fetchClient();
     fetchPaymentMethods(); // Fetch payment methods
     fetchreciept();
   }, []);
@@ -290,7 +290,7 @@ const RecieptEditForm = () => {
 
   return (
     <Box m="20px">
-      <Header title="EDIT TASK" subtitle="Edit Task Details" />
+      <Header title="Invoice Receipts" subtitle="Invoice Receipts" />
 
       <Formik onSubmit={sendForm} initialValues={{}}>
         {({ handleBlur, handleSubmit }) => (
@@ -307,11 +307,11 @@ const RecieptEditForm = () => {
                 select
                 fullWidth
                 variant="filled"
-                label="Project"
+                label="client"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
                 value={reciept.project}
-                name="project"
+                name="client"
                 sx={{ gridColumn: "span 4" }}
               >
                 {clients.map((client) => (
