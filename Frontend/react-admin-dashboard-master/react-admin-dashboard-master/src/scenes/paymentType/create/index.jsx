@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import Header from "../../../components/Header";
@@ -8,6 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 const PaymentMethodForm = () => {
   const [Py_TypeName, setP_T_Name] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const sendForm = async () => {
@@ -30,13 +31,12 @@ const PaymentMethodForm = () => {
     console.log("Response data:", data);
     console.log(Py_TypeName)
     console.log(issueDate)
-    window.location.href = '/paymentType';
+    setSnackbarOpen(true); // Show the snackbar
+    // Redirect to '/paymentType' after 2 seconds
+    setTimeout(() => {
+      window.location.href = '/paymentType';
+    }, 2000);
   };
-
-//   const validationSchema = yup.object().shape({
-//     payment_method_name: yup.string().required("Payment method name is required"),
-//     issue_date: yup.string().required("Issue date is required"),
-//   });
 
   return (
     <Box m="20px">
@@ -48,14 +48,11 @@ const PaymentMethodForm = () => {
             PaymentTypes: "",
           issue_date: "",
         }}
-        // validationSchema={validationSchema}
       >
         {({
-          values,
-          errors,
           touched,
+          errors,
           handleBlur,
-          handleChange,
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
@@ -94,14 +91,24 @@ const PaymentMethodForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+              <Button onClick={() => window.history.back()} color="primary" variant="contained">
+                Back
+              </Button>
               <Button type="submit" color="secondary" variant="contained">
-                Create Payment Type
+                Create Project
               </Button>
             </Box>
           </form>
         )}
       </Formik>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={2000} // Automatically close after 2 seconds
+        onClose={() => setSnackbarOpen(false)}
+        message="Payment type created successfully!"
+      />
     </Box>
   );
 };

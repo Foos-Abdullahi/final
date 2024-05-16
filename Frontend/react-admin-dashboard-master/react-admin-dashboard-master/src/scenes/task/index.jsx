@@ -87,7 +87,7 @@ const AllTask = () => {
         <img
           src={`/assets/task/${params.value}`} 
           alt="Tasks"
-          style={{ width: 100, height: 60 }} 
+          style={{ width: 60, height: 60 }} 
         />
       ),
     },

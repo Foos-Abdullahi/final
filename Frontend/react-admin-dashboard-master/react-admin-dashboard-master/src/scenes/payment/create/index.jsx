@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -14,6 +14,7 @@ const CreatePayment = () => {
   const [projectOptions, setProjectOptions] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
   const [expenseDate, setExpenseDate] = useState(new Date().toISOString().substr(0, 10));
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     // Fetch payment type options
@@ -68,6 +69,7 @@ const CreatePayment = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
+    setSnackbarOpen(true); // Show the snackbar
   };
 
   const handleFormSubmit = () => {
@@ -165,14 +167,24 @@ const CreatePayment = () => {
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+              <Button onClick={() => window.history.back()} color="primary" variant="contained">
+                Back
+              </Button>
               <Button type="submit" color="secondary" variant="contained">
-                Record Payment
+                Create Payment
               </Button>
             </Box>
           </form>
         )}
       </Formik>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Payment recorded successfully!"
+      />
     </Box>
   );
 };

@@ -10,12 +10,14 @@ const ReciptForm = () => {
   const [reciept, setReciept] = useState({
     client: 0, // Default client ID
     payment_method: "", // Default payment method
+    project: 0, // Default payment method
     amount: 0,
     issue_date: new Date().toISOString().substr(0, 10),
   });
 
   const [clients, setClients] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   const fetchclientsAndPaymentMethods = async () => {
     try {
@@ -32,6 +34,13 @@ const ReciptForm = () => {
       }
       const paymentMethodData = await paymentMethodResponse.json();
       setPaymentMethods(paymentMethodData);
+
+      const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
+      if (!projectResponse.ok) {
+        throw new Error("Failed to fetch Projects");
+      }
+      const projectData = await projectResponse.json();
+      setProjects(projectData);
     } catch (error) {
       console.error("Error fetching clients and payment methods:", error);
     }
@@ -66,7 +75,7 @@ const ReciptForm = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE MATERIAL" subtitle="Create a New Material" />
+      <Header title="CREATE Invoice Reciept" subtitle="Create a New Invoice" />
 
       <Formik onSubmit={sendForm} initialValues={reciept}>
         {({
@@ -101,6 +110,25 @@ const ReciptForm = () => {
                 {clients.map((Client) => (
                   <MenuItem key={Client.id} value={Client.id}>
                     {Client.client_name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                select
+                fullWidth
+                variant="filled"
+                label="Project"
+                onBlur={handleBlur}
+                onChange={(e) => setReciept({ ...reciept, project: e.target.value })}
+                value={reciept.project}
+                name="project"
+                error={!!touched.project && !!errors.project}
+                helperText={touched.project && errors.project}
+                sx={{ gridColumn: "span 4" }}
+              >
+                {projects.map((Project) => (
+                  <MenuItem key={Project.id} value={Project.id}>
+                    {Project.project_name}
                   </MenuItem>
                 ))}
               </TextField>

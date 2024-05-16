@@ -28,12 +28,25 @@ def getById(request,id):
     return Response(serializers.data)
 
 
+# @api_view(['POST'])
+# def create(request):
+#     serializers = Py_MethodeSerializer(data=request.data)
+#     if serializers.is_valid():
+#         serializers.save()
+#     return Response("payment_methode is saved")
+
 @api_view(['POST'])
 def create(request):
-    serializers = Py_MethodeSerializer(data=request.data)
-    if serializers.is_valid():
-        serializers.save()
-    return Response("payment_methode is saved")
+    # Extract Py_method_name from request data
+    pymentmethod = request.data.get('Py_method_name', None)
+    # Check if an pymentmethod with the provided Py_method_name already exists
+    if Payment_Methode.objects.filter(Py_method_name=pymentmethod).exists():
+        return Response("this Py_method already exists")
+    # Proceed with creating the Py_method_name if not already exists
+    serializer = Py_MethodeSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response("pymentmethod is saved")
 
 
 @api_view(['PUT'])

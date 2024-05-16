@@ -16,7 +16,7 @@ const EmployeeEdit = () => {
   const [phone, setPhone] = useState("");
   const [salary, setSalary] = useState("");
   const [issueDate, setIssueDate] = useState("");
-
+const [employeeImage,setEmployeeImage]=useState(null)
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
@@ -43,18 +43,19 @@ const EmployeeEdit = () => {
   const updateEmployee = async () => {
     alert(editingEmployeeId)
     try {
+      const formData = new FormData();
+      formData.append('employee_image', employeeImage);
+      formData.append('employee_name', employeeName  || originalData.employee_name);
+      formData.append('position', position || originalData.position);
+      formData.append('phone', phone || originalData.phone);
+      formData.append('salary', salary || originalData.salary);
+      formData.append('issue_date', issueDate || originalData.issue_date);
       const response = await fetch(`http://127.0.0.1:8000/Employee/update/${editingEmployeeId}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          employee_name: employeeName || originalData.employee_name,
-          position: position || originalData.position,
-          phone: phone || originalData.phone,
-          salary: salary || originalData.salary,
-          issue_date: issueDate || originalData.issue_date,
-        }),
+        body:formData,
       });
       console.log(employeeName || originalData.employee_name);
       console.log(position || originalData.position);
@@ -151,6 +152,18 @@ const EmployeeEdit = () => {
                 error={touched.issue_date && !!errors.issue_date}
                 helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: 'span 4' }}
+              />
+              <TextField
+                fullWidth
+                required
+                variant="filled"
+                type="file"
+                label="employee Image"
+                onBlur={handleBlur}
+                onChange={(e) => setEmployeeImage(e.target.files[0])}
+                name="employee_name"
+                error={touched.employee_image && !!errors.employee_image}
+                helperText={touched.employee_image && errors.employee_image}
               />
             </div>
             <Box display="flex" justifyContent="end" mt="20px">

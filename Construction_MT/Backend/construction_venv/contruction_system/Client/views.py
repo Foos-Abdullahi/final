@@ -48,12 +48,24 @@ def delete(request, id):
     return Response("Client is deleted")
 
 #create
+# @api_view(['POST'])
+# def create(request):
+#     serializer = ClientSerializers(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()      
+#     return Response("Client is saved")
 @api_view(['POST'])
 def create(request):
+    # Extract phone number from request data
+    phone_number = request.data.get('phone', None)
+    # Check if an Client with the provided phone number already exists
+    if Client.objects.filter(phone=phone_number).exists():
+        return Response("this Client already exists")
+    # Proceed with creating the employee if not already exists
     serializer = ClientSerializers(data=request.data)
     if serializer.is_valid():
-        serializer.save()      
-    return Response("Client is saved")
+        serializer.save()
+        return Response("Client is saved")
 
 #update
 @api_view(['PUT'])

@@ -62,7 +62,7 @@ const PaymentMethode = () => {
         <img
           src={`/assets/payment-method/${params.value}`}
           alt="Payment Method"
-          style={{ width: 100, height: 60 }}
+          style={{ width: 50, height: 50 }}
         />
       ),
     },

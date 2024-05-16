@@ -1,17 +1,31 @@
-import { Box, Button, TextField } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, TextField, Snackbar } from "@mui/material";
 import { Formik } from "formik";
-import * as yup from "yup";
 import Header from "../../../components/Header";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import React, { useState } from "react";
 
 const PaymentMethodForm = () => {
   const [paymentMethodName, setPaymentMethodName] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const [paymentMethodImage, setPaymentMethodImage] = useState(null); // New state for the image
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for snackbar
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const sendForm = async () => {
+    // Check if an payment method name already exist
+    const getres = await fetch("http://127.0.0.1:8000/Payment_Methode/");
+    const dataGET = await getres.json();
+    const existingPayment_Methode = dataGET.find((py_me_name) => py_me_name.Py_method_name === paymentMethodName);
+  
+    if (existingPayment_Methode) {
+      setSnackbarMessage("An Payment_Methode with this Payment_Methode name already exists!");
+      setSnackbarOpen(true);
+      return;
+    }
+  
+    // Proceed with creating the payment method if not already exists
     const formData = new FormData(); // Create FormData object
     formData.append("pay_method_image", paymentMethodImage); // Append image data
     formData.append("Py_method_name", paymentMethodName);
@@ -24,13 +38,18 @@ const PaymentMethodForm = () => {
 
     if (!res.ok) {
       console.log(`Request failed with status ${res.status}`);
+      return;
     }
 
+    // Show Snackbar with success message
+    setSnackbarMessage("Role created successfully!");
+    setSnackbarOpen(true);
+ 
     const data = await res.json();
     console.log("Response data:", data);
     console.log(paymentMethodName);
     console.log(issueDate);
-    window.location.href = "/paymentMethod";
+    // window.location.href = "/paymentMethod";
   };
 
   return (
@@ -45,11 +64,9 @@ const PaymentMethodForm = () => {
         }}
       >
         {({
-          values,
-          errors,
           touched,
+          errors,
           handleBlur,
-          handleChange,
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
@@ -106,6 +123,13 @@ const PaymentMethodForm = () => {
           </form>
         )}
       </Formik>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
     </Box>
   );
 };

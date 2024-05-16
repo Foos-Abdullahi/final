@@ -57,7 +57,7 @@ const Employee = () => {
       headerName: "Image",
       flex: 1,
       renderCell: (params) => (
-        <img src={`/assets/employee/${params.value}`} alt="Employee" style={{ width: 100, height: 100 }} />
+        <img src={`/assets/employee/${params.value}`} alt="Employee" style={{ width: 60, height: 60 }} />
       ),
     },
     {

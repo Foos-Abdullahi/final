@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2024 at 10:34 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.1.12
+-- Generation Time: May 16, 2024 at 05:09 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `construction_db`
+-- Database: `construction_db3`
 --
 
 -- --------------------------------------------------------
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `auth_group` (
   `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -42,7 +42,7 @@ CREATE TABLE `auth_group_permissions` (
   `id` bigint(20) NOT NULL,
   `group_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -55,7 +55,7 @@ CREATE TABLE `auth_permission` (
   `name` varchar(255) NOT NULL,
   `content_type_id` int(11) NOT NULL,
   `codename` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `auth_permission`
@@ -133,11 +133,7 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (69, 'Can add payment_ type', 18, 'add_payment_type'),
 (70, 'Can change payment_ type', 18, 'change_payment_type'),
 (71, 'Can delete payment_ type', 18, 'delete_payment_type'),
-(72, 'Can view payment_ type', 18, 'view_payment_type'),
-(73, 'Can add invoice', 19, 'add_invoice'),
-(74, 'Can change invoice', 19, 'change_invoice'),
-(75, 'Can delete invoice', 19, 'delete_invoice'),
-(76, 'Can view invoice', 19, 'view_invoice');
+(72, 'Can view payment_ type', 18, 'view_payment_type');
 
 -- --------------------------------------------------------
 
@@ -157,7 +153,7 @@ CREATE TABLE `auth_user` (
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `date_joined` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -169,7 +165,7 @@ CREATE TABLE `auth_user_groups` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -181,7 +177,7 @@ CREATE TABLE `auth_user_user_permissions` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -194,17 +190,20 @@ CREATE TABLE `client_client` (
   `client_name` varchar(100) NOT NULL,
   `client_image` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `phone` varchar(100) NOT NULL,
   `document_image` varchar(100) NOT NULL,
-  `issue_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `issue_date` date NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `phone` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `client_client`
 --
 
-INSERT INTO `client_client` (`id`, `client_name`, `client_image`, `password`, `phone`, `document_image`, `issue_date`) VALUES
-(1, 'Abdifatah Hussien Mohamed', '3.jpeg', 'foodcade123', '615754310', 'passport.pdf', '2024-05-06');
+INSERT INTO `client_client` (`id`, `client_name`, `client_image`, `password`, `document_image`, `issue_date`, `email`, `phone`) VALUES
+(1, 'Abdi Fatah Hussein Mohamoud ', 'foodciro.jpg', 'cxm123', 'passport1.jpeg', '2024-05-23', 'foodciro2050@gmail.com', '615754310'),
+(2, 'Sahra Yuusuf Maxamed', '4.jpg', 's123', 'Passport2.jpg', '2024-05-31', 'sahra20@gmail.com', '615748090'),
+(3, 'Khadar Abdullahi', '3.jpeg', 'k123', 'passport1.jpeg', '2024-05-16', 'Khadar2050@gmail.com', '615778262');
 
 -- --------------------------------------------------------
 
@@ -218,15 +217,15 @@ CREATE TABLE `design_design` (
   `status` varchar(100) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `issue_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `design_design`
 --
 
 INSERT INTO `design_design` (`id`, `architecture`, `status`, `amount`, `issue_date`) VALUES
-(1, '1.jpg', 'company', '10000.00', '2024-05-06'),
-(2, '2.jpg', 'company', '20000.00', '2024-05-06');
+(1, '6.jpg', 'pending', 1000000.00, '2024-05-23'),
+(2, '4.jpg', 'progress', 200000.00, '2024-05-31');
 
 -- --------------------------------------------------------
 
@@ -243,7 +242,7 @@ CREATE TABLE `django_admin_log` (
   `change_message` longtext NOT NULL,
   `content_type_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -255,7 +254,7 @@ CREATE TABLE `django_content_type` (
   `id` int(11) NOT NULL,
   `app_label` varchar(100) NOT NULL,
   `model` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `django_content_type`
@@ -270,7 +269,6 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (5, 'contenttypes', 'contenttype'),
 (17, 'Design', 'design'),
 (9, 'Employee', 'employee'),
-(19, 'Invoice', 'invoice'),
 (12, 'invoice_reciept', 'payments'),
 (14, 'Material', 'material'),
 (11, 'payment', 'expense'),
@@ -293,28 +291,49 @@ CREATE TABLE `django_migrations` (
   `app` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `django_migrations`
 --
 
 INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
-(1, 'Role', '0001_initial', '2024-05-06 08:10:15.027007'),
-(2, 'Employee', '0001_initial', '2024-05-06 08:10:24.667342'),
-(3, 'Payment_Type', '0001_initial', '2024-05-06 08:11:05.671564'),
-(4, 'Payment_Methode', '0001_initial', '2024-05-06 08:11:12.592630'),
-(5, 'user', '0001_initial', '2024-05-06 08:11:55.036756'),
-(6, 'Client', '0001_initial', '2024-05-06 13:16:23.470117'),
-(7, 'Design', '0001_initial', '2024-05-06 13:16:32.309187'),
-(8, 'Projects', '0001_initial', '2024-05-06 13:17:51.693877'),
-(9, 'payment', '0001_initial', '2024-05-06 13:19:48.023986'),
-(10, 'invoice_reciept', '0001_initial', '2024-05-06 13:19:58.220382'),
-(11, 'Material', '0001_initial', '2024-05-06 13:20:18.820266'),
-(12, 'Tasks', '0001_initial', '2024-05-06 13:20:27.859905'),
-(13, 'Projects', '0002_projects_budgetremain', '2024-05-06 13:31:56.692295'),
-(14, 'Tasks', '0002_tasks_task_image', '2024-05-07 12:08:52.706376'),
-(15, 'Payment_Methode', '0002_payment_methode_pay_method_image', '2024-05-07 14:21:19.479968');
+(1, 'Employee', '0001_initial', '2024-05-15 15:53:38.370811'),
+(2, 'Role', '0001_initial', '2024-05-15 15:54:12.675430'),
+(3, 'user', '0001_initial', '2024-05-15 15:54:29.273380'),
+(4, 'Client', '0001_initial', '2024-05-15 15:56:18.262159'),
+(5, 'Design', '0001_initial', '2024-05-15 15:58:00.434493'),
+(6, 'Projects', '0001_initial', '2024-05-15 15:58:39.687553'),
+(7, 'Tasks', '0001_initial', '2024-05-15 15:59:35.564207'),
+(8, 'Payment_Type', '0001_initial', '2024-05-15 16:03:17.437322'),
+(9, 'payment', '0001_initial', '2024-05-15 16:03:36.593604'),
+(10, 'Payment_Methode', '0001_initial', '2024-05-15 16:04:32.756895'),
+(11, 'invoice_reciept', '0001_initial', '2024-05-15 16:07:36.464648'),
+(12, 'Material', '0001_initial', '2024-05-15 16:08:27.304671'),
+(13, 'contenttypes', '0001_initial', '2024-05-15 16:50:59.169495'),
+(14, 'auth', '0001_initial', '2024-05-15 16:51:00.061735'),
+(15, 'admin', '0001_initial', '2024-05-15 16:51:00.310406'),
+(16, 'admin', '0002_logentry_remove_auto_add', '2024-05-15 16:51:00.310406'),
+(17, 'admin', '0003_logentry_add_action_flag_choices', '2024-05-15 16:51:00.340479'),
+(18, 'contenttypes', '0002_remove_content_type_name', '2024-05-15 16:51:00.451474'),
+(19, 'auth', '0002_alter_permission_name_max_length', '2024-05-15 16:51:00.472959'),
+(20, 'auth', '0003_alter_user_email_max_length', '2024-05-15 16:51:00.496727'),
+(21, 'auth', '0004_alter_user_username_opts', '2024-05-15 16:51:00.512084'),
+(22, 'auth', '0005_alter_user_last_login_null', '2024-05-15 16:51:00.586698'),
+(23, 'auth', '0006_require_contenttypes_0002', '2024-05-15 16:51:00.586698'),
+(24, 'auth', '0007_alter_validators_add_error_messages', '2024-05-15 16:51:00.609190'),
+(25, 'auth', '0008_alter_user_username_max_length', '2024-05-15 16:51:00.634407'),
+(26, 'auth', '0009_alter_user_last_name_max_length', '2024-05-15 16:51:00.657660'),
+(27, 'auth', '0010_alter_group_name_max_length', '2024-05-15 16:51:00.679751'),
+(28, 'auth', '0011_update_proxy_permissions', '2024-05-15 16:51:00.706105'),
+(29, 'auth', '0012_alter_user_first_name_max_length', '2024-05-15 16:51:00.726744'),
+(30, 'sessions', '0001_initial', '2024-05-15 16:51:00.787062'),
+(31, 'Employee', '0002_employee_email', '2024-05-16 04:24:41.034335'),
+(32, 'Employee', '0003_alter_employee_email', '2024-05-16 04:25:13.616390'),
+(33, 'Client', '0002_remove_client_phone_client_email', '2024-05-16 07:52:36.739576'),
+(34, 'Client', '0003_alter_client_email', '2024-05-16 07:55:26.817406'),
+(35, 'Client', '0004_client_phone', '2024-05-16 13:31:48.563742'),
+(36, 'Client', '0005_alter_client_phone', '2024-05-16 13:32:36.033321');
 
 -- --------------------------------------------------------
 
@@ -326,7 +345,7 @@ CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
   `expire_date` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -341,15 +360,17 @@ CREATE TABLE `employee_employee` (
   `position` varchar(100) NOT NULL,
   `phone` varchar(100) NOT NULL,
   `salary` decimal(10,2) NOT NULL,
-  `issue_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `issue_date` date NOT NULL,
+  `email` varchar(254) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `employee_employee`
 --
 
-INSERT INTO `employee_employee` (`id`, `employee_name`, `employee_Image`, `position`, `phone`, `salary`, `issue_date`) VALUES
-(1, 'Foos Abdullahi Ali', 'foos.jpg', 'super Admin', '619745141', '10000.00', '2024-05-07');
+INSERT INTO `employee_employee` (`id`, `employee_name`, `employee_Image`, `position`, `phone`, `salary`, `issue_date`, `email`) VALUES
+(1, 'Foos Abdullahi', 'foos.jpg', 'Admin', '619745141', 5000.00, '2024-05-15', 'FoosAbdullahi20@gmail.com'),
+(3, 'Halima Mohamed', 'halima.jpg', 'cashier', '615008877', 4000.00, '2024-05-16', 'halimamohamed2050@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -364,27 +385,14 @@ CREATE TABLE `invoice_reciept_payments` (
   `client_id` bigint(20) NOT NULL,
   `payment_method_id` bigint(20) NOT NULL,
   `project_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `invoice_reciept_payments`
 --
 
 INSERT INTO `invoice_reciept_payments` (`id`, `amount`, `issue_date`, `client_id`, `payment_method_id`, `project_id`) VALUES
-(1, '1000.00', '2024-05-06', 1, 1, 1),
-(2, '10000.00', '2024-05-06', 1, 1, 2),
-(3, '1000.00', '2024-05-06', 1, 1, 1),
-(4, '2000.00', '2024-05-06', 1, 1, 1);
-
---
--- Triggers `invoice_reciept_payments`
---
-DELIMITER $$
-CREATE TRIGGER `UpdateProject_afterInsertInvoice` AFTER INSERT ON `invoice_reciept_payments` FOR EACH ROW UPDATE projects_projects
-SET BudgetRemain = BudgetRemain - new.amount
-WHERE id = new.project_id
-$$
-DELIMITER ;
+(1, 100000.00, '2024-05-15', 2, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -400,15 +408,7 @@ CREATE TABLE `material_material` (
   `sub_total` decimal(10,2) NOT NULL,
   `issue_date` date NOT NULL,
   `project_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `material_material`
---
-
-INSERT INTO `material_material` (`id`, `material_name`, `quantity`, `unit_price`, `sub_total`, `issue_date`, `project_id`) VALUES
-(1, 'Alwaax', 1000, '100.00', '100000.00', '2024-05-08', 1),
-(2, 'Shamiito', 20, '50.00', '1000.00', '2024-05-08', 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -422,7 +422,7 @@ CREATE TABLE `payment_expense` (
   `amount` decimal(10,2) NOT NULL,
   `expense_date` date NOT NULL,
   `payment_Type_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -432,19 +432,20 @@ CREATE TABLE `payment_expense` (
 
 CREATE TABLE `payment_methode_payment_methode` (
   `id` bigint(20) NOT NULL,
+  `pay_method_image` varchar(100) NOT NULL,
   `Py_method_name` varchar(100) NOT NULL,
-  `issue_date` date NOT NULL,
-  `pay_method_image` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `issue_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `payment_methode_payment_methode`
 --
 
-INSERT INTO `payment_methode_payment_methode` (`id`, `Py_method_name`, `issue_date`, `pay_method_image`) VALUES
-(1, 'Evc-Plus', '2024-05-06', 'evc-plus.png'),
-(2, 'E-dahab', '2024-05-06', 'e-dahab.png'),
-(3, 'Master Card', '2024-05-07', 'master-card.png');
+INSERT INTO `payment_methode_payment_methode` (`id`, `pay_method_image`, `Py_method_name`, `issue_date`) VALUES
+(1, 'cash.jpg', 'Cash', '2024-05-15'),
+(2, 'master-card.png', 'Master Card', '2024-05-15'),
+(3, 'evc-plus.png', 'Evc-Plus', '2024-05-15'),
+(4, 'e-dahab.png', 'E-Dahab', '2024-05-15');
 
 -- --------------------------------------------------------
 
@@ -456,14 +457,14 @@ CREATE TABLE `payment_type_payment_type` (
   `id` bigint(20) NOT NULL,
   `Py_Type_name` varchar(100) NOT NULL,
   `issue_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `payment_type_payment_type`
 --
 
 INSERT INTO `payment_type_payment_type` (`id`, `Py_Type_name`, `issue_date`) VALUES
-(1, 'Salary', '2024-05-06');
+(2, 'Salary', '2024-05-15');
 
 -- --------------------------------------------------------
 
@@ -478,21 +479,21 @@ CREATE TABLE `projects_projects` (
   `status` varchar(100) NOT NULL,
   `Agreements` varchar(10000) NOT NULL,
   `budget` double NOT NULL,
+  `BudgetRemain` double NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `issue_date` date NOT NULL,
   `client_id` bigint(20) NOT NULL,
-  `design_id` bigint(20) NOT NULL,
-  `BudgetRemain` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `design_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `projects_projects`
 --
 
-INSERT INTO `projects_projects` (`id`, `project_No`, `project_name`, `status`, `Agreements`, `budget`, `start_date`, `end_date`, `issue_date`, `client_id`, `design_id`, `BudgetRemain`) VALUES
-(1, 'pr001', 'Dahab Tower', 'pending', 'waa lakala saxiixday', 150000, '2024-05-10', '2024-07-10', '2024-05-06', 1, 1, 146000),
-(2, 'pr002', 'Towfiq Road', 'pending', 'okayw waye', 200000, '2024-05-20', '2024-09-20', '2024-05-06', 1, 2, 190000);
+INSERT INTO `projects_projects` (`id`, `project_No`, `project_name`, `status`, `Agreements`, `budget`, `BudgetRemain`, `start_date`, `end_date`, `issue_date`, `client_id`, `design_id`) VALUES
+(1, 'pr001', 'Dahab Tawer', 'Pending', 'waa la kala saxiixday ', 1000000, 500000, '2024-05-31', '2025-10-31', '2024-05-15', 1, 1),
+(2, 'pr002', 'Sahra Home', 'progress', 'waa la kala saxiixday', 200000, 100000, '2024-05-31', '2025-05-31', '2024-05-15', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -504,16 +505,16 @@ CREATE TABLE `role_role` (
   `id` bigint(20) NOT NULL,
   `Role_name` varchar(100) NOT NULL,
   `issue_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `role_role`
 --
 
 INSERT INTO `role_role` (`id`, `Role_name`, `issue_date`) VALUES
-(1, 'super Admin', '2024-05-07'),
-(2, 'Admin', '2024-05-07'),
-(3, 'Cashier', '2024-05-07');
+(1, 'Admin', '2024-05-15'),
+(2, 'Cashier', '2024-05-18'),
+(3, 'User', '2024-05-20');
 
 -- --------------------------------------------------------
 
@@ -524,21 +525,13 @@ INSERT INTO `role_role` (`id`, `Role_name`, `issue_date`) VALUES
 CREATE TABLE `tasks_tasks` (
   `id` bigint(20) NOT NULL,
   `task_name` varchar(100) NOT NULL,
+  `task_image` varchar(100) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `status` varchar(100) NOT NULL,
   `issue_date` date NOT NULL,
-  `project_id` bigint(20) NOT NULL,
-  `task_image` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tasks_tasks`
---
-
-INSERT INTO `tasks_tasks` (`id`, `task_name`, `start_date`, `end_date`, `status`, `issue_date`, `project_id`, `task_image`) VALUES
-(1, 'start', '2024-05-08', '2024-05-15', 'pending', '2024-05-08', 1, 'start.png'),
-(2, 'floor1', '2024-05-16', '2024-05-26', 'pending', '2024-05-08', 1, 'floor1.png');
+  `project_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -553,14 +546,14 @@ CREATE TABLE `user_user` (
   `issue_date` date NOT NULL,
   `employee_id_id` bigint(20) NOT NULL,
   `role_id_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `user_user`
 --
 
 INSERT INTO `user_user` (`id`, `UserName`, `Password`, `issue_date`, `employee_id_id`, `role_id_id`) VALUES
-(1, 'Foos', 'foos123', '2024-05-08', 1, 1);
+(1, 'foos', 'f123', '2024-05-15', 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -615,7 +608,9 @@ ALTER TABLE `auth_user_user_permissions`
 -- Indexes for table `client_client`
 --
 ALTER TABLE `client_client`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Client_client_email_03915c19_uniq` (`email`),
+  ADD UNIQUE KEY `Client_client_phone_406f3d14_uniq` (`phone`);
 
 --
 -- Indexes for table `design_design`
@@ -655,7 +650,8 @@ ALTER TABLE `django_session`
 -- Indexes for table `employee_employee`
 --
 ALTER TABLE `employee_employee`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `invoice_reciept_payments`
@@ -741,7 +737,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `auth_user`
@@ -765,7 +761,7 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT for table `client_client`
 --
 ALTER TABLE `client_client`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `design_design`
@@ -783,31 +779,31 @@ ALTER TABLE `django_admin_log`
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `employee_employee`
 --
 ALTER TABLE `employee_employee`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `invoice_reciept_payments`
 --
 ALTER TABLE `invoice_reciept_payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `material_material`
 --
 ALTER TABLE `material_material`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `payment_expense`
@@ -819,13 +815,13 @@ ALTER TABLE `payment_expense`
 -- AUTO_INCREMENT for table `payment_methode_payment_methode`
 --
 ALTER TABLE `payment_methode_payment_methode`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payment_type_payment_type`
 --
 ALTER TABLE `payment_type_payment_type`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `projects_projects`
@@ -843,13 +839,13 @@ ALTER TABLE `role_role`
 -- AUTO_INCREMENT for table `tasks_tasks`
 --
 ALTER TABLE `tasks_tasks`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_user`
 --
 ALTER TABLE `user_user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

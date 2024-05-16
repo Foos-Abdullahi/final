@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, TextField, Button, CircularProgress, Link, Paper, Grid, Avatar } from "@mui/material";
 import { LockClockOutlined} from "@mui/icons-material";
-import App from "./App";
+import App from "../Dashboard/App";
+// import App from "../Dashboard/App";
 // import ForgotPassword from "./ForgotPassword"; // Import the ForgotPassword component
 
 const Login = () => {
@@ -21,47 +22,45 @@ const Login = () => {
     // Set checkingLogin to false after checking login status
     setCheckingLogin(false);
   }, []);
-
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const response = await fetch("http://127.0.0.1:8000/user/");
-      const rolesResponse = await fetch("http://127.0.0.1:8000/Role/");
-      const roledata = await rolesResponse.json();
-      console.log("roles", roledata);
-      
-      const employeeResponse = await fetch("http://127.0.0.1:8000/Employee/");
-      const employeedata = await employeeResponse.json();
-      console.log("roles", employeedata);
-      const data = await response.json();
-      console.log('user :', data);
-
-      for (let i = 0; i < data.length; i++) {
-        if (username === data[i].UserName && password === data[i].Password) {
-          console.log('this is id:', data[i].id);
-          const roleName = roledata.find(role => role.id === data[i].role_id)?.Role_name;
-          const employeeName = employeedata.find(employee => employee.id === data[i].employee_id)?.employee_name;
-          const employeeImage = employeedata.find(employee => employee.id === data[i].employee_id)?.employee_Image;
-          sessionStorage.setItem('userid', data[i].id)
-          sessionStorage.setItem('UserName', data[i].UserName)
-          sessionStorage.setItem('UserRole', roleName)
-          sessionStorage.setItem('EmployeeName', employeeName)
-          sessionStorage.setItem('EmployeeImage', employeeImage)
-          setIsLoggedIn(true);
-          sessionStorage.setItem("isLoggedIn", "true");
-          return;
+      e.preventDefault();
+      setLoading(true);
+      try {
+        const response = await fetch("http://127.0.0.1:8000/user/");
+        const rolesResponse = await fetch("http://127.0.0.1:8000/Role/");
+        const roledata = await rolesResponse.json();
+        console.log("roles", roledata);
+        
+        const employeeResponse = await fetch("http://127.0.0.1:8000/Employee/");
+        const employeedata = await employeeResponse.json();
+        console.log("roles", employeedata);
+        const data = await response.json();
+        console.log('user :', data);
+  
+        for (let i = 0; i < data.length; i++) {
+          if (username === data[i].UserName && password === data[i].Password) {
+            console.log('this is id:', data[i].id);
+            const roleName = roledata.find(role => role.id === data[i].role_id)?.Role_name;
+            const employeeName = employeedata.find(employee => employee.id === data[i].employee_id)?.employee_name;
+            const employeeImage = employeedata.find(employee => employee.id === data[i].employee_id)?.employee_Image;
+            sessionStorage.setItem('userid', data[i].id)
+            sessionStorage.setItem('UserName', data[i].UserName)
+            sessionStorage.setItem('UserRole', roleName)
+            sessionStorage.setItem('EmployeeName', employeeName)
+            sessionStorage.setItem('EmployeeImage', employeeImage)
+            setIsLoggedIn(true);
+            sessionStorage.setItem("isLoggedIn", "true");
+            return window.history.push("/dashboard");;
+          }
         }
+        setError("Invalid username or password");
+        setLoading(false);
+      } catch (error) {
+        console.error('Error during login:', error);
+        setError(error.message || 'Error occurred during login');
+        setLoading(false);
       }
-      setError("Invalid username or password");
-      setLoading(false);
-    } catch (error) {
-      console.error('Error during login:', error);
-      setError(error.message || 'Error occurred during login');
-      setLoading(false);
-    }
-  };
-
+    };
   if (checkingLogin) {
     // While checking login status, render nothing or a loading spinner
     return null;
@@ -93,7 +92,7 @@ const Login = () => {
         alignItems="center"
         mb={4}
       >
-        <img src={"/assets/logo192.png"} alt="Logo" style={{ width: "100px", height: "100px" }} />
+        <img src={"/assets/City.jpg"} alt="Logo" style={{ width: "100px", height: "100px" }} />
       </Box>
 
       <Paper elevation={10} sx={{ padding: 2, width: 350, bgcolor: '#E2E2E2' }}>

@@ -13,10 +13,12 @@ const AllInvoiceReceipts = () => {
   const [invoiceReceipts, setInvoiceReceipts] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [clients, SetClients] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchProjects();
+     fetchProjects();
+    fetchClients();
     fetchInvoiceReceipts();
     fetchPaymentMethods();
     fetchSearch();
@@ -31,7 +33,7 @@ const AllInvoiceReceipts = () => {
       console.error("Error fetching invoice receipts:", error);
     }
   };
-  const fetchProjects = async () => {
+  const fetchClients = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Client/");
       const data = await response.json();
@@ -41,7 +43,16 @@ const AllInvoiceReceipts = () => {
       console.error("Error fetching payment methods:", error);
     }
   };
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/Projects/");
+      const data = await response.json();
 
+      setProjects(data);
+    } catch (error) {
+      console.error("Error fetching payment methods:", error);
+    }
+  };
   const fetchPaymentMethods = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Payment_Methode/");
@@ -51,6 +62,7 @@ const AllInvoiceReceipts = () => {
       console.error("Error fetching payment methods:", error);
     }
   };
+  
   const fetchSearch = async () => {
     try {
       const response = await fetch(`http://127.0.0.1:8000/invoice_reciept/search?query=${searchQuery}`);
@@ -85,6 +97,15 @@ const AllInvoiceReceipts = () => {
       valueGetter: (params) => {
         const paymentMethod = paymentMethods.find((method) => method.id === params.row.payment_method);
         return paymentMethod ? paymentMethod.Py_method_name : "";
+      },
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      flex: 1,
+      valueGetter: (params) => {
+        const proj= projects.find((pro) => pro.id === params.row.project);
+        return proj ? proj.project_name : "";
       },
     },
     {

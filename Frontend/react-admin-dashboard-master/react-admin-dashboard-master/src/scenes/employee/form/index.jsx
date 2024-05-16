@@ -1,50 +1,82 @@
-import { Box, Button, TextField } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, TextField, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import Header from "../../../components/Header";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import React, { useState } from "react";
 
 const EmployeeForm = () => {
   const [employeeName, setEmployeeName] = useState("");
   const [position, setPosition] = useState("");
+  const[Email,setEmail]=useState('')
   const [phone, setPhone] = useState("");
   const [salary, setSalary] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const [employeeImage, setEmployeeImage] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const sendForm = async () => {
+    // Check if an email and phone number already exist
+    const getres = await fetch("http://127.0.0.1:8000/Employee/");
+    const dataGET = await getres.json();
+    const existingEmployee = dataGET.find((employee) => employee.phone === phone || employee.email === Email);
+  
+    if (existingEmployee) {
+      setSnackbarMessage("An employee with this email or phone number already exists!");
+      setSnackbarOpen(true);
+      return;
+    }
+  
+    // Proceed with creating the employee if not already exists
     const formData = new FormData(); 
     formData.append("employee_Image", employeeImage); 
     formData.append("employee_name", employeeName);
     formData.append("position", position);
+    formData.append("email", Email);
     formData.append("phone", phone);
     formData.append("salary", salary);
     formData.append("issue_date", issueDate);
-
+  
     const res = await fetch("http://127.0.0.1:8000/Employee/create/", {
       method: "POST",
       body: formData, 
     });
-
+  
     if (!res.ok) {
       console.log(`Request failed with status ${res.status}`);
+      return;
     }
-
+  
     const data = await res.json();
     console.log("Response data:", data);
     console.log(employeeName);
     console.log(issueDate);
-    // window.location.href = "/employee";
+    
+    // Show Snackbar with success message
+    setSnackbarMessage("Employee created successfully!");
+    setSnackbarOpen(true);
   };
+  
 
+  const validationSchema = yup.object().shape({
+    employee_name: yup.string().required("Employee name is required"),
+    position: yup.string().required("Position is required"),
+    phone: yup.string().required("Phone number is required"),
+    salary: yup.number().required("Salary is required"),
+    issue_date: yup.date().required("Issue date is required"),
+  });
   return (
     <Box m="20px">
-      <Header title="CREATE EMPLOYEE" subtitle="Create a New Employee" />
-
+      <Header title="CREATE Role" subtitle="Create a New Role" />
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
       <Formik
-        onSubmit={sendForm}
         initialValues={{
           employee_name: "",
           position: "",
@@ -52,6 +84,9 @@ const EmployeeForm = () => {
           salary: "",
           issue_date: "",
         }}
+        // validationSchema={validationSchema}
+        // onSubmit={sendForm}
+        onSubmit={sendForm}
       >
         {({
           values,
@@ -94,6 +129,19 @@ const EmployeeForm = () => {
                 name="position"
                 error={!!touched.position && !!errors.position}
                 helperText={touched.position && errors.position}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="email"
+                label="Email"
+                onBlur={handleBlur}
+                onChange={(e) => setEmail(e.target.value)}
+                value={Email}
+                name="email"
+                error={!!touched.Email && !!errors.Email}
+                helperText={touched.Email && errors.Email}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -154,6 +202,8 @@ const EmployeeForm = () => {
           </form>
         )}
       </Formik>
+
+      
     </Box>
   );
 };

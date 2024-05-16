@@ -63,7 +63,7 @@ const Client = () => {
         <img
           src={`/assets/client/${params.value}`} 
           alt="ClientImage"
-          style={{ width: 100, height: 60 }} 
+          style={{ width: 60, height: 60 }} 
         />
       ),
     },
@@ -80,7 +80,7 @@ const Client = () => {
         <img
           src={`/assets/${params.value}`} 
           alt="DocumentImage"
-          style={{ width: 100, height: 60 }} 
+          style={{ width: 50, height: 50 }}
         />
       ),
     },

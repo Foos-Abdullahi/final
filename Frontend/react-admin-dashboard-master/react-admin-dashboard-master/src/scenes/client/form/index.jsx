@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import Header from "../../../components/Header";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -8,21 +8,32 @@ const ClientForm = () => {
   const [documentImage, setDocumentImage] = useState(null);
   const [clientName, setClientName] = useState("");
   const [phone, setPhone] = useState("");
+  const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [clientImage, setClientImage] = useState(null);
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const sendForm = async () => {
-    const documentImageName = documentImage.name;
-    const ClientImageName = clientImage.name;
-    const fileName = documentImage.name.split('.')[0];
+
+    // Check if an email and phone number already exist
+    const getres = await fetch("http://127.0.0.1:8000/Client/");
+    const dataGET = await getres.json();
+    const existingEmployee = dataGET.find((client) => client.phone === phone || client.email === Email);
+  
+    if (existingEmployee) {
+      setSnackbarMessage("Client with this phone number or Email already exists!");
+      setSnackbarOpen(true);
+      return;
+    }
     const formData = new FormData();
-    
-    formData.append("document_image", documentImage)
-    formData.append("client_image", documentImage)
+    formData.append("document_image", documentImage);
+    formData.append("client_image", clientImage); // Is this correct? It seems like the document image is being set for both client image and document image.
     formData.append("client_name", clientName);
     formData.append("phone", phone);
+    formData.append("email", Email);
     formData.append("password", password);
     formData.append("issue_date", issueDate);
 
@@ -37,13 +48,15 @@ const ClientForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    console.log(documentImageName);
     console.log(documentImage);
     console.log(clientName);
     console.log(phone);
     console.log(issueDate);
-  };
 
+    // Show Snackbar with success message
+    setSnackbarMessage("Client created successfully!");
+    setSnackbarOpen(true);
+  };
   return (
     <Box m="20px">
       <Header title="CREATE Client" subtitle="Create a New Client" />
@@ -117,6 +130,17 @@ const ClientForm = () => {
                 required
                 sx={{ gridColumn: "span 4" }}
               />
+               <TextField
+                fullWidth
+                variant="filled"
+                type="email"
+                label="Email"
+                onBlur={handleBlur}
+                onChange={(e) => setEmail(e.target.value)}
+                value={Email}
+                required
+                sx={{ gridColumn: "span 4" }}
+              />
               <TextField
                 fullWidth
                 variant="filled"
@@ -140,7 +164,10 @@ const ClientForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+              <Button color="primary" variant="contained" onClick={() => window.location.href = "/client"}>
+                  Back
+                </Button>
               <Button type="submit" color="secondary" variant="contained">
                 Create Client
               </Button>
@@ -148,6 +175,13 @@ const ClientForm = () => {
           </form>
         )}
       </Formik>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
     </Box>
   );
 };

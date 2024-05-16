@@ -4,15 +4,7 @@ from .serializer import EmployeeSerializers
 from .models import Employee
 from django.db.models import Q
 
-# @api_view(['GET'])
-# def searchUserId(request):
-#     query_param = request.GET.get('query', '')
-#     employee = Employee.objects.filter(
-#         Q(phone__icontains=query_param)
-#     )
-#     serializer = EmployeeSerializers(employee, many=True)
-#     return Response(serializer.data)
-
+# search
 
 @api_view(['GET'])
 def search(request):
@@ -45,13 +37,21 @@ def delete(request, id):
     employee.delete()
     return Response("Employee is deleted")
 
-#create
+
+
 @api_view(['POST'])
 def create(request):
+    # Extract phone number from request data
+    phone_number = request.data.get('phone', None)
+    email = request.data.get('email', None)
+    # Check if an employee with the provided phone number already exists
+    if Employee.objects.filter(phone=phone_number).exists() and Employee.objects.filter(email=email).exists():
+        return Response("this Employee already exists")
+    # Proceed with creating the employee if not already exists
     serializer = EmployeeSerializers(data=request.data)
     if serializer.is_valid():
         serializer.save()
-    return Response("Employee is saved")
+        return Response("Employee is saved")
 
 #update
 @api_view(['PUT'])

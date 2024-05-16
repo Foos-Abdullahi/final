@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -11,12 +11,10 @@ import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ReportIcon from "@mui/icons-material/Report";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import ProjectIcon from "@mui/icons-material/Engineering";
 import MaterialIcon from "@mui/icons-material/WorkOutline";
 import ClientIcon from "@mui/icons-material/PeopleAltOutlined";
 import InvoiceReceiptIcon from "@mui/icons-material/ReceiptOutlined";
-import InvoiceIcon from "@mui/icons-material/DescriptionOutlined";
 import PaymentIcon from "@mui/icons-material/MonetizationOnOutlined";
 import PaymentMethodIcon from "@mui/icons-material/PaymentOutlined";
 import PaymentTypeIcon from "@mui/icons-material/LocalAtmOutlined";
@@ -45,16 +43,26 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const Sidebar = () => {
+  let session = window.sessionStorage; 
+  const [userRole, setUserRole] = useState("");
+  const [employees, setEmployees] = useState("");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  let session = window.sessionStorage;
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-
+  useEffect(() => {
+    // Retrieve user role from session storage
+    const storedRole = window.sessionStorage.getItem("UserRole");
+    const EmpImage=window.sessionStorage.getItem('EmployeeImage')
+    setUserRole(storedRole);
+    setEmployees(EmpImage);
+  }, []);
   return (
     <Box
-      sx={{
-        "& .pro-sidebar-inner": {
+    sx={{
+      "& .pro-sidebar-inner": {
+          position:'fixed',
+          width:'270px',
           background: `${colors.primary[400]} !important`,
         },
         "& .pro-icon-wrapper": {
@@ -106,7 +114,8 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`/assets/employee/${session.getItem('EmployeeImage')}`}
+                  // src={`../../assets/user.png`}
+                  src={`../../assets/employee${employees}`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -117,26 +126,28 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {/* {session.getItem('EmployeeName')} */}
-                  {session.getItem('UserName')}
+                  {/* Ed Roh */}
+                  {session.getItem("UserName")} 
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  {session.getItem('UserRole')}
+                  {/* VP Fancy Admin */}
+                  {userRole}
                 </Typography>
               </Box>
             </Box>
           )}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Dashboard"
-              to="/Dashboard"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
+        {userRole === "Admin" && (
+          <>
+          <Item
+            title="Dashboard"
+            to="/Dashboard"
+            icon={<HomeOutlinedIcon />}
+            selected={selected}
+            setSelected={setSelected}
+          />
+            {/* <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
@@ -163,7 +174,7 @@ const Sidebar = () => {
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
 
             <Typography
               variant="h6"
@@ -172,13 +183,13 @@ const Sidebar = () => {
             >
               Pages
             </Typography>
-            <Item
+            {/* <Item
               title="Profile Form"
               to="/form"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
              {/* Add icons for other titles */}
             <Item
               title="Project"
@@ -289,6 +300,56 @@ const Sidebar = () => {
                 <Link to="/Report/projectByDate" />
               </MenuItem> */}
             </SubMenu>
+            </>
+            )}
+             {userRole === 'HR' &&(<>
+              <Item
+              title="Employee"
+              to="/employee"
+              icon={<EmployeeIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             </>)}
+            {userRole === 'Cashier' &&(
+              <>
+                  <Item
+                  title="Invoice Receipt"
+                  to="/invoiceReciept"
+                  icon={<InvoiceReceiptIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                {/* <Item
+                  title="Invoice"
+                  to="/invoice"
+                  icon={<InvoiceIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                /> */}
+                <Item
+                  title="Expense"
+                  to="/payment"
+                  icon={<PaymentIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Payment Method"
+                  to="/paymentMethod"
+                  icon={<PaymentMethodIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Payment Type"
+                  to="/paymentType"
+                  icon={<PaymentTypeIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </>
+            )}
           </Box>
         </Menu>
       </ProSidebar>

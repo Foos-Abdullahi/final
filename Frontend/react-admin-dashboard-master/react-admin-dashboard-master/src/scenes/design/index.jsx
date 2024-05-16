@@ -53,7 +53,7 @@ const Designs = () => {
         <img
           src={`/assets/design${params.value}`} 
           alt="Design"
-          style={{ width: 100, height: 60 }} 
+          style={{ width: 50, height: 50 }}
         />
       ),
     },

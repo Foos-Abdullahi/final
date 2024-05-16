@@ -15,7 +15,7 @@ const DetailProject = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const userId = window.location.pathname.split("/").pop();
   useEffect(() => {
     fetchProjects();
     fetchClients();
@@ -25,7 +25,7 @@ const DetailProject = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/Projects/");
+      const response = await fetch(`http://127.0.0.1:8000/Projects/view/${userId}`);
       const data = await response.json();
       
       

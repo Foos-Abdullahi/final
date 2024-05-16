@@ -1,12 +1,13 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, TextField, MenuItem, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
-import React, { useState, useEffect } from "react";
 
 const CreateProject = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [projectName, setProjectName] = useState("");
   const [clientOptions, setClientOptions] = useState([]);
   const [designOptions, setDesignOptions] = useState([]);
@@ -20,7 +21,6 @@ const CreateProject = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
-
   useEffect(() => {
     // Fetch client and design options
     fetchClientOptions();
@@ -80,15 +80,28 @@ const CreateProject = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    window.history.back();
-  };
+    setSnackbarOpen(true);
+    setSnackbarMessage("Project created successfully!");
+    setSnackbarOpen(true);  };
 
   const handleFormSubmit = () => {
     sendForm();
   };
 
+  const handleBudgetChange = (event) => {
+    const { value } = event.target;
+    setBudget(value);
+    setBudgetRemain(value); // Set budgetRemain to the entered budget value
+  };
+
   return (
     <Box m="20px">
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
       <Header title="CREATE PROJECT" subtitle="Create a New Project" />
 
       <Formik
@@ -166,7 +179,7 @@ const CreateProject = () => {
               >
                 {designOptions.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
-                    {option.image}
+                    {option.architecture}
                   </MenuItem>
                 ))}
               </TextField>
@@ -201,7 +214,7 @@ const CreateProject = () => {
                 type="number"
                 label="Budget"
                 onBlur={handleBlur}
-                onChange={(e) => setBudget(e.target.value)}
+                onChange={handleBudgetChange} // Use the custom function to handle budget change
                 value={budget}
                 name="budget"
                 sx={{ gridColumn: "span 4" }}
@@ -267,7 +280,10 @@ const CreateProject = () => {
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+              <Button onClick={() => window.history.back()} color="primary" variant="contained">
+                Back
+              </Button>
               <Button type="submit" color="secondary" variant="contained">
                 Create Project
               </Button>

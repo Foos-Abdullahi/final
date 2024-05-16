@@ -52,7 +52,7 @@ const TaskForm = () => {
       }
 
       const data = await res.json();
-      window.history.back();
+      // window.history.back();
       console.log("Response data:", data);
     } catch (error) {
       console.error("Error sending form:", error);
@@ -177,7 +177,10 @@ const TaskForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
-            <Box display="flex" justifyContent="end" mt="5px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+            <Button color="primary" variant="contained" onClick={() => window.location.href = "/task"}>
+                Back
+              </Button>
               <Button type="submit" color="secondary" variant="contained">
                 Create Material
               </Button>

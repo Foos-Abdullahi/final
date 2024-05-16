@@ -10,7 +10,7 @@ from django.db import connection
 def search(request):
     query_param = request.GET.get('query', '')
     role = Role.objects.filter(
-        Q(issue_date__icontains=query_param)
+        Q(Role_name__icontains=query_param)
     )
     serializer = RoleSerializer(role, many=True)
     return Response(serializer.data)
@@ -32,30 +32,48 @@ def getAll(request):
 
 
 
+# @api_view(['GET'])
+# def getById(request,id):
+#     with connection.cursor() as cursor:
+#         cursor.callproc('get_roles_by_id', [id])
+#         role = cursor.fetchone()
+#     return Response(role)
+
+# get by id 
 @api_view(['GET'])
-def getById(request,id):
-    with connection.cursor() as cursor:
-        cursor.callproc('get_roles_by_id', [id])
-        role = cursor.fetchone()
-    return Response(role)
+def getById(request, id):
+    role=Role.objects.get(id=id)
+    serializers=RoleSerializer(role,many=False)
+    return Response(serializers.data)
 
 
+# @api_view(['POST'])
+# def create(request):
+#     allroles = Role.objects.all()
+#     role_name = request.data.get('Role_name','')
+#     # issue_date = request.data.get('issue_date', '')
+#     print("Role Name" + role_name)
+#     # print("Date" + issue_date)
+#     with connection.cursor() as cursor:
+#         # cursor.execute('INSERT INTO role_role (Role_name) VALUES (`role_name`)')
+#         cursor.execute('INSERT INTO role_role (Role_name) VALUES (%s)', [role_name])
+#         # cursor.callproc('create',[role_name])
+#         # cursor.execute()
+    
+#     return Response("Role is saved")
 
 @api_view(['POST'])
 def create(request):
-    allroles = Role.objects.all()
-    role_name = request.data.get('Role_name','')
-    # issue_date = request.data.get('issue_date', '')
-    print("Role Name" + role_name)
-    # print("Date" + issue_date)
-    with connection.cursor() as cursor:
-        # cursor.execute('INSERT INTO role_role (Role_name) VALUES (`role_name`)')
-        cursor.execute('INSERT INTO role_role (Role_name) VALUES (%s)', [role_name])
-        # cursor.callproc('create',[role_name])
-        # cursor.execute()
-    
-    return Response("Role is saved")
-
+    # Extract role name from request data
+    RoleName = request.data.get('role_name', None)
+    # Check if an employee with the provided role name already exists
+    if Role.objects.filter(Role_name=RoleName).exists():
+        return Response("this role already exists")
+    # Proceed with creating the rple if not already exists
+    serializer = RoleSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response("role is saved")
 
 @api_view(['PUT'])
 def update(request, id):

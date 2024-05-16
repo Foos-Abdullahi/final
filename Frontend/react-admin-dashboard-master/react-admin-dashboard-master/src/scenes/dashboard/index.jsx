@@ -1,23 +1,70 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button,selectClasses,useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
+// import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
-import GeographyChart from "../../components/GeographyChart";
-import BarChart from "../../components/BarChart";
+// import LineChart from "../../components/LineChart";
+// import GeographyChart from "../../components/GeographyChart";
+// import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
+// import ProgressCircle from "../../components/ProgressCircle";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
+  const [totalClient, setTotalClient] = useState(0);
+  const [totalEmployee, setTotalEmployee] = useState(0);
+  const [userRole, setUserRole] = useState("");
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  return (
+  const selectClient=((totalClient/3))+((totalClient/3))
+  const ClientPercentage=((selectClient/totalClient)*100).toFixed(2)
+   const EmpPercentage=(2/totalEmployee*100).toFixed(2)
+  useEffect(() => {
+    // Fetch employee data from your backend API
+    const fetchClinet = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/Client/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch Clinet data");
+        }
+        const data = await response.json();
+        // Set the total number of employees
+        setTotalClient(data.length);
+      } catch (error) {
+        console.error("Error fetching Clinet data:", error);
+      }
+    };
+    const fetchEmployee = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/Employee/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch Clinet data");
+        }
+        const Empdata = await response.json();
+        // Set the total number of employees
+        setTotalEmployee(Empdata.length);
+      } catch (error) {
+        console.error("Error fetching Clinet data:", error);
+      }
+    };
+    fetchClinet();
+    fetchEmployee();
+    const storedRole = window.sessionStorage.getItem("UserRole");
+    if (storedRole) {
+      setUserRole(storedRole);
+    }
+    return () => {
+      setUserRole("");
+    };
+  }, []);
+  return (<>
+    {userRole === 'Admin' &&(<>
+      
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -74,10 +121,10 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
-            progress="0.50"
-            increase="+21%"
+            title={`${totalEmployee}`}
+            subtitle="All Employee"
+            progress={`${EmpPercentage/100}`}
+            increase={`+ ${EmpPercentage} %`}
             icon={
               <PointOfSaleIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -93,10 +140,10 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
-            subtitle="New Clients"
-            progress="0.30"
-            increase="+5%"
+            title={`${totalClient}`}
+            subtitle="New clients"
+            progress={ClientPercentage/100}
+            increase={`+ ${ClientPercentage} %`}
             icon={
               <PersonAddIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -278,6 +325,7 @@ const Dashboard = () => {
         </Box> */}
       </Box>
     </Box>
+      </>)}</>
   );
 };
 
