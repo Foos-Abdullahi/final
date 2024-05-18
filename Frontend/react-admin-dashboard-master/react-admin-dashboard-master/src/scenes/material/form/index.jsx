@@ -184,7 +184,7 @@ const MaterialForm = () => {
                 Back
               </Button>
               <Button type="submit" color="secondary" variant="contained">
-                Create Project
+                Create Material
               </Button>
             </Box>
           </form>

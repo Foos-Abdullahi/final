@@ -132,7 +132,7 @@ const AllTask = () => {
 
   return (
     <Box m="20px">
-      <Header title="Client" subtitle="List of Client Balances" />
+      <Header title="Tasks" subtitle="List of Tasks" />
       <Box
         display="flex"
         justifyContent="space-between"

@@ -128,7 +128,7 @@ const Projects = () => {
 
   return (
     <Box m="20px">
-      <Header title="Client" subtitle="List of Client Balances" />
+      <Header title="Projects" subtitle="List of Projects" />
       <Box
         display="flex"
         justifyContent="space-between"
