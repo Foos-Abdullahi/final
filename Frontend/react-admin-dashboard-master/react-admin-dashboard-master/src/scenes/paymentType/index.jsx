@@ -72,7 +72,7 @@ const PymentTaype = () => {
   ];
   return (
     <Box m="20px">
-      <Header title="Client" subtitle="List of Client Balances" />
+      <Header title="Payment type" subtitle="List of Payment Types" />
       <Box
         display="flex"
         justifyContent="space-between"

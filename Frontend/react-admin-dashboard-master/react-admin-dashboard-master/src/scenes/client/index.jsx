@@ -84,16 +84,6 @@ const Client = () => {
         />
       ),
     },
-    // {
-    //   field: "balance",
-    //   headerName: "Balance",
-    //   flex: 1,
-    //   renderCell: (params) => (
-    //     <Typography color={colors.greenAccent[500]}>
-    //       ${params.row.balance}
-    //     </Typography>
-    //   ),
-    // },
     {
       field: "issue_date",
       headerName: "Issue Date",
