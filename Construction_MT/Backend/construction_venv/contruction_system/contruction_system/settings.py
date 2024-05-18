@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'Design.apps.DesignConfig',
     'Payment_Type.apps.PaymentTypeConfig',
     # 'Invoice.apps.InvoiceConfig',
+    'companies.apps.CompaniesConfig',
     'rest_framework',
     'corsheaders'
     
@@ -108,7 +109,7 @@ WSGI_APPLICATION = 'contruction_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',        
-        'NAME': 'construction_db3',
+        'NAME': 'construction_db',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',   # Set to your MySQL host, usually 'localhost'

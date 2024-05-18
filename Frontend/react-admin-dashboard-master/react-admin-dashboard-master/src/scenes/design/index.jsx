@@ -73,7 +73,7 @@ const Designs = () => {
   
   return (
     <Box m="20px">
-      <Header title="Client" subtitle="List of Client Balances" />
+      <Header title="Design" subtitle="List of Archituctures" />
       <Box
         display="flex"
         justifyContent="space-between"

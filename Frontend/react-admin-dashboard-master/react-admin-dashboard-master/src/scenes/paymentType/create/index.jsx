@@ -96,7 +96,7 @@ const PaymentMethodForm = () => {
                 Back
               </Button>
               <Button type="submit" color="secondary" variant="contained">
-                Create Project
+                Create Payment Type
               </Button>
             </Box>
           </form>

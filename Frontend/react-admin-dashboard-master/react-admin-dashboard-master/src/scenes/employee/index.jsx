@@ -79,7 +79,7 @@ const Employee = () => {
 
   return (
     <Box m="20px">
-      <Header title="Employee" subtitle="List of Employee" />
+      <Header title="Employee" subtitle="List of Employees" />
       <Box
         display="flex"
         justifyContent="space-between"

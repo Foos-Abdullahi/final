@@ -31,6 +31,7 @@ urlpatterns = [
     path('Material/',include('Material.urls')),
     path('Design/',include('Design.urls')),
     path('Payment_Type/',include('Payment_Type.urls')),
+    path('companies/',include('companies.urls')),
     # path('Invoice/',include('Invoice.urls')),
 ]
 
