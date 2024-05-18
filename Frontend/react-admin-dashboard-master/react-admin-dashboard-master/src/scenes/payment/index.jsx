@@ -5,8 +5,6 @@ import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PaymentType from "../paymentType";
-import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
 
 const Payment = () => {
   const [payments, setPayments] = useState([]);
@@ -18,7 +16,6 @@ const Payment = () => {
     fetchPayments();
     fetchProjects();
     fetchPaymentType();
-    fetchSearch();
   }, []);
 
   const fetchPayments = async () => {
@@ -48,18 +45,6 @@ const Payment = () => {
     } catch (error) {
       console.error('Error fetching payment methods:', error);
     }
-  };
-  const fetchSearch = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/payment/search?query=${searchQuery}`);
-      const data = await response.json();
-      setPayments(data);
-    } catch (error) {
-      console.error('Error fetching Clients:', error);
-    }
-  };
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
   };
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -104,25 +89,9 @@ const Payment = () => {
         justifyContent="space-between"
         alignItems="center"
         mb="20px"
+        position='relative'
+        left='85%'
       >
-        <Box
-          backgroundColor={colors.primary[400]}
-          borderRadius="3px"
-          display="flex"
-          alignItems="center"
-          pl={1}
-        >
-          <InputBase
-            sx={{ ml: 2, flex: 1 }}
-            type="date"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={handleSearch}
-          />
-          <IconButton type="button" sx={{ p: 1 }}>
-            <SearchIcon />
-          </IconButton>
-        </Box>
         <Button
           type="submit"
           color="secondary"
