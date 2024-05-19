@@ -33,6 +33,14 @@ def searchProjectNo(request):
     serializer = ProjectsSerializers(project, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def search_by_client_id(request):
+    client_id = request.GET.get('client_id', '')
+    if client_id:
+        projects = Projects.objects.filter(client__id=client_id)
+        serializer = ProjectsSerializers(projects, many=True)
+        return Response(serializer.data)
+    return Response({"error": "Client ID not provided"}, status=400)
 
 @api_view(['GET'])
 def search(request):

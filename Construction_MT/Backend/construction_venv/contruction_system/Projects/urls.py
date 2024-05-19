@@ -10,4 +10,6 @@ path('update/<int:id>/', views.update),
 path('search/', views.search),
 path('searchProjectNo/', views.searchProjectNo),
 path('searchDatesBetween/', views.search_dates_between),
+    path('searchByClientID/', views.search_by_client_id),  # Added this line
+
 ]

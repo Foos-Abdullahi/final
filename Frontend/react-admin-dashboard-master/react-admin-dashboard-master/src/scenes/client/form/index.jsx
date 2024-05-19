@@ -36,6 +36,7 @@ const ClientForm = () => {
     formData.append("email", Email);
     formData.append("password", password);
     formData.append("issue_date", issueDate);
+    formData.append("issue_date", issueDate);
 
     const res = await fetch("http://127.0.0.1:8000/Client/create/", {
       method: "POST",
