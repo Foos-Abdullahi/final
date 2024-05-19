@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable jsx-a11y/img-redundant-alt */
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Button, Typography, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material";
 import { Print } from "@mui/icons-material";
 
@@ -32,14 +33,17 @@ const ReceiptPage = () => {
 
         fetchData();
     }, [id]);
-
+    const printContentRef = useRef();
     const handlePrint = () => {
-        window.print();
+      const content = printContentRef.current.innerHTML;
+     document.body.innerHTML= content; 
+      window.print();
+      window.location.reload();
     };
 
     return (
         <Box
-          style={{ backgroundColor: "#1A2634", minHeight: "100vh", padding: "20px" }}
+          style={{ backgroundColor: "#5F6368", minHeight: "100vh", padding: "20px" }}
           display="flex"
           flexDirection="column"
         >
@@ -52,20 +56,16 @@ const ReceiptPage = () => {
                 </Button>
               </Box>
               <Box>
-                
+              <Paper ref={printContentRef} elevation={3} sx={{ padding: "20px", color: "black", bgcolor: "#FFFFFF" }}>
                   <Box display="flex" justifyContent="space-between">
                     <Box>
-                      <Typography variant="h3" color="white">Company</Typography>
-                      <address>
-                        Street Address<br />
-                        State, City<br />
-                        Region, Postal Code<br />
-                        ltd@example.com
-                      </address>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                      <img alt="Design Image" src={`/assets/city logo.png`} width= '250px' height= '100px' />
                     </Box>
-                    <Box textAlign="right">
-                      <Typography variant="h3" color="white">Client</Typography>
-                      <address>
+                    </Box>
+                    <Box textAlign="right" color="black">
+                      <Typography variant="h3" >Client</Typography>
+                      <address >
                         {client.client_name}<br />
                         {client.phone}<br />
                       </address>
@@ -76,27 +76,28 @@ const ReceiptPage = () => {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell style={{ width: "1%" }}><Typography variant="body1" color="white">#</Typography></TableCell>
-                        <TableCell><Typography variant="body1" color="white">Payment Method</Typography></TableCell>
-                        <TableCell style={{ width: "1%" }} align="center"><Typography variant="body1" color="white">Amount</Typography></TableCell>
-                        <TableCell style={{ width: "1%" }} align="right"><Typography variant="body1" color="white">Date</Typography></TableCell>
+                        <TableCell ><Typography variant="body1" color="black">#</Typography></TableCell>
+                        <TableCell><Typography variant="body1" color="black">Payment Method</Typography></TableCell>
+                        <TableCell><Typography variant="body1" color="black">Amount</Typography></TableCell>
+                        <TableCell><Typography variant="body1" color="black">Date</Typography></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       
                           <TableRow>
-                            <TableCell><Typography variant="body1" color="white">1</Typography></TableCell>
+                            <TableCell><Typography variant="body1" color="black">1</Typography></TableCell>
                             <TableCell>
                           <img src={`/assets/payment-method/${paymentMethod.pay_method_image}`} alt="Payment Method" style={{ width: 50, height: 50 }} />
                         </TableCell>
-                            <TableCell align="center"><Typography variant="body1" color="white">{invoiceReceipt.amount}</Typography></TableCell>
-                            <TableCell align="right"><Typography variant="body1" color="white">{invoiceReceipt.issue_date}</Typography></TableCell>
+                            <TableCell><Typography variant="body1" color="black">{invoiceReceipt.amount}</Typography></TableCell>
+                            <TableCell><Typography variant="body1" color="black">{invoiceReceipt.issue_date}</Typography></TableCell>
                           </TableRow>
                         
                                      </TableBody>
                   </Table>
                 </TableContainer>
-                <Typography variant="body2" align="center" color="white" mt={5}>Thank you very much for doing business with us. We look forward to working with you again!</Typography>
+                <Typography variant="body2" align="center" color="black" mt={5}>Thank you very much for doing business with us. We look forward to working with you again!</Typography>
+              </Paper>
               </Box>
             </Box>
           </Box>

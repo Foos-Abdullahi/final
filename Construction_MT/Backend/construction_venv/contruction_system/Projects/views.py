@@ -4,6 +4,7 @@ from .serializer import ProjectsSerializers
 from .models import Projects
 from django.db.models import Q
 from django.utils import timezone
+from rest_framework import status
 
 # Create your views here.
 @api_view(['GET'])
@@ -77,10 +78,18 @@ def delete(request, id):
 #create
 @api_view(['POST'])
 def create(request):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+    
     serializer = ProjectsSerializers(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-    return Response("Project saved")
+        serializer.save(user_id=user_id)
+        return Response({"detail": "Project created successfully"}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 #update
 @api_view(['PUT'])

@@ -21,6 +21,14 @@ const CreateProject = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    const storedRole = window.sessionStorage.getItem("userid");
+    if (storedRole) {
+      setUserId(storedRole);
+    }
+  }, []);
   useEffect(() => {
     // Fetch client and design options
     fetchClientOptions();
@@ -54,6 +62,19 @@ const CreateProject = () => {
   };
 
   const sendForm = async () => {
+    // const formData = new FormData();
+    // formData.append("project_name", projectName);
+    // formData.append("client", selectedClient);
+    // formData.append("design", selectedDesign);
+    // formData.append("status", status);
+    // formData.append("start_date", startDate);
+    // formData.append("end_date", endDate);
+    // formData.append("Agreements", agreements);
+    // formData.append("budget", budget);
+    // formData.append("BudgetRemain", budgetRemain);
+    // formData.append("project_No", projectNo);
+    // formData.append("issue_date", issueDate);
+    // formData.append("user_id", userId);
     const res = await fetch("http://127.0.0.1:8000/Projects/create/", {
       method: "POST",
       headers: {
@@ -71,6 +92,7 @@ const CreateProject = () => {
         BudgetRemain: budgetRemain,
         project_No: projectNo,
         issue_date: issueDate,
+        user_id: userId,
       }),
     });
 
@@ -278,6 +300,11 @@ const CreateProject = () => {
                 value={issueDate}
                 name="issue_date"
                 sx={{ gridColumn: "span 4" }}
+              />
+               <input
+                type="hidden"
+                name="user_id"
+                value={userId}
               />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">

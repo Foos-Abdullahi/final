@@ -4,7 +4,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddIcon from "@mui/icons-material/Add";
@@ -13,7 +12,6 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [clients, setClients] = useState([]);
   const [designs, setDesigns] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -22,8 +20,7 @@ const Projects = () => {
     fetchProjects();
     fetchClients();
     fetchDesigns();
-    fetchSearch();
-  }, [searchQuery]);
+  }, []);
 
   const fetchProjects = async () => {
     try {
@@ -49,28 +46,10 @@ const Projects = () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Design/");
       const data = await response.json();
-      // const design = designs.find(design => design.id === projects.design);
-      // console.log("before",designs);
-      setDesigns(data);
-      // console.log("after",designs[0][0]);
-      
+      setDesigns(data);      
     } catch (error) {
       console.error("Error fetching designs:", error);
     }
-  };
-
-  const fetchSearch = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/Projects/search?query=${searchQuery}`);
-      const data = await response.json();
-      setProjects(data);
-    } catch (error) {
-      console.error('Error fetching projects:', error);
-    }
-  };
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
   };
 
   const columns = [
@@ -133,25 +112,10 @@ const Projects = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        mb="20px"
+        mb="20px"position='relative'
+        left='90%'
+
       >
-        <Box
-          backgroundColor={colors.primary[400]}
-          borderRadius="3px"
-          display="flex"
-          alignItems="center"
-          pl={1}
-        >
-          <InputBase
-            sx={{ ml: 2, flex: 1 }}
-            placeholder="Search"
-            value={searchQuery}
-            onChange={handleSearch}
-          />
-          <IconButton type="button" sx={{ p: 1 }}>
-            <SearchIcon />
-          </IconButton>
-        </Box>
         <Button
           color="secondary"
           component={Link}
