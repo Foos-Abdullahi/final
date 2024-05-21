@@ -123,7 +123,7 @@ const PaymentMethodForm = () => {
                 style={{ gridColumn: "span 4" }}
               />
                {/* Hidden user_id field */}
-               <input type="text" name="user_id" value={userId} />
+               <input type="text" name="user" value={userId} />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button color="primary" variant="contained" onClick={() => window.location.href = "/paymentMethod"}>
