@@ -4,14 +4,11 @@ from .serializer import TaskSerializer
 from .models import Tasks
 from django.db.models import Q
 
-# @api_view(['GET'])
-# def search(request):
-#     query_param = request.GET.get('query', '')
-#     task = Tasks.objects.filter(
-#         Q(issue_date__icontains=query_param)
-#     )
-#     serializer = TaskSerializer(task, many=True)
-#     return Response(serializer.data)
+@api_view(['GET'])
+def get_finished_tasks_by_project(request, project_id):
+    tasks = Tasks.objects.filter(status='finished', project_id=project_id)
+    serializer = TaskSerializer(tasks, many=True)
+    return Response(serializer.data)
 
 #get All
 @api_view(['GET'])

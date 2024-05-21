@@ -136,7 +136,7 @@ const DesignForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
                {/* Hidden user_id field */}
-               <input type="text" name="user_id" value={userId} />
+               <input type="text" name="user" value={userId} />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
