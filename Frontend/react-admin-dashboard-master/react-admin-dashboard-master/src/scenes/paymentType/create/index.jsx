@@ -9,7 +9,16 @@ const PaymentMethodForm = () => {
   const [Py_TypeName, setP_T_Name] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [userId, setUserId] = useState(""); // Add state for userId
   const isNonMobile = useMediaQuery("(min-width:600px)");
+
+  useEffect(() => {
+    // Fetch user ID from sessionStorage
+    const storedUserId = window.sessionStorage.getItem("userid");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
 
   const sendForm = async () => {
     const res = await fetch(`http://127.0.0.1:8000/Payment_Type/create/`, {
@@ -20,6 +29,7 @@ const PaymentMethodForm = () => {
       body: JSON.stringify({
         Py_Type_name: Py_TypeName,
         issue_date: issueDate,
+        user_id: userId, // Include userId in the payload
       }),
     });
 
@@ -29,8 +39,8 @@ const PaymentMethodForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    console.log(Py_TypeName)
-    console.log(issueDate)
+    console.log(Py_TypeName);
+    console.log(issueDate);
     setSnackbarOpen(true); // Show the snackbar
     // Redirect to '/paymentType' after 2 seconds
     setTimeout(() => {
@@ -45,7 +55,7 @@ const PaymentMethodForm = () => {
       <Formik
         onSubmit={sendForm}
         initialValues={{
-            PaymentTypes: "",
+          PaymentTypes: "",
           issue_date: "",
         }}
       >
@@ -90,6 +100,8 @@ const PaymentMethodForm = () => {
                 helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
+               {/* Hidden user_id field */}
+               <input type="text" name="user_id" value={userId} />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button onClick={() => window.history.back()} color="primary" variant="contained">

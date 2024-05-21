@@ -7,14 +7,17 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const AllTask = () => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
-  
+  const [users, setUser] = useState([]);
+
   useEffect(() => {
     fetchTask();
     fetchProjects();
+    fetchUser();
   }, []);
 
   const fetchTask = async () => {
@@ -27,6 +30,7 @@ const AllTask = () => {
       console.error('Error fetching employees:', error);
     }
   };
+
   const fetchProjects = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/Projects/');
@@ -35,6 +39,15 @@ const AllTask = () => {
       console.log("Projetcs : ",projects);
     } catch (error) {
       console.error('Error fetching payment methods:', error);
+    }
+  };
+  const fetchUser = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/user/");
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
     }
   };
   const theme = useTheme();
@@ -96,19 +109,28 @@ const AllTask = () => {
       flex: 1,
     },
     {
+      field: "user",
+      headerName: "User Name",
+      flex: 1,
+      valueGetter: (params) => {
+        const user = users.find(User => User.id === params.row.user);
+        return user ? user.UserName : '';
+      },
+    },
+    {
       field: "actions",
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <Button
-          component={Link}
-          to={`/task/edit/${params.row.id}`}
-          variant="contained"
-          color="secondary"
-          startIcon={<EditIcon />}
-        >
-          
-        </Button>
+        <Box>
+          <IconButton component={Link} 
+          to={`/task/edit/${params.row.id}`}>
+            <EditIcon />
+          </IconButton>
+          <IconButton component={Link} to={`/task/details/${params.row.id}`}>
+            <VisibilityIcon />
+          </IconButton>
+        </Box>
       ),
     },
   ];

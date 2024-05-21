@@ -6,16 +6,27 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const AllMaterial = () => {
   const [material, setMaterial] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [users, setUser] = useState([]);
 
   useEffect(() => {
     fetchEmployees();
     fetchProjects();
+    fetchUser();
   }, []);
-
+  const fetchUser = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/user/");
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
+  };
   const fetchEmployees = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/Material/');
@@ -86,17 +97,27 @@ const AllMaterial = () => {
       flex: 1,
     },
     {
+      field: "user",
+      headerName: "User Name",
+      flex: 1,
+      valueGetter: (params) => {
+        const user = users.find(User => User.id === params.row.user);
+        return user ? user.UserName : '';
+      },
+    },
+    {
       field: "actions", 
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <IconButton
-          component={Link}
-          to={`/material/edit/${params.row.id}`} 
-          color="secondary"
-        >
-          <EditIcon />
-        </IconButton>
+        <Box>
+          <IconButton component={Link} to={`/material/edit/${params.row.id}`}>
+            <EditIcon />
+          </IconButton>
+          <IconButton component={Link} to={`/material/details/${params.row.id}`}>
+            <VisibilityIcon />
+          </IconButton>
+        </Box>
       ),
     },
   ];

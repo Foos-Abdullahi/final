@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, IconButton, useTheme, InputBase } from "@mui/material";
+import { Box, Button, IconButton, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [clients, setClients] = useState([]);
   const [designs, setDesigns] = useState([]);
+  const [users, setUser] = useState([]);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -20,6 +21,7 @@ const Projects = () => {
     fetchProjects();
     fetchClients();
     fetchDesigns();
+    fetchUser();
   }, []);
 
   const fetchProjects = async () => {
@@ -41,6 +43,15 @@ const Projects = () => {
       console.error("Error fetching clients:", error);
     }
   };
+  const fetchUser = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/user/");
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
+  };
 
   const fetchDesigns = async () => {
     try {
@@ -54,7 +65,6 @@ const Projects = () => {
 
   const columns = [
     { field: "id", headerName: "ID" },
-    { field: "project_No", headerName: "Project No", flex: 1 },
     { field: "project_name", headerName: "Project Name", flex: 1 },
     {
       field: "client_name",
@@ -80,14 +90,16 @@ const Projects = () => {
         );
       },
     },
-    
     { field: "status", headerName: "Status", flex: 1 },
-    { field: "Agreements", headerName: "Agreements", flex: 1 },
-    { field: "budget", headerName: "Budget", flex: 1 },
-    { field: "BudgetRemain", headerName: "Budget Remain", flex: 1 },
-    { field: "start_date", headerName: "Start Date", flex: 1 },
-    { field: "end_date", headerName: "End Date", flex: 1 },
-    { field: "issue_date", headerName: "Date", flex: 1 },
+    {
+      field: "user",
+      headerName: "User Name",
+      flex: 1,
+      valueGetter: (params) => {
+        const user = users.find(User => User.id === params.row.user);
+        return user ? user.UserName : '';
+      },
+    },
     {
       field: "actions",
       headerName: "Actions",
@@ -110,30 +122,18 @@ const Projects = () => {
       <Header title="Projects" subtitle="List of Projects" />
       <Box
         display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb="20px"position='relative'
-        left='90%'
-
+        justifyContent="flex-end"
+        mb="20px"
       >
         <Button
           color="secondary"
           component={Link}
           to="/project/form"
+          variant="contained"
+          startIcon={<AddIcon />}
         >
-          <AddIcon />
           Add New
         </Button>
-        {/* <Button
-          type="submit"
-          color="secondary"
-          variant="contained"
-          component={Link}
-          to="/Client/form"
-        >
-          <AddIcon />
-          Add New
-        </Button> */}
       </Box>
 
       <Box
@@ -145,9 +145,6 @@ const Projects = () => {
           },
           "& .MuiDataGrid-cell": {
             borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
           },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: colors.blueAccent[700],

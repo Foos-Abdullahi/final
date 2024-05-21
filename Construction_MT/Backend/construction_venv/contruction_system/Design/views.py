@@ -5,6 +5,7 @@ from .serializer import DesignSerializer
 from .models import Design
 from django.db.models import Q
 from django.utils.dateparse import parse_date
+from rest_framework import status
 
 @api_view(['GET'])
 def search(request):
@@ -31,9 +32,14 @@ def getById(request,id):
 
 @api_view(['POST'])
 def create(request):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(user_id)
+    
     serializers = DesignSerializer(data=request.data)
     if serializers.is_valid():
-        serializers.save()
+        serializers.save(user_id=user_id)
     return Response("Design is saved")
 
 

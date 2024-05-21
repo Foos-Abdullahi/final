@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, TextField, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -16,7 +16,6 @@ const EmployeeForm = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
   const sendForm = async () => {
     // Check if an email and phone number already exist
     const getres = await fetch("http://127.0.0.1:8000/Employee/");
@@ -190,6 +189,8 @@ const EmployeeForm = () => {
                 accept="image/*"
                 style={{ gridColumn: "span 4" }}
               />
+               {/* Hidden user_id field
+               <input type="text" name="user_id" value={userId} /> */}
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button color="primary" variant="contained" onClick={() => window.location.href = "/employee"}>

@@ -10,11 +10,21 @@ import AddIcon from '@mui/icons-material/Add';
 const PymentTaype = () => {
 
   const [payment_types, setpayment_types] = useState([]);
+  const [users, setUser] = useState([]);
 
   useEffect(() => {
     fetchPy_types();
+    fetchUser();
   }, []);
-
+  const fetchUser = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/user/");
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
+  };
   const fetchPy_types = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/Payment_Type/'); 
@@ -37,6 +47,15 @@ const PymentTaype = () => {
       field: "issue_date",
       headerName: "Date",
       flex: 1,
+    },
+    {
+      field: "user",
+      headerName: "User Name",
+      flex: 1,
+      valueGetter: (params) => {
+        const user = users.find(User => User.id === params.row.user);
+        return user ? user.UserName : '';
+      },
     },
     {
       field: "Edit",

@@ -6,27 +6,36 @@ import React, { useState, useEffect } from "react";
 
 const ReciptForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    const storedUserId = window.sessionStorage.getItem("userid");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
 
   const [reciept, setReciept] = useState({
     client: 0, // Default client ID
     payment_method: "", // Default payment method
-    project: 0, // Default payment method
+    project: 0, // Default project ID
     amount: 0,
     issue_date: new Date().toISOString().substr(0, 10),
+    user_id: userId, // Added user_id attribute
   });
 
   const [clients, setClients] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [projects, setProjects] = useState([]);
 
-  const fetchclientsAndPaymentMethods = async () => {
+  const fetchClientsAndPaymentMethods = async () => {
     try {
-      const ClientResponse = await fetch("http://127.0.0.1:8000/Client/");
-      if (!ClientResponse.ok) {
+      const clientResponse = await fetch("http://127.0.0.1:8000/Client/");
+      if (!clientResponse.ok) {
         throw new Error("Failed to fetch clients");
       }
-      const ClientData = await ClientResponse.json();
-      setClients(ClientData);
+      const clientData = await clientResponse.json();
+      setClients(clientData);
 
       const paymentMethodResponse = await fetch("http://127.0.0.1:8000/Payment_Methode/");
       if (!paymentMethodResponse.ok) {
@@ -37,7 +46,7 @@ const ReciptForm = () => {
 
       const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
       if (!projectResponse.ok) {
-        throw new Error("Failed to fetch Projects");
+        throw new Error("Failed to fetch projects");
       }
       const projectData = await projectResponse.json();
       setProjects(projectData);
@@ -47,7 +56,7 @@ const ReciptForm = () => {
   };
 
   useEffect(() => {
-    fetchclientsAndPaymentMethods();
+    fetchClientsAndPaymentMethods();
   }, []);
 
   const sendForm = async () => {
@@ -180,7 +189,7 @@ const ReciptForm = () => {
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create Material
+                Create Receipt
               </Button>
             </Box>
           </form>

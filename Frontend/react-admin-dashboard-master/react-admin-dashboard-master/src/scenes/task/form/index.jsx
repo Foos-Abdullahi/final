@@ -241,6 +241,7 @@ const TaskForm = () => {
     status: "",
     issue_date: new Date().toISOString().substr(0, 10),
     task_image: null, // Added task_image attribute
+    user_id: "", // Added user_id attribute
   });
 
   const [projects, setProjects] = useState([]);
@@ -260,6 +261,11 @@ const TaskForm = () => {
 
   useEffect(() => {
     fetchProjects();
+    // Fetch user ID from sessionStorage
+    const storedUserId = window.sessionStorage.getItem("userid");
+    if (storedUserId) {
+      setTask((prevTask) => ({ ...prevTask, user_id: storedUserId }));
+    }
   }, []);
 
   const sendForm = async () => {
@@ -271,6 +277,7 @@ const TaskForm = () => {
       formData.append("end_date", task.end_date);
       formData.append("status", task.status);
       formData.append("issue_date", task.issue_date);
+      formData.append("user_id", task.user_id);
       if (task.task_image) {
         formData.append("task_image", task.task_image);
       }
@@ -287,7 +294,7 @@ const TaskForm = () => {
       const data = await res.json();
       // window.history.back();
       console.log("Response data:", data);
-      console.log("hall data: ",task);
+      console.log("hall data: ", task);
     } catch (error) {
       console.error("Error sending form:", error);
     }
@@ -405,14 +412,16 @@ const TaskForm = () => {
                 type="file"
                 label="Task Image"
                 onBlur={handleBlur}
-                onChange={(e) => setTask({...task,task_image:e.target.files[0]})}
+                onChange={(e) => setTask({ ...task, task_image: e.target.files[0] })}
                 error={!!touched.task_image && !!errors.task_image}
                 helperText={touched.task_image && errors.task_image}
                 sx={{ gridColumn: "span 4" }}
               />
+               {/* Hidden user_id field */}
+              <input type="hidden" name="user" value={task.user_id} />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
-            <Button color="primary" variant="contained" onClick={() => window.location.href = "/task"}>
+              <Button color="primary" variant="contained" onClick={() => window.location.href = "/task"}>
                 Back
               </Button>
               <Button type="submit" color="secondary" variant="contained">

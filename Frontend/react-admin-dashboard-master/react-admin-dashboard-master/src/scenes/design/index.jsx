@@ -10,11 +10,23 @@ import AddIcon from "@mui/icons-material/Add";
 const Designs = () => {
 
   const [designs, setdesigns] = useState([]);
+  const [users, setUser] = useState([]);
+
 
   useEffect(() => {
     fetchdesigns();
+    fetchUser();
   }, []);
 
+  const fetchUser = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/user/");
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
+  };
   const fetchdesigns = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/Design/'); 
@@ -54,6 +66,15 @@ const Designs = () => {
       field: "issue_date",
       headerName: "Date",
       flex: 1,
+    },
+    {
+      field: "user",
+      headerName: "User Name",
+      flex: 1,
+      valueGetter: (params) => {
+        const user = users.find(User => User.id === params.row.user);
+        return user ? user.UserName : '';
+      },
     },
     {
       field: "Edit",

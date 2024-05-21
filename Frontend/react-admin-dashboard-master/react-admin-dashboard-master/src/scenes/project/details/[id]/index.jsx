@@ -1,226 +1,113 @@
-import { Box, Button, useTheme, IconButton
-} from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { Link } from "react-router-dom";
-import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
-import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
-import { Visibility, Edit } from "@mui/icons-material";
+import { Box, Typography, useTheme, Grid, Paper, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { tokens } from "../../../../theme";
+import Header from "../../../../components/Header";
+
 const DetailProject = () => {
-  const [projects, setProjects] = useState([]);
-  const [clients, setClients] = useState([]);
-  const [designs, setDesigns] = useState([]);
+  const { id } = useParams();
+  const [project, setProject] = useState(null);
+  const [client, setClient] = useState(null);
+  const [design, setDesign] = useState(null);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [searchQuery, setSearchQuery] = useState("");
-  const userId = window.location.pathname.split("/").pop();
+
   useEffect(() => {
-    fetchProjects();
-    fetchClients();
-    fetchdesigns();
-    fetchSearch();
-  }, [searchQuery]);
+    fetchProject();
+  }, [id]);
 
-  const fetchProjects = async () => {
+  const fetchProject = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/Projects/view/${userId}`);
-      const data = await response.json();
-      
-      
-      
-      setProjects(data);
+      const projectResponse = await fetch(`http://127.0.0.1:8000/Projects/view/${id}/`);
+      const projectData = await projectResponse.json();
+      setProject(projectData);
+
+      const clientResponse = await fetch(`http://127.0.0.1:8000/Client/view/${projectData.client}/`);
+      const clientData = await clientResponse.json();
+      setClient(clientData);
+
+      const designResponse = await fetch(`http://127.0.0.1:8000/Design/view/${projectData.design}/`);
+      const designData = await designResponse.json();
+      setDesign(designData);
     } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error("Error fetching project details:", error);
     }
   };
 
-  const fetchClients = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/Client/");
-      const data = await response.json();
-      setClients(data);
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-    }
-  };
-  const fetchdesigns = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/Design/");
-      const data = await response.json();
-      setDesigns(data);
-      console.log("xogta ",data);
-    } catch (error) {
-      console.error("Error fetching Design:", error);
-    }
-  };
-  const fetchSearch = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/Projects/search?query=${searchQuery}`);
-      const data = await response.json();
-      setProjects(data);
-    } catch (error) {
-      console.error('Error fetching Clients:', error);
-    }
-  };
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-  const columns = [
-    { field: "id", headerName: "ID" },
-    {
-      field: "project_name",
-      headerName: "Project Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "client_name",
-      headerName: "Client Name",
-      // field: "client",
-      // headerName: "Client",
-      flex: 1,
-      valueGetter: (params) => {
-        const client = clients.find(Client => Client.id === params.row.client);
-        return client ? client.client_name : '';
-      },
-    },
-    {
-      field: "image",
-      headerName: "Image",
-      // field: "design",
-      // headerName: "design",
-      flex: 1,
-      valueGetter: (params) => {
-        const Design = designs.find(design => design.id === params.row.design);
-        return Design ? Design.image: '';
-      },
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-    },
-    {
-      field: "Agreements",
-      headerName: "Agreements",
-      flex: 1,
-    },
-    {
-      field: "budget",
-      headerName: "budget",
-      flex: 1,
-    },
-    {
-      field: "start_date",
-      headerName: "Start Date",
-      flex: 1,
-    },
-    {
-      field: "end_date",
-      headerName: "End Date",
-      flex: 1,
-    },
-    {
-      field: "issue_date",
-      headerName: "Date",
-      flex: 1,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 1,
-      renderCell: (params) => (
-        <Box>
-          <IconButton
-            component={Link}
-            to={`/project/edit/${params.row.id}`}
-          >
-            <Edit />
-          </IconButton>
-          <IconButton
-            component={Link}
-            to={`/project/details/${params.row.id}`} 
-          >
-            <Visibility />
-          </IconButton>
-        </Box>
-      ),
-    },
-  ];
+  if (!project || !client || !design) return <div>Loading...</div>;
 
   return (
     <Box m="20px">
-      <Header title="Client" subtitle="List of Client Balances" />
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb="20px"
-      >
-        <Box
-          backgroundColor={colors.primary[400]}
-          borderRadius="3px"
-          display="flex"
-          alignItems="center"
-          pl={1}
-        >
-          <InputBase
-            sx={{ ml: 2, flex: 1 }}
-            placeholder="Search"
-            value={searchQuery}
-            onChange={handleSearch}
-          />
-          <IconButton type="button" sx={{ p: 1 }}>
-            <SearchIcon />
-          </IconButton>
-        </Box>
-        <Button
-          type="submit"
-          color="secondary"
-          variant="contained"
-          component={Link}
-          to="/project/form"
-        >
-            Create New Project
-        </Button>
-      </Box>
-  
-      <Box
-        m="40px 0 0 0"
-        height="75vh"
+      <Header title="Project Details" subtitle={`Details for ${project.project_name}`} />
+      <Paper
+        elevation={3}
         sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
+          p: 3,
+          bgcolor: colors.primary[400],
+          borderRadius: 2,
+          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+          width: "100%",
+          maxWidth: "1200px",
+          margin: "auto",
         }}
       >
-        <DataGrid checkboxSelection rows={projects} columns={columns} />
-      </Box>
+        <Typography variant="h4" align="center" gutterBottom>
+          {project.project_name}
+        </Typography>
+        <img
+          src={`/assets/design/${design.architecture}`}
+          alt="Design"
+          style={{
+            width: "100%",
+            maxWidth: "600px",
+            height: "auto",
+            objectFit: "cover",
+            borderRadius: "8px",
+            marginBottom: "20px",
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell><Typography variant="h6">Client:</Typography></TableCell>
+              <TableCell><Typography>{client.client_name}</Typography></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell><Typography variant="h6">Status:</Typography></TableCell>
+              <TableCell><Typography>{project.status}</Typography></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell><Typography variant="h6">Agreements:</Typography></TableCell>
+              <TableCell><Typography>{project.Agreements}</Typography></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell><Typography variant="h6">Budget:</Typography></TableCell>
+              <TableCell><Typography>{project.budget}</Typography></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell><Typography variant="h6">Budget Remain:</Typography></TableCell>
+              <TableCell><Typography>{project.BudgetRemain}</Typography></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell><Typography variant="h6">Start Date:</Typography></TableCell>
+              <TableCell><Typography>{project.start_date}</Typography></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell><Typography variant="h6">End Date:</Typography></TableCell>
+              <TableCell><Typography>{project.end_date}</Typography></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell><Typography variant="h6">Issue Date:</Typography></TableCell>
+              <TableCell><Typography>{project.issue_date}</Typography></TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </Paper>
     </Box>
   );
-  
 };
 
 export default DetailProject;

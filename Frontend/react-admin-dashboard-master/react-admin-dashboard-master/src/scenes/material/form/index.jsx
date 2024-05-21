@@ -13,10 +13,12 @@ const MaterialForm = () => {
     unit_price: 0,
     sub_total: 0,
     issue_date: new Date().toISOString().substr(0, 10),
+    user_id: "", // Add user_id to the state
   });
   const [projects, setProjects] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -31,6 +33,11 @@ const MaterialForm = () => {
       }
     };
     fetchProjects();
+
+    const storedUserId = window.sessionStorage.getItem("userid");
+    if (storedUserId) {
+      setMaterial((prevMaterial) => ({ ...prevMaterial, user_id: storedUserId }));
+    }
   }, []);
 
   const sendForm = async () => {
@@ -48,24 +55,17 @@ const MaterialForm = () => {
       }
       const data = await res.json();
       console.log("Response data material:", data);
+      setSnackbarMessage("Material created successfully!");
       setSnackbarOpen(true);
     } catch (error) {
       console.error("Error sending form:", error);
+      setSnackbarMessage("Error creating material.");
+      setSnackbarOpen(true);
     }
-    setSnackbarMessage("Material created successfully!");
-    setSnackbarOpen(true);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // If the changed field is not quantity or unit_price, update directly
-    if (name !== "quantity" && name !== "unit_price") {
-      setMaterial({ ...material, [name]: value });
-      return;
-    }
-      // Show Snackbar with success message
-      
-    // Calculate subTotal using the updated value
     let subTotal = material.sub_total;
     if (name === "quantity") {
       subTotal = value * material.unit_price;
@@ -178,6 +178,8 @@ const MaterialForm = () => {
                 name="issue_date"
                 sx={{ gridColumn: "span 4" }}
               />
+              {/* Hidden user_id field */}
+              <input type="text" name="user_id" value={material.user_id} />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button onClick={() => window.history.back()} color="primary" variant="contained">
@@ -190,8 +192,6 @@ const MaterialForm = () => {
           </form>
         )}
       </Formik>
-
-      
     </Box>
   );
 };

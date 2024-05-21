@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, TextField, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import Header from "../../../components/Header";
@@ -10,8 +10,17 @@ const PaymentMethodForm = () => {
   const [paymentMethodImage, setPaymentMethodImage] = useState(null); // New state for the image
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for snackbar
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [userId, setUserId] = useState("");
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
+
+  useEffect(() => {
+    // Fetch user ID from sessionStorage
+    const storedUserId = window.sessionStorage.getItem("userid");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
 
   const sendForm = async () => {
     // Check if an payment method name already exist
@@ -20,7 +29,7 @@ const PaymentMethodForm = () => {
     const existingPayment_Methode = dataGET.find((py_me_name) => py_me_name.Py_method_name === paymentMethodName);
   
     if (existingPayment_Methode) {
-      setSnackbarMessage("An Payment_Methode with this Payment_Methode name already exists!");
+      setSnackbarMessage("A Payment Method with this name already exists!");
       setSnackbarOpen(true);
       return;
     }
@@ -30,6 +39,7 @@ const PaymentMethodForm = () => {
     formData.append("pay_method_image", paymentMethodImage); // Append image data
     formData.append("Py_method_name", paymentMethodName);
     formData.append("issue_date", issueDate);
+    formData.append("user_id", userId); // Append user ID
 
     const res = await fetch("http://127.0.0.1:8000/Payment_Methode/create/", {
       method: "POST",
@@ -42,13 +52,14 @@ const PaymentMethodForm = () => {
     }
 
     // Show Snackbar with success message
-    setSnackbarMessage("Role created successfully!");
+    setSnackbarMessage("Payment method created successfully!");
     setSnackbarOpen(true);
  
     const data = await res.json();
     console.log("Response data:", data);
     console.log(paymentMethodName);
     console.log(issueDate);
+    console.log(userId);
     // window.location.href = "/paymentMethod";
   };
 
@@ -111,6 +122,8 @@ const PaymentMethodForm = () => {
                 accept="image/*"
                 style={{ gridColumn: "span 4" }}
               />
+               {/* Hidden user_id field */}
+               <input type="text" name="user_id" value={userId} />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button color="primary" variant="contained" onClick={() => window.location.href = "/paymentMethod"}>

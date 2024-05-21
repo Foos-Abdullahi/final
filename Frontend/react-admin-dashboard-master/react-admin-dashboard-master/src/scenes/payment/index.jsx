@@ -10,14 +10,23 @@ const Payment = () => {
   const [payments, setPayments] = useState([]);
   const [projects, setProjects] = useState([]);
   const [PaymentTypes, setPaymentType] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [users, setUser] = useState([]);
 
   useEffect(() => {
     fetchPayments();
     fetchProjects();
     fetchPaymentType();
+    fetchUser();
   }, []);
-
+  const fetchUser = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/user/");
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
+  };
   const fetchPayments = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/payment/");
@@ -78,6 +87,15 @@ const Payment = () => {
       field: "expense_date",
       headerName: "Expense Date",
       flex: 1,
+    },
+    {
+      field: "user",
+      headerName: "User Name",
+      flex: 1,
+      valueGetter: (params) => {
+        const user = users.find(User => User.id === params.row.user);
+        return user ? user.UserName : '';
+      },
     },
   ];
 

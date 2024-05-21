@@ -11,7 +11,14 @@ const DesignForm = () => {
   const [amounts, setamount] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [userId, setUserId] = useState("");
 
+  useEffect(() => {
+    const storedRole = window.sessionStorage.getItem("userid");
+    if (storedRole) {
+      setUserId(storedRole);
+    }
+  }, []);
   const sendForm = async () => {
     const imageName = images.name;
     const formData = new FormData();
@@ -20,6 +27,7 @@ const DesignForm = () => {
     formData.append("status", statuses);
     formData.append("amount", amounts);
     formData.append("issue_date", issueDate);
+    formData.append("user_id", userId);
 
     const res = await fetch("http://127.0.0.1:8000/Design/create/", {
       method: "POST",
@@ -37,6 +45,7 @@ const DesignForm = () => {
     console.log(statuses)
     console.log(amounts)
     console.log(issueDate)
+    console.log(userId)
     // window.location.href = '/design';
   };
 
@@ -126,6 +135,8 @@ const DesignForm = () => {
                 helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
+               {/* Hidden user_id field */}
+               <input type="text" name="user_id" value={userId} />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">

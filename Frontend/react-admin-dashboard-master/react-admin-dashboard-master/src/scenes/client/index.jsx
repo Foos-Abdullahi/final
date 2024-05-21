@@ -7,6 +7,8 @@ import Header from "../../components/Header";
 import InputBase from "@mui/material/InputBase";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
 
 const Client = () => {
   const [Clients, setClients] = useState([]);
@@ -79,15 +81,23 @@ const Client = () => {
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <>
-          <IconButton
-            color="secondary"
-            component={Link}
-            to={`/client/edit/${params.row.id}`}
-          >
+        <Box>
+          <IconButton component={Link} to={`/client/edit/${params.row.id}`}>
             <EditIcon />
           </IconButton>
-        </>
+          <IconButton component={Link} to={`/client/details/${params.row.id}`}>
+            <VisibilityIcon />
+          </IconButton>
+        </Box>
+        // <>
+        //   <IconButton
+        //     color="secondary"
+        //     component={Link}
+        //     to={`/client/edit/${params.row.id}`}
+        //   >
+        //     <EditIcon />
+        //   </IconButton>
+        // </>
       ),
     },
   ];

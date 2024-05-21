@@ -67,6 +67,9 @@ import ClientReport from "../scenes/Report/clientReport";
 import ProjectList from "../scenes/Report/projectReport";
 import ProjecTDetail from "../scenes/Report/prReport/[id]";
 import Profile from "../scenes/user/profile/[id]";
+import DetailProject from "../scenes/project/details/[id]";
+import TaskDetails from "../scenes/task/details/[id]";
+import MaterialDetail from "../scenes/material/details/[id]";
 // foof ciro tables================================;
 
 
@@ -101,6 +104,7 @@ function App() {
               <Route path="/project" element={<Project />} />
               <Route path="/project/form" element={<CreateProjects />} />
               <Route path="/project/edit/:id" element={<ProjectEdit />} />
+              <Route path="/project/details/:id" element={<DetailProject />} />
               {/* <Route path="/project/details/:id" element={<DetailProject />} /> */}
               <Route path="/payment" element={<Payment />} />
               <Route path="/payment/create" element={<CreatePayment />} />
@@ -147,18 +151,18 @@ function App() {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/geography" element={<Geography />} />
-               {/* foof ciro tables================================; */}
               <Route path="/material" element={<AllMaterail />} />
               <Route path="/material/form" element={<MaterialForm/>} />
               <Route path="/material/edit/:id" element={<MaterialEditForm/>} />
+              <Route path="/material/details/:id" element={<MaterialDetail/>} />
               <Route path="/task" element={<AllTask />} />
               <Route path="/task/form" element={<TaskForm />} />
               <Route path="/task/edit/:id" element={<TaskEditForm />} />
+              <Route path="/task/details/:id" element={<TaskDetails />} />
               <Route path="/invoiceReciept" element={< AllinvoicerReciept/>} />
               <Route path="/invoiceReciept/from" element={< ReciptForm/>} />
               <Route path="/invoiceReciept/edit/:id" element={< RecieptEditForm/>} />
               <Route path="/invoiceReciept/reciept/:id" element={< ReceiptPage/>} />
-              {/* foof ciro tables================================; */}
               </>
               )}
               {userRole === 'HR' &&(<>

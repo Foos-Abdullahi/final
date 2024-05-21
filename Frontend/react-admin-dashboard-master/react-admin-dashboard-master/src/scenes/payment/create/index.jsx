@@ -15,12 +15,18 @@ const CreatePayment = () => {
   const [selectedProject, setSelectedProject] = useState("");
   const [expenseDate, setExpenseDate] = useState(new Date().toISOString().substr(0, 10));
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     // Fetch payment type options
     fetchPaymentTypeOptions();
     // Fetch project options
     fetchProjectOptions();
+    // Fetch user ID from sessionStorage
+    const storedUserId = window.sessionStorage.getItem("userid");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
   }, []);
 
   const fetchPaymentTypeOptions = async () => {
@@ -60,11 +66,13 @@ const CreatePayment = () => {
         payment_Type: selectedPaymentType,
         project: selectedProject,
         expense_date: expenseDate,
+        user_id: userId,
       }),
     });
 
     if (!res.ok) {
       console.log(`Request failed with status ${res.status}`);
+      return;
     }
 
     const data = await res.json();
@@ -82,8 +90,8 @@ const CreatePayment = () => {
 
       <Formik
         onSubmit={handleFormSubmit}
-        initialValues={{ amount: "", payment_Type: "", project: "", expense_date: "" }}
-        // validationSchema={checkoutSchema}
+        initialValues={{ amount: "", payment_Type: "", project: "", expense_date: "", user_id: userId }}
+        validationSchema={checkoutSchema}
       >
         {({
           values,
@@ -166,6 +174,8 @@ const CreatePayment = () => {
                 helperText={touched.expense_date && errors.expense_date}
                 sx={{ gridColumn: "span 4" }}
               />
+              {/* Hidden user_id field */}
+              <input type="text" name="user_id" value={userId} />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button onClick={() => window.history.back()} color="primary" variant="contained">

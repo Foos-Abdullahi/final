@@ -10,11 +10,21 @@ import React, { useState, useEffect } from "react";
 const PaymentMethode = () => {
 
   const [PaymentMethodes, setpaymentMothode] = useState([]);
+  const [users, setUser] = useState([]);
 
   useEffect(() => {
     fetchPymentMothode();
+    fetchUser();
   }, []);
-
+  const fetchUser = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/user/");
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
+  };
   const fetchPymentMothode = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/Payment_Methode/'); 
@@ -55,7 +65,15 @@ const PaymentMethode = () => {
       headerName: "Date",
       flex: 1,
     },
-   
+    {
+      field: "user",
+      headerName: "User Name",
+      flex: 1,
+      valueGetter: (params) => {
+        const user = users.find(User => User.id === params.row.user);
+        return user ? user.UserName : '';
+      },
+    },
     {
       field: "Edit",
       headerName: "Action",
