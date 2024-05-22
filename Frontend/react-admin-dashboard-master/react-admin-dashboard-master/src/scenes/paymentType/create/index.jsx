@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, TextField, Snackbar } from "@mui/material";
 import { Formik } from "formik";
-import * as yup from "yup";
 import Header from "../../../components/Header";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const PaymentMethodForm = () => {
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   const [Py_TypeName, setP_T_Name] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [userId, setUserId] = useState(""); // Add state for userId
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+  useEffect(() => {
+    const user = window.sessionStorage.getItem("userid");
+    if (user) {
+      setUserId(user);
+    }
+  }, []);
 
   useEffect(() => {
     // Fetch user ID from sessionStorage
@@ -29,7 +34,7 @@ const PaymentMethodForm = () => {
       body: JSON.stringify({
         Py_Type_name: Py_TypeName,
         issue_date: issueDate,
-        user_id: userId, // Include userId in the payload
+        user_id: userId,
       }),
     });
 
@@ -99,6 +104,11 @@ const PaymentMethodForm = () => {
                 error={!!touched.issue_date && !!errors.issue_date}
                 helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
+              />
+                    <input
+                type="hidden"
+                name="user_id"
+                value={userId}
               />
                {/* Hidden user_id field */}
                <input type="text" name="user_id" value={userId} />

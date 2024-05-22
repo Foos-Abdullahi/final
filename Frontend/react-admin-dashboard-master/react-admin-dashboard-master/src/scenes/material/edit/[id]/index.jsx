@@ -7,19 +7,23 @@ import React, { useState, useEffect } from "react";
 const MaterialEditForm = () => {
   const url = window.location.pathname;
   const materialId = url.split("/").pop();
-
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
-  const [material, setMaterial] = useState({
-    project: 0,
-    material_name: "",
-    quantity: 0,
-    unit_price: 0,
-    sub_total: 0,
-    issue_date: "",
-  });
-
   const [projects, setProjects] = useState([]);
+  const [selectproject,setSelectProject]=useState("");
+  const [materialname,setMaterial_name]=useState("");
+  const [quantity,setQuantity]=useState("");
+  const [unit_price,setUnit_price]=useState("");
+  const [sub_total,setSub_total]=useState("");
+  const [issue_date,setIssue_date]=useState("");
+  const [userId, setUserId] = useState("");
+  useEffect(() => {
+    const user = window.sessionStorage.getItem("userid");
+    if (user) {
+      setUserId(user);
+    }
+  }, []);
+
+  // const [projects, setProjects] = useState([]);
 
   const fetchProjects = async () => {
     try {
@@ -34,31 +38,30 @@ const MaterialEditForm = () => {
     }
   };
 
-  const fetchMaterial = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/Material/getbyid/${materialId}/`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch material details");
-      }
-      const data = await response.json();
-      console.log("waaa lawadaa", data);
-      setMaterial({
-        project: data.project,
-        material_name: data.material_name,
-        quantity: data.quantity,
-        unit_price: data.unit_price,
-        sub_total: data.sub_total,
-        issue_date: data.issue_date,
-      });
-    } catch (error) {
-      console.error("Error fetching material details:", error);
-    }
-  };
-
+  
   useEffect(() => {
+    const fetchMaterial = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/Material/getbyid/${materialId}/`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch material details");
+        }
+        const data = await response.json();
+        console.log("waaa lawadaa", data);
+        setSelectProject(data.project);
+        setMaterial_name(data.material_name);
+        setQuantity(data.quantity);
+        setUnit_price(data.unit_price);
+        setSub_total(data.sub_total);
+        setIssue_date(data.issue_date);
+        setUserId(data.user);
+      } catch (error) {
+        console.error("Error fetching material details:", error);
+      }
+    };
     fetchProjects();
     fetchMaterial();
-  }, []);
+  }, [materialId]);
 
   const sendForm = async () => {
     try {
@@ -67,7 +70,15 @@ const MaterialEditForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(material),
+        body: JSON.stringify({
+          project: selectproject,
+          material_name: materialname,
+          quantity: quantity,
+          unit_price: unit_price,
+          sub_total: sub_total,
+          issue_date: issue_date,
+          user_id: userId,
+        }),
       });
 
       if (!res.ok) {
@@ -79,7 +90,7 @@ const MaterialEditForm = () => {
       console.log("Response data:", data);
       window.history.back();
       // Reload data from the server after successful form submission
-      fetchMaterial();
+      // fetchMaterial();
     } catch (error) {
       console.error("Error sending form:", error);
     }
@@ -87,21 +98,13 @@ const MaterialEditForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // If the changed field is not quantity or unit_price, update directly
-    if (name !== 'quantity' && name !== 'unit_price') {
-      setMaterial({ ...material, [name]: value });
-      return;
+    if (name === "quantity") {
+      setQuantity(value);
+      setSub_total(value * unit_price);
+    } else if (name === "unit_price") {
+      setUnit_price(value);
+      setSub_total(quantity * value);
     }
-  
-    // Calculate subTotal using the updated value
-    let subTotal = material.sub_total;
-    if (name === 'quantity') {
-      subTotal = value * material.unit_price;
-    } else if (name === 'unit_price') {
-      subTotal = material.quantity * value;
-    }
-  
-    setMaterial({ ...material, [name]: value, sub_total: subTotal });
   };
 
   return (
@@ -125,8 +128,8 @@ const MaterialEditForm = () => {
                 variant="filled"
                 label="Project"
                 onBlur={handleBlur}
-                onChange={handleInputChange}
-                value={material.project}
+                onChange={(e)=>setSelectProject(e.target.value)}
+                value={selectproject}
                 name="project"
                 sx={{ gridColumn: "span 4" }}
               >
@@ -142,8 +145,8 @@ const MaterialEditForm = () => {
                 type="text"
                 label="Material Name"
                 onBlur={handleBlur}
-                onChange={handleInputChange}
-                value={material.material_name}
+                onChange={(e)=>setMaterial_name(e.target.value)}
+                value={materialname}
                 name="material_name"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -154,7 +157,7 @@ const MaterialEditForm = () => {
                 label="Quantity"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
-                value={material.quantity}
+                value={quantity}
                 name="quantity"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -165,7 +168,7 @@ const MaterialEditForm = () => {
                 label="Unit Price"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
-                value={material.unit_price}
+                value={unit_price}
                 name="unit_price"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -176,7 +179,7 @@ const MaterialEditForm = () => {
                 label="Sub Total"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
-                value={material.sub_total}
+                value={sub_total}
                 name="sub_total"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -186,10 +189,15 @@ const MaterialEditForm = () => {
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={handleInputChange}
-                value={material.issue_date}
+                onChange={(e)=>e.target.value}
+                value={issue_date}
                 name="issue_date"
                 sx={{ gridColumn: "span 4" }}
+              />
+                 <input
+                type="number"
+                name="user_id"
+                value={userId}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">

@@ -27,9 +27,12 @@ def getById(request,id):
 
 @api_view(['POST'])
 def create(request):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     searilizer = ExpenseSearilizer(data=request.data)
     if searilizer.is_valid():
-        searilizer.save()
+        searilizer.save(user_id = user_id)
     return Response("Saved")
 
 @api_view(['PUT'])

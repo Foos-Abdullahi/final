@@ -6,58 +6,66 @@ import React, { useState, useEffect } from "react";
 
 const ReciptForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [clientOption, setClientOption] = useState([]);
+  const [projectOption, setProjectOption] = useState([]);
+  const [paymentMethodOption, setPaymentMethodOption] = useState([]);
+  const [selectclient,setSelectClient]= useState("");
+  const [selectpayment_method,setSelectPayment_method]= useState("");
+  const [selectproject,setSelectProject]= useState("");
+  const [amount,setAmount]=useState("");
+  const [issue_date,setIssue_date]=useState(new Date().toISOString().substr(0, 10));
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const storedUserId = window.sessionStorage.getItem("userid");
-    if (storedUserId) {
-      setUserId(storedUserId);
+    const user = window.sessionStorage.getItem("userid");
+    if (user) {
+      setUserId(user);
     }
   }, []);
+  
+  useEffect(() => {
+    fetchClient();
+    fetchProjects();
+    fetchPaymentMethod();
+  }, []);
 
-  const [reciept, setReciept] = useState({
-    client: 0, // Default client ID
-    payment_method: "", // Default payment method
-    project: 0, // Default project ID
-    amount: 0,
-    issue_date: new Date().toISOString().substr(0, 10),
-    user_id: userId, // Added user_id attribute
-  });
-
-  const [clients, setClients] = useState([]);
-  const [paymentMethods, setPaymentMethods] = useState([]);
-  const [projects, setProjects] = useState([]);
-
-  const fetchClientsAndPaymentMethods = async () => {
+  const fetchClient = async () => {
     try {
-      const clientResponse = await fetch("http://127.0.0.1:8000/Client/");
-      if (!clientResponse.ok) {
-        throw new Error("Failed to fetch clients");
+      const response = await fetch("http://127.0.0.1:8000/Client/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch design options");
       }
-      const clientData = await clientResponse.json();
-      setClients(clientData);
-
-      const paymentMethodResponse = await fetch("http://127.0.0.1:8000/Payment_Methode/");
-      if (!paymentMethodResponse.ok) {
-        throw new Error("Failed to fetch payment methods");
-      }
-      const paymentMethodData = await paymentMethodResponse.json();
-      setPaymentMethods(paymentMethodData);
-
-      const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
-      if (!projectResponse.ok) {
-        throw new Error("Failed to fetch projects");
-      }
-      const projectData = await projectResponse.json();
-      setProjects(projectData);
+      const data = await response.json();
+      setClientOption(data);
     } catch (error) {
-      console.error("Error fetching clients and payment methods:", error);
+      console.error("Error fetching design options:", error);
     }
   };
 
-  useEffect(() => {
-    fetchClientsAndPaymentMethods();
-  }, []);
+  const fetchPaymentMethod = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/Payment_Methode/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch design options");
+      }
+      const data = await response.json();
+      setPaymentMethodOption(data);
+    } catch (error) {
+      console.error("Error fetching design options:", error);
+    }
+  };
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/Projects/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch design options");
+      }
+      const data = await response.json();
+      setProjectOption(data);
+    } catch (error) {
+      console.error("Error fetching design options:", error);
+    }
+  };
 
   const sendForm = async () => {
     try {
@@ -66,7 +74,14 @@ const ReciptForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(reciept),
+        body: JSON.stringify({
+          client: selectclient,
+          payment_method: selectpayment_method,
+          project: selectproject,
+          amount: amount,
+          issue_date: issue_date,
+          user_id: userId,
+        }),
       });
 
       if (!res.ok) {
@@ -76,7 +91,13 @@ const ReciptForm = () => {
 
       const data = await res.json();
       console.log("Response data:", data);
-      window.history.back();
+      console.log("selectclient:",selectclient);
+      console.log("selectproject:",selectproject);
+      console.log("selectpayment_method:",selectpayment_method);
+      console.log("amount:",amount);
+      console.log("issue_date:",issue_date);
+      console.log("user id:",userId);
+      // window.history.back();
     } catch (error) {
       console.error("Error sending form:", error);
     }
@@ -86,7 +107,16 @@ const ReciptForm = () => {
     <Box m="20px">
       <Header title="CREATE Invoice Reciept" subtitle="Create a New Invoice" />
 
-      <Formik onSubmit={sendForm} initialValues={reciept}>
+      <Formik 
+      onSubmit={sendForm} 
+      initialValues={{
+        client: "",
+        payment_method: "",
+        project: "",
+        amount: "",
+        issue_date: "",
+
+      }}>
         {({
           values,
           errors,
@@ -109,14 +139,12 @@ const ReciptForm = () => {
                 variant="filled"
                 label="Client"
                 onBlur={handleBlur}
-                onChange={(e) => setReciept({ ...reciept, client: e.target.value })}
-                value={reciept.client}
+                onChange={(e) => setSelectClient(e.target.value )}
+                value={selectclient}
                 name="client"
-                error={!!touched.client && !!errors.client}
-                helperText={touched.client && errors.client}
                 sx={{ gridColumn: "span 4" }}
               >
-                {clients.map((Client) => (
+                {clientOption.map((Client) => (
                   <MenuItem key={Client.id} value={Client.id}>
                     {Client.client_name}
                   </MenuItem>
@@ -128,14 +156,12 @@ const ReciptForm = () => {
                 variant="filled"
                 label="Project"
                 onBlur={handleBlur}
-                onChange={(e) => setReciept({ ...reciept, project: e.target.value })}
-                value={reciept.project}
+                onChange={(e) => setSelectProject(e.target.value)}
+                value={selectproject}
                 name="project"
-                error={!!touched.project && !!errors.project}
-                helperText={touched.project && errors.project}
                 sx={{ gridColumn: "span 4" }}
               >
-                {projects.map((Project) => (
+                {projectOption.map((Project) => (
                   <MenuItem key={Project.id} value={Project.id}>
                     {Project.project_name}
                   </MenuItem>
@@ -147,14 +173,12 @@ const ReciptForm = () => {
                 variant="filled"
                 label="Payment Method"
                 onBlur={handleBlur}
-                onChange={(e) => setReciept({ ...reciept, payment_method: e.target.value })}
-                value={reciept.payment_method}
+                onChange={(e) => setSelectPayment_method(e.target.value)}
+                value={selectpayment_method}
                 name="payment_method"
-                error={!!touched.payment_method && !!errors.payment_method}
-                helperText={touched.payment_method && errors.payment_method}
                 sx={{ gridColumn: "span 4" }}
               >
-                {paymentMethods.map((py_method) => (
+                {paymentMethodOption.map((py_method) => (
                   <MenuItem key={py_method.id} value={py_method.id}>
                     {py_method.Py_method_name}
                   </MenuItem>
@@ -166,11 +190,9 @@ const ReciptForm = () => {
                 type="number"
                 label="Amount"
                 onBlur={handleBlur}
-                onChange={(e) => setReciept({ ...reciept, amount: e.target.value })}
-                value={reciept.amount}
+                onChange={(e) => setAmount(e.target.value )}
+                value={amount}
                 name="amount"
-                error={!!touched.amount && !!errors.amount}
-                helperText={touched.amount && errors.amount}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -179,15 +201,21 @@ const ReciptForm = () => {
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={(e) => setReciept({ ...reciept, issue_date: e.target.value })}
-                value={reciept.issue_date}
+                onChange={(e) => setIssue_date(e.target.value )}
+                value={issue_date}
                 name="issue_date"
-                error={!!touched.issue_date && !!errors.issue_date}
-                helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
+                  <input
+                type="hidden"
+                name="user_id"
+                value={userId}
+              />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+            <Button color="primary" variant="contained" onClick={() => window.location.href = "/invoiceReciept"}>
+                Back
+              </Button>
               <Button type="submit" color="secondary" variant="contained">
                 Create Receipt
               </Button>

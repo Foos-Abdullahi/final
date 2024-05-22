@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .serializer import PaymentTypeSerializer
 from .models import Payment_Type
 from django.db.models import Q
+from rest_framework import status
 
 @api_view(['GET'])
 def search(request):
@@ -32,9 +33,12 @@ def getById(request,id):
 
 @api_view(['POST'])
 def create(request):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     serializers = PaymentTypeSerializer(data=request.data)
     if serializers.is_valid():
-        serializers.save()
+        serializers.save(user_id = user_id)
     return Response("Payment_Type is saved")
 
 
