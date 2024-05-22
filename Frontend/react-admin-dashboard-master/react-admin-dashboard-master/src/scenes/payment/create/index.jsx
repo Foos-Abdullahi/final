@@ -1,6 +1,6 @@
 import { Box, Button, TextField, MenuItem, Snackbar } from "@mui/material";
 import { Formik } from "formik";
-import * as yup from "yup";
+// import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
 import React, { useState, useEffect } from "react";
@@ -11,49 +11,33 @@ const CreatePayment = () => {
   const [amount, setAmount] = useState("");
   const [paymentTypeOptions, setPaymentTypeOptions] = useState([]);
   const [selectedPaymentType, setSelectedPaymentType] = useState("");
-  const [projectOptions, setProjectOptions] = useState([]);
-  const [selectedProject, setSelectedProject] = useState("");
+  const [expensedescription, setExpense_description] = useState("");
   const [expenseDate, setExpenseDate] = useState(new Date().toISOString().substr(0, 10));
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [userId, setUserId] = useState("");
-
   useEffect(() => {
-    // Fetch payment type options
-    fetchPaymentTypeOptions();
-    // Fetch project options
-    fetchProjectOptions();
-    // Fetch user ID from sessionStorage
-    const storedUserId = window.sessionStorage.getItem("userid");
-    if (storedUserId) {
-      setUserId(storedUserId);
+    const user = window.sessionStorage.getItem("userid");
+    if (user) {
+      setUserId(user);
     }
   }, []);
-
-  const fetchPaymentTypeOptions = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/Payment_Type/");
-      if (!response.ok) {
-        throw new Error("Failed to fetch payment type options");
+  useEffect(() => {
+    // Fetch payment type options
+    const fetchPaymentTypeOptions = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/Payment_Type/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch payment type options");
+        }
+        const data = await response.json();
+        setPaymentTypeOptions(data);
+      } catch (error) {
+        console.error("Error fetching payment type options:", error);
       }
-      const data = await response.json();
-      setPaymentTypeOptions(data);
-    } catch (error) {
-      console.error("Error fetching payment type options:", error);
-    }
-  };
+    };
+    fetchPaymentTypeOptions();
+  }, []);
 
-  const fetchProjectOptions = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/Projects/");
-      if (!response.ok) {
-        throw new Error("Failed to fetch project options");
-      }
-      const data = await response.json();
-      setProjectOptions(data);
-    } catch (error) {
-      console.error("Error fetching project options:", error);
-    }
-  };
 
   const sendForm = async () => {
     const res = await fetch("http://127.0.0.1:8000/payment/create/", {
@@ -62,9 +46,9 @@ const CreatePayment = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        amount: amount,
         payment_Type: selectedPaymentType,
-        project: selectedProject,
+        expense_description:expensedescription,
+        amount: amount,
         expense_date: expenseDate,
         user_id: userId,
       }),
@@ -77,11 +61,12 @@ const CreatePayment = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
+    console.log("payment type: ",selectedPaymentType);
+    console.log("description: ",expensedescription);
+    console.log("Amount : ",amount);
+    console.log("Date : ",expenseDate);
+    console.log("user_id: ",userId);
     setSnackbarOpen(true); // Show the snackbar
-  };
-
-  const handleFormSubmit = () => {
-    sendForm();
   };
 
   return (
@@ -89,9 +74,15 @@ const CreatePayment = () => {
       <Header title="CREATE PAYMENT" subtitle="Record a New Payment" />
 
       <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={{ amount: "", payment_Type: "", project: "", expense_date: "", user_id: userId }}
-        validationSchema={checkoutSchema}
+        onSubmit={sendForm}
+        initialValues={
+          { 
+            payment_Type: "", 
+            expense_description:"",
+            amount: "", 
+            expense_date: "" 
+        }
+        }
       >
         {({
           values,
@@ -119,8 +110,6 @@ const CreatePayment = () => {
                 onChange={(e) => setAmount(e.target.value)}
                 value={amount}
                 name="amount"
-                error={touched.amount && Boolean(errors.amount)}
-                helperText={touched.amount && errors.amount}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -132,8 +121,6 @@ const CreatePayment = () => {
                 onChange={(e) => setSelectedPaymentType(e.target.value)}
                 value={selectedPaymentType}
                 name="payment_Type"
-                error={touched.payment_Type && Boolean(errors.payment_Type)}
-                helperText={touched.payment_Type && errors.payment_Type}
                 sx={{ gridColumn: "span 4" }}
               >
                 {paymentTypeOptions.map((option) => (
@@ -142,25 +129,19 @@ const CreatePayment = () => {
                   </MenuItem>
                 ))}
               </TextField>
+
               <TextField
                 fullWidth
-                select
                 variant="filled"
-                label="Project"
+                type="text"
+                label="expense description"
                 onBlur={handleBlur}
-                onChange={(e) => setSelectedProject(e.target.value)}
-                value={selectedProject}
-                name="project"
-                error={touched.project && Boolean(errors.project)}
-                helperText={touched.project && errors.project}
+                onChange={(e) => setExpense_description(e.target.value)}
+                value={expensedescription}
+                name="expense_description"
                 sx={{ gridColumn: "span 4" }}
-              >
-                {projectOptions.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.project_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -170,12 +151,13 @@ const CreatePayment = () => {
                 onChange={(e) => setExpenseDate(e.target.value)}
                 value={expenseDate}
                 name="expense_date"
-                error={touched.expense_date && Boolean(errors.expense_date)}
-                helperText={touched.expense_date && errors.expense_date}
                 sx={{ gridColumn: "span 4" }}
               />
-              {/* Hidden user_id field */}
-              <input type="text" name="user_id" value={userId} />
+              <input
+                type="hidden"
+                name="user_id"
+                value={userId}
+              />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button onClick={() => window.history.back()} color="primary" variant="contained">
@@ -198,12 +180,4 @@ const CreatePayment = () => {
     </Box>
   );
 };
-
-const checkoutSchema = yup.object().shape({
-  amount: yup.number().required("Amount is required"),
-  payment_Type: yup.string().required("Payment Type is required"),
-  project: yup.string().required("Project is required"),
-  expense_date: yup.string().required("Expense Date is required"),
-});
-
 export default CreatePayment;

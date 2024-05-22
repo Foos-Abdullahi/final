@@ -16,8 +16,23 @@ const MaterialForm = () => {
     user_id: "", // Add user_id to the state
   });
   const [projects, setProjects] = useState([]);
+  const [selectproject,setSelectProject]=useState("");
+  const [materialname,setMaterial_name]=useState("");
+  const [quantity,setQuantity]=useState("");
+  const [unit_price,setUnit_price]=useState("");
+  const [sub_total,setSub_total]=useState("");
+  const [issue_date,setIssue_date]=useState(new Date().toISOString().substr(0, 10));
+  const [userId, setUserId] = useState("");
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  useEffect(() => {
+    const user = window.sessionStorage.getItem("userid");
+    if (user) {
+      setUserId(user);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -47,7 +62,17 @@ const MaterialForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(material),
+        body: JSON.stringify({
+          project: selectproject,
+          material_name: materialname,
+          quantity: quantity,
+          unit_price: unit_price,
+          sub_total: sub_total,
+          issue_date: issue_date,
+          user_id: userId,
+
+
+        }),
       });
       if (!res.ok) {
         console.log(`Request failed with status ${res.status}`);
@@ -68,14 +93,13 @@ const MaterialForm = () => {
     const { name, value } = e.target;
     let subTotal = material.sub_total;
     if (name === "quantity") {
-      subTotal = value * material.unit_price;
+      setQuantity(value);
+      setSub_total(value * unit_price);
     } else if (name === "unit_price") {
-      subTotal = material.quantity * value;
+      setUnit_price(value);
+      setSub_total(quantity * value);
     }
-
-    setMaterial({ ...material, [name]: value, sub_total: subTotal });
   };
-
   return (
     <Box m="20px">
       <Snackbar
@@ -85,7 +109,14 @@ const MaterialForm = () => {
         message={snackbarMessage}
       />
       <Header title="CREATE MATERIAL" subtitle="Create a New Material" />
-      <Formik onSubmit={sendForm} initialValues={material}>
+      <Formik onSubmit={sendForm} initialValues={{
+        material_name: "",
+        quantity: "",
+        unit_price: "",
+        sub_total: "",
+        project: "",
+        issue_date: ""
+      }}>
         {({
           values,
           errors,
@@ -108,11 +139,9 @@ const MaterialForm = () => {
                 variant="filled"
                 label="Project"
                 onBlur={handleBlur}
-                onChange={handleInputChange}
-                value={material.project}
+                onChange={(e)=>setSelectProject(e.target.value)}
+                value={selectproject}
                 name="project"
-                error={!!touched.project && !!errors.project}
-                helperText={touched.project && errors.project}
                 sx={{ gridColumn: "span 4" }}
               >
                 {projects.map((project) => (
@@ -127,11 +156,9 @@ const MaterialForm = () => {
                 type="text"
                 label="Material Name"
                 onBlur={handleBlur}
-                onChange={handleInputChange}
-                value={material.material_name}
+                onChange={(e)=>setMaterial_name(e.target.value)}
+                value={materialname}
                 name="material_name"
-                error={!!touched.material_name && !!errors.material_name}
-                helperText={touched.material_name && errors.material_name}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -141,7 +168,7 @@ const MaterialForm = () => {
                 label="Quantity"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
-                value={material.quantity}
+                value={quantity}
                 name="quantity"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -152,7 +179,7 @@ const MaterialForm = () => {
                 label="Unit Price"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
-                value={material.unit_price}
+                value={unit_price}
                 name="unit_price"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -163,7 +190,7 @@ const MaterialForm = () => {
                 label="Sub Total"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
-                value={material.sub_total}
+                value={sub_total}
                 name="sub_total"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -173,13 +200,16 @@ const MaterialForm = () => {
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={handleInputChange}
-                value={material.issue_date}
+                onChange={(e)=>setIssue_date(e.target.value)}
+                value={issue_date}
                 name="issue_date"
                 sx={{ gridColumn: "span 4" }}
               />
-              {/* Hidden user_id field */}
-              <input type="text" name="user_id" value={material.user_id} />
+                    <input
+                type="hidden"
+                name="user_id"
+                value={userId}
+              />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button onClick={() => window.history.back()} color="primary" variant="contained">

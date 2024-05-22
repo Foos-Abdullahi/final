@@ -14,16 +14,17 @@ const DesignForm = () => {
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
+    const user = window.sessionStorage.getItem("userid");
+    if (user) {
+      setUserId(user);
     const storedRole = window.sessionStorage.getItem("userid");
     if (storedRole) {
       setUserId(storedRole);
     }
-  }, []);
+  }}, []);
   const sendForm = async () => {
-    const imageName = images.name;
     const formData = new FormData();
-    formData.append("image", images); 
-
+    formData.append("architecture", images); 
     formData.append("status", statuses);
     formData.append("amount", amounts);
     formData.append("issue_date", issueDate);
@@ -41,18 +42,12 @@ const DesignForm = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
-    console.log(imageName)
+    console.log(images)
     console.log(statuses)
     console.log(amounts)
     console.log(issueDate)
     console.log(userId)
-    // window.location.href = '/design';
   };
-
-//   const validationSchema = yup.object().shape({
-//     payment_method_name: yup.string().required("Design name is required"),
-//     issue_date: yup.string().required("Issue date is required"),
-//   });
 
   return (
     <Box m="20px">
@@ -64,7 +59,6 @@ const DesignForm = () => {
           Designs: "",
           issue_date: "",
         }}
-        // validationSchema={validationSchema}
       >
         {({
           values,
@@ -91,9 +85,9 @@ const DesignForm = () => {
                 onBlur={handleBlur}
                 onChange={(e) => setImage(e.target.files[0])}
                 // value={images}
-                name="Designs"
-                error={!!touched.Designs && !!errors.Designs}
-                helperText={touched.Designs && errors.Designs}
+                name="architecture"
+                error={!!touched.architecture && !!errors.architecture}
+                helperText={touched.architecture && errors.architecture}
                 sx={{ gridColumn: "span 4" }}
               />
                  <TextField
@@ -104,9 +98,9 @@ const DesignForm = () => {
                 onBlur={handleBlur}
                 onChange={(e) => setstatus(e.target.value)}
                 value={statuses}
-                name="Designs"
-                error={!!touched.Designs && !!errors.Designs}
-                helperText={touched.Designs && errors.Designs}
+                name="status"
+                error={!!touched.status && !!errors.status}
+                helperText={touched.status && errors.status}
                 sx={{ gridColumn: "span 4" }}
               />
                  <TextField
@@ -117,9 +111,9 @@ const DesignForm = () => {
                 onBlur={handleBlur}
                 onChange={(e) => setamount(e.target.value)}
                 value={amounts}
-                name="Designs"
-                error={!!touched.Designs && !!errors.Designs}
-                helperText={touched.Designs && errors.Designs}
+                name="amount"
+                error={!!touched.amount && !!errors.amount}
+                helperText={touched.amount && errors.amount}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -135,10 +129,18 @@ const DesignForm = () => {
                 helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
+                <input
+                type="hidden"
+                name="user_id"
+                value={userId}
+              />
                {/* Hidden user_id field */}
-               <input type="text" name="user" value={userId} />
+               <input type="text" name="user_id" value={userId} />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+              <Button onClick={() => window.history.back()} color="primary" variant="contained">
+                Back
+              </Button>
               <Button type="submit" color="secondary" variant="contained">
                 Create Design
               </Button>

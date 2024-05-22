@@ -72,12 +72,6 @@ const CreateUser = () => {
     console.log("Response data:", data);
   };
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
-    // Call the sendForm function here
-    sendForm();
-  };
-
   return (
     <Box m="20px">
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
@@ -113,8 +107,6 @@ const CreateUser = () => {
                 onChange={(e) => setUserName(e.target.value)}
                 value={userName}
                 name="userName"
-                error={!!touched.userName && !!errors.userName}
-                helperText={touched.userName && errors.userName}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -126,8 +118,6 @@ const CreateUser = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 name="password"
-                error={!!touched.password && !!errors.password}
-                helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -139,8 +129,6 @@ const CreateUser = () => {
                 onChange={(e) => setSelectedEmployee(e.target.value)}
                 value={selectedEmployee}
                 name="employee_id"
-                error={!!touched.employee_id && !!errors.employee_id}
-                helperText={touched.employee_id && errors.employee_id}
                 sx={{ gridColumn: "span 4" }}
               >
                 {employeeOptions.map((option) => (
@@ -177,12 +165,13 @@ const CreateUser = () => {
                 onChange={(e) => setIssueDate(e.target.value)}
                 value={issue_date}
                 name="issue_date"
-                error={!!touched.issue_date && !!errors.issue_date}
-                helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="space-between" mt="20px">
+              <Button onClick={() => window.history.back()} color="primary" variant="contained">
+                Back
+              </Button>
               <Button type="submit" color="secondary" variant="contained">
                 Create New User
               </Button>
@@ -197,13 +186,13 @@ const CreateUser = () => {
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
-const checkoutSchema = yup.object().shape({
-  userName: yup.string().required("required"),
-  password: yup.string().required("required"),
-  employee_id: yup.string().required("required"),
-  role_id: yup.string().required("required"),
-  issue_date: yup.string().required("required"),
-});
+// const checkoutSchema = yup.object().shape({
+//   userName: yup.string().required("required"),
+//   password: yup.string().required("required"),
+//   employee_id: yup.string().required("required"),
+//   role_id: yup.string().required("required"),
+//   issue_date: yup.string().required("required"),
+// });
 const initialValues = {
   userName: "",
   password: "",

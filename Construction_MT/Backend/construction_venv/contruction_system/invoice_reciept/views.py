@@ -3,7 +3,7 @@ from rest_framework.response import  Response
 from .serializers import PaymentSerializer
 from  .models import Payments
 from django.db.models import Q
-
+from rest_framework import status
 # Create your views here.
 
 @api_view(['GET'])
@@ -46,10 +46,13 @@ def delete(request,id):
    
 #add new
 @api_view(['POST'])
-def addNew(request):
+def create(request):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     serializer = PaymentSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(user_id=user_id)
     return Response("payment is saved")
     
 #update

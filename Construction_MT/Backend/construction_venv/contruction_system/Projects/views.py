@@ -94,10 +94,13 @@ def create(request):
 #update
 @api_view(['PUT'])
 def update(request, id):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     project=Projects.objects.get(id=id)
     serializer = ProjectsSerializers(instance=project, data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(user_id = user_id)
     return Response('Project updated')
 
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import Header from "../../../components/Header";
@@ -13,6 +13,12 @@ const PaymentMethodForm = () => {
   const [userId, setUserId] = useState("");
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  useEffect(() => {
+    const user = window.sessionStorage.getItem("userid");
+    if (user) {
+      setUserId(user);
+    }
+  }, []);
 
   useEffect(() => {
     // Fetch user ID from sessionStorage
@@ -21,7 +27,6 @@ const PaymentMethodForm = () => {
       setUserId(storedUserId);
     }
   }, []);
-
   const sendForm = async () => {
     // Check if an payment method name already exist
     const getres = await fetch("http://127.0.0.1:8000/Payment_Methode/");
@@ -39,8 +44,8 @@ const PaymentMethodForm = () => {
     formData.append("pay_method_image", paymentMethodImage); // Append image data
     formData.append("Py_method_name", paymentMethodName);
     formData.append("issue_date", issueDate);
+    formData.append("user_id", userId);
     formData.append("user_id", userId); // Append user ID
-
     const res = await fetch("http://127.0.0.1:8000/Payment_Methode/create/", {
       method: "POST",
       body: formData, // Send FormData instead of JSON
@@ -122,8 +127,13 @@ const PaymentMethodForm = () => {
                 accept="image/*"
                 style={{ gridColumn: "span 4" }}
               />
+                  <input
+                type="hidden"
+                name="user_id"
+                value={userId}
+              />
                {/* Hidden user_id field */}
-               <input type="text" name="user" value={userId} />
+               <input type="text" name="user_id" value={userId} />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button color="primary" variant="contained" onClick={() => window.location.href = "/paymentMethod"}>

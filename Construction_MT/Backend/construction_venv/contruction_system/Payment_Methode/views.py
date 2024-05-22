@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .serializer import Py_MethodeSerializer
 from .models import Payment_Methode
 from django.db.models import Q
-
+from rest_framework import status
 # Create your views here.
 @api_view(['GET'])
 def search(request):
@@ -28,15 +28,11 @@ def getById(request,id):
     return Response(serializers.data)
 
 
-# @api_view(['POST'])
-# def create(request):
-#     serializers = Py_MethodeSerializer(data=request.data)
-#     if serializers.is_valid():
-#         serializers.save()
-#     return Response("payment_methode is saved")
-
 @api_view(['POST'])
 def create(request):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     # Extract Py_method_name from request data
     pymentmethod = request.data.get('Py_method_name', None)
     # Check if an pymentmethod with the provided Py_method_name already exists
@@ -45,7 +41,7 @@ def create(request):
     # Proceed with creating the Py_method_name if not already exists
     serializer = Py_MethodeSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(user_id = user_id)
         return Response("pymentmethod is saved")
 
 

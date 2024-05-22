@@ -24,9 +24,9 @@ const CreateProject = () => {
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const storedRole = window.sessionStorage.getItem("userid");
-    if (storedRole) {
-      setUserId(storedRole);
+    const user = window.sessionStorage.getItem("userid");
+    if (user) {
+      setUserId(user);
     }
   }, []);
   useEffect(() => {
@@ -62,19 +62,6 @@ const CreateProject = () => {
   };
 
   const sendForm = async () => {
-    // const formData = new FormData();
-    // formData.append("project_name", projectName);
-    // formData.append("client", selectedClient);
-    // formData.append("design", selectedDesign);
-    // formData.append("status", status);
-    // formData.append("start_date", startDate);
-    // formData.append("end_date", endDate);
-    // formData.append("Agreements", agreements);
-    // formData.append("budget", budget);
-    // formData.append("BudgetRemain", budgetRemain);
-    // formData.append("project_No", projectNo);
-    // formData.append("issue_date", issueDate);
-    // formData.append("user_id", userId);
     const res = await fetch("http://127.0.0.1:8000/Projects/create/", {
       method: "POST",
       headers: {

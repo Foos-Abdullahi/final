@@ -4,19 +4,8 @@ from .serializer import MaterialSerializer
 from .models import Material
 from django.db.models import Q
 from rest_framework import status
-
 # from Projects.models import Projects
 # from Tasks.models import Tasks
-
-# @api_view(['GET'])
-# def get_projects_by_Name(request):
-#     query_param = request.GET.get('query', '')
-#     projects = Projects.objects.filter(project_name__icontains=query_param)
-#     materials = Material.objects.filter(project__in=projects)
-#     tasks = Tasks.objects.filter(project__in=projects)
-#     material_serializer = MaterialSerializer(materials, many=True)
-#     task_serializer = TasksSerializer(tasks, many=True)
-#     return Response({'materials': material_serializer.data, 'tasks': task_serializer.data})
 @api_view(["GET"])
 def get_projects_by_Name(request):
     projectName = request.query_params.get('prId', None)
@@ -60,9 +49,12 @@ def delete_item(requset,id):
 #create
 @api_view(['POST'])
 def  create_item(request):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     serializer=MaterialSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(user_id = user_id)
     return Response("New material is added")
 #update
 @api_view(['PUT'])
