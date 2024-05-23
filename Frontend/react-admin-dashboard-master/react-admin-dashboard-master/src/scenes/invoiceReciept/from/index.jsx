@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
@@ -15,7 +15,8 @@ const ReciptForm = () => {
   const [amount,setAmount]=useState("");
   const [issue_date,setIssue_date]=useState(new Date().toISOString().substr(0, 10));
   const [userId, setUserId] = useState("");
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   useEffect(() => {
     const user = window.sessionStorage.getItem("userid");
     if (user) {
@@ -97,6 +98,8 @@ const ReciptForm = () => {
       console.log("amount:",amount);
       console.log("issue_date:",issue_date);
       console.log("user id:",userId);
+      setSnackbarMessage("Material created successfully!");
+      setSnackbarOpen(true);
       // window.history.back();
     } catch (error) {
       console.error("Error sending form:", error);
@@ -106,7 +109,12 @@ const ReciptForm = () => {
   return (
     <Box m="20px">
       <Header title="CREATE Invoice Reciept" subtitle="Create a New Invoice" />
-
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
       <Formik 
       onSubmit={sendForm} 
       initialValues={{
@@ -222,6 +230,7 @@ const ReciptForm = () => {
             </Box>
           </form>
         )}
+        
       </Formik>
     </Box>
   );
