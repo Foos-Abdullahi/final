@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from .serializer import EmployeeSerializers
 from .models import Employee
 from django.db.models import Q
-
+import re
 # search
 
 @api_view(['GET'])
@@ -59,6 +59,9 @@ def update(request, id):
     employee=Employee.objects.get(id=id)
     serializer = EmployeeSerializers(instance=employee, data=request.data)
     if serializer.is_valid():
+        if 'employee_Image' in request.FILES:
+            serializer.validated_data['employee_Image'] = re.sub(r'_[^_]*\.', '.',
+            request.FILES['employee_Image'].name)
         serializer.save()
     return Response('Employee is updated')
 

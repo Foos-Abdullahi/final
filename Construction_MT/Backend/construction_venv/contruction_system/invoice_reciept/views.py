@@ -47,7 +47,7 @@ def delete(request,id):
 #add new
 @api_view(['POST'])
 def create(request):
-    user_id = request.data.get('user_id')
+    user_id = request.data.get('user')
     if not user_id:
         return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     serializer = PaymentSerializer(data=request.data)
