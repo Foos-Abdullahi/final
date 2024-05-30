@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Companies
+from .models import Service
 
 class ServiceSerializers(serializers.ModelSerializer):
     class Meta:
-        model=Companies
+        model=Service
         fields='__all__'
