@@ -3,6 +3,7 @@ from rest_framework.response import  Response
 from .serializers import PaymentSerializer
 from  .models import Payments
 from django.db.models import Q
+from Projects.models import Projects
 from rest_framework import status
 from Projects.models import Projects
 
@@ -54,12 +55,18 @@ def create(request):
     if not user_id:
         print(f"Not userID {user_id}")
         return Response("User ID is required.")
+
     serializer = PaymentSerializer(data=request.data)
     print(f"Searilizer ID userID {user_id}")
     if serializer.is_valid():
         print(f"Searilizer ID userID {user_id}")
         project_id = request.data.get('project')
         amount = float(request.data.get('amount', 0))
+
+        project = Projects.objects.get(id=project_id)
+        print("Amount:", amount)
+        print("Project Budget:", project.BudgetRemain)
+
         project = Projects.objects.get(id=project_id)
         print("Amount:", amount)
         print("Project Budget:", project.BudgetRemain)
@@ -78,5 +85,4 @@ def update(request,id):
      if serializer.is_valid():
           serializer.save()
      return  Response("The Reciept has been updated")
-    
    
