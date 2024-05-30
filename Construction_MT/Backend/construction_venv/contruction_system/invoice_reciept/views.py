@@ -54,18 +54,15 @@ def create(request):
     if not user_id:
         print(f"Not userID {user_id}")
         return Response("User ID is required.")
-
     serializer = PaymentSerializer(data=request.data)
     print(f"Searilizer ID userID {user_id}")
     if serializer.is_valid():
         print(f"Searilizer ID userID {user_id}")
         project_id = request.data.get('project')
         amount = float(request.data.get('amount', 0))
-
         project = Projects.objects.get(id=project_id)
         print("Amount:", amount)
         print("Project Budget:", project.BudgetRemain)
-
         if amount > project.BudgetRemain    :
             print("Payment amount exceeds project budget.")
             return Response("Payment amount exceeds project budget.")
