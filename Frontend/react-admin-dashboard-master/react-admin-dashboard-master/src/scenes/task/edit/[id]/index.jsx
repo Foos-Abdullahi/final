@@ -5,9 +5,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../../components/Header";
 
 const TaskEditForm = () => {
-
   const url = window.location.pathname;
-  const taskId = url.split("/").pop(); 
+  const taskId = url.split("/").pop();
   
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [projects, setProjects] = useState([]);
@@ -17,15 +16,8 @@ const TaskEditForm = () => {
   const [endDate, setEndDate] = useState("");
   const [status, setStatus]= useState("");
   const [issueDate, setIssueDate]= useState("");
-  const [users, setUsers] = useState("");
-  const [image,setImage] = useState([false])
+  const [image, setImage] = useState(null);
 
-  useEffect(() => {
-    const user = window.sessionStorage.getItem("userid");
-    if (user) {
-      setUsers(user);
-    }
-  }, []);
   const fetchProjects = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Projects/");
@@ -33,37 +25,12 @@ const TaskEditForm = () => {
         throw new Error("Failed to fetch projects");
       }
       const data = await response.json();
-      setProjects(data); // Assuming data is an array of projects with IDs and names
+      setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
   };
 
-
-    // useEffect(() => {
-  //   const fetchTask = async () => {
-  //     try {
-  //       const response = await fetch(`http://127.0.0.1:8000/Tasks/detils/${taskId}/`);
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch task details");
-  //       }
-  //       const data = await response.json();
-  //       console.log("Fetched task data:", data);
-  //       setSelectProject(data.project);
-  //       setTaskname(data.task_name);
-  //       setStartDate(data.start_date);
-  //       setEndDate(data.end_date);
-  //       setStatus(data.status);
-  //       setUserId(data.user);
-  //       setIssueDate(data.issue_date);
-  //       setImage(data.task_image)
-  //     } catch (error) {
-  //       console.error("Error fetching task details:", error);
-  //     }
-  //   };
-  //   fetchProjects();
-  //   fetchTask();
-  // }, []);
   useEffect(() => {
     const fetchTask = async () => {
       try {
@@ -72,40 +39,39 @@ const TaskEditForm = () => {
           throw new Error("Failed to fetch task details");
         }
         const data = await response.json();
-        console.log("Fetched task data:", data);
         setSelectProject(data.project);
         setTaskname(data.task_name);
         setStartDate(data.start_date);
         setEndDate(data.end_date);
         setStatus(data.status);
-        setUsers(data.user)
-        setIssueDate(data.issue_date)
-        setImage(data.task_image)
+        setIssueDate(data.issue_date);
+        setImage(data.task_image);
       } catch (error) {
         console.error("Error fetching task details:", error);
       }
     };
+
     fetchProjects();
     fetchTask();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendForm = async () => {
     try {
-        const res = await fetch(`http://127.0.0.1:8000/Tasks/update/${taskId}/`, {
+      const formData = new FormData();
+      formData.append('task_name', taskname);
+      formData.append('project', selectproject);
+      formData.append('start_date', startDate);
+      formData.append('end_date', endDate);
+      formData.append('status', status);
+      formData.append('issue_date', issueDate);
+      if (image) {
+        formData.append('task_image', image);
+      }
+
+      const res = await fetch(`http://127.0.0.1:8000/Tasks/update/${taskId}/`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          task_name: taskname,
-          project: selectproject,
-          start_date: startDate,
-          end_date: endDate,
-          status: status,
-          user: users,
-          issue_date: issueDate,
-          task_image: image,
-        }),
+        body: formData,
       });
 
       if (!res.ok) {
@@ -115,17 +81,17 @@ const TaskEditForm = () => {
 
       const data = await res.json();
       console.log("Response data:", data);
-      window.location.href="/task"
-      // window.history.back();
-      // Reload data from the server after successful form submission
+      window.location.href = "/task";
     } catch (error) {
       console.error("Error sending form:", error);
     }
   };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
   };
+
   return (
     <Box m="20px">
       <Header title="EDIT TASK" subtitle="Edit Task Details" />
@@ -147,7 +113,7 @@ const TaskEditForm = () => {
                 variant="filled"
                 label="Project"
                 onBlur={handleBlur}
-                onChange={(e)=>setSelectProject(e.target.value)}
+                onChange={(e) => setSelectProject(e.target.value)}
                 value={selectproject}
                 name="project"
                 sx={{ gridColumn: "span 4" }}
@@ -164,7 +130,7 @@ const TaskEditForm = () => {
                 type="text"
                 label="Task Name"
                 onBlur={handleBlur}
-                onChange={(e)=>setTaskname(e.target.value)}
+                onChange={(e) => setTaskname(e.target.value)}
                 value={taskname}
                 name="task_name"
                 sx={{ gridColumn: "span 4" }}
@@ -175,7 +141,7 @@ const TaskEditForm = () => {
                 type="date"
                 label="Start Date"
                 onBlur={handleBlur}
-                onChange={(e)=>setStartDate(e.target.value)}
+                onChange={(e) => setStartDate(e.target.value)}
                 value={startDate}
                 name="start_date"
                 sx={{ gridColumn: "span 4" }}
@@ -186,7 +152,7 @@ const TaskEditForm = () => {
                 type="date"
                 label="End Date"
                 onBlur={handleBlur}
-                onChange={(e)=>setEndDate(e.target.value)}
+                onChange={(e) => setEndDate(e.target.value)}
                 value={endDate}
                 name="end_date"
                 sx={{ gridColumn: "span 4" }}
@@ -197,7 +163,7 @@ const TaskEditForm = () => {
                 type="text"
                 label="Status"
                 onBlur={handleBlur}
-                onChange={(e)=>setStatus(e.target.value)}
+                onChange={(e) => setStatus(e.target.value)}
                 value={status}
                 name="status"
                 sx={{ gridColumn: "span 4" }}
@@ -208,27 +174,20 @@ const TaskEditForm = () => {
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={(e)=>setIssueDate(e.target.value)}
+                onChange={(e) => setIssueDate(e.target.value)}
                 value={issueDate}
                 name="issue_date"
                 sx={{ gridColumn: "span 4" }}
               />
-                 <input
-                type="number"
-                name="user_id"
-                value={users}
+
+              <input
+                type="file"
+                onChange={handleImageChange}
+                accept="image/*"
+                // value={image? image : null}
+
+                style={{ gridColumn: "span 4" }}
               />
-              <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Image"
-                  onBlur={handleBlur}
-                  onChange={handleImageChange}
-                  value={image}
-                  name="image"
-                  sx={{ gridColumn: "span 4" }}
-                />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -241,12 +200,24 @@ const TaskEditForm = () => {
     </Box>
   );
 };
+
 export default TaskEditForm;
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+ 
 // import React, { useState, useEffect } from "react";
 // import { Box, Button, TextField, MenuItem } from "@mui/material";
 // import { Formik } from "formik";
@@ -254,28 +225,21 @@ export default TaskEditForm;
 // import Header from "../../../../components/Header";
 
 // const TaskEditForm = () => {
-
 //   const url = window.location.pathname;
 //   const taskId = url.split("/").pop(); 
   
 //   const isNonMobile = useMediaQuery("(min-width:600px)");
-  
+//   const [task, setTask] = useState({
+//     project: "",
+//     task_name: "",
+//     start_date: "",
+//     end_date: "",
+//     status: "",
+//     issue_date: "",
+//     task_image: null,
+//   });
 //   const [projects, setProjects] = useState([]);
-//   const [selectproject, setSelectProject] = useState([]);
-//   const [taskname, setTaskname] = useState([]);
-//   const [startDate, setStartDate] = useState([]);
-//   const [endDate, setEndDate] = useState([]);
-//   const [status, setStatus]=useState("");
-//   const [issueDate, setIssueDate]=useState("");
-//   const [userId, setUserId] = useState("");
-//   const [image, setImage] = useState(false); // Added image state
-
-//   useEffect(() => {
-//     const user = window.sessionStorage.getItem("userid");
-//     if (user) {
-//       setUserId(user);
-//     }
-//   }, []);
+//   const [imageFile, setImageFile] = useState(null); // State to hold the image file
 
 //   const fetchProjects = async () => {
 //     try {
@@ -290,48 +254,38 @@ export default TaskEditForm;
 //     }
 //   };
 
-  // useEffect(() => {
-  //   const fetchTask = async () => {
-  //     try {
-  //       const response = await fetch(`http://127.0.0.1:8000/Tasks/detils/${taskId}/`);
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch task details");
-  //       }
-  //       const data = await response.json();
-  //       console.log("Fetched task data:", data);
-  //       setSelectProject(data.project);
-  //       setTaskname(data.task_name);
-  //       setStartDate(data.start_date);
-  //       setEndDate(data.end_date);
-  //       setStatus(data.status);
-  //       setUserId(data.user);
-  //       setIssueDate(data.issue_date);
-  //       setImage(data.task_image)
-  //     } catch (error) {
-  //       console.error("Error fetching task details:", error);
-  //     }
-  //   };
-  //   fetchProjects();
-  //   fetchTask();
-  // }, []);
+//   const fetchTask = async () => {
+//     try {
+//       const response = await fetch(`http://127.0.0.1:8000/Tasks/detils/${taskId}/`);
+//       if (response.ok) {
+//         const data = await response.json();
+//         setTask(data);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching task details:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchTask();
+//     fetchProjects();
+//   }, []);
+
 
 //   const sendForm = async () => {
 //     try {
+//       const formData = new FormData();
+//       for (const key in task) {
+//         formData.append(key, task[key]);
+//       }
+//       // Append the image file if it exists
+//       if (imageFile) {
+//         formData.append("task_image", imageFile);
+//       }
+
 //       const res = await fetch(`http://127.0.0.1:8000/Tasks/update/${taskId}/`, {
 //         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           task_name: taskname,
-//           project: selectproject,
-//           start_date: startDate,
-//           end_date: endDate,
-//           status: status,
-//           user_id: userId,
-//           issue_date: issueDate,
-//           image: image // Include image in the request body
-//         }),
+//         body: formData,
 //       });
 
 //       if (!res.ok) {
@@ -339,18 +293,24 @@ export default TaskEditForm;
 //         return;
 //       }
 
-//       const data = await res.json();
-//       console.log("Response data:", data);
-//       window.history.back();
-//       // Reload data from the server after successful form submission
+//       console.log("Task updated successfully!");
+//       window.location.href = "/task";
 //     } catch (error) {
 //       console.error("Error sending form:", error);
 //     }
 //   };
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   setImage(file);
-  // };
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setTask({ ...task, [name]: value });
+//   };
+
+//   const handleImageChange = (e) => {
+//     const file = e.target.files[0];
+//     setImageFile(file); // Set the image file in the state
+//     setTask({ ...task, task_image: file }); // Update the task with the image file
+//   };
+
 //   return (
 //     <Box m="20px">
 //       <Header title="EDIT TASK" subtitle="Edit Task Details" />
@@ -372,8 +332,8 @@ export default TaskEditForm;
 //                 variant="filled"
 //                 label="Project"
 //                 onBlur={handleBlur}
-//                 onChange={(e)=>setSelectProject(e.target.value)}
-//                 value={selectproject}
+//                 onChange={handleInputChange}
+//                 value={task.project}
 //                 name="project"
 //                 sx={{ gridColumn: "span 4" }}
 //               >
@@ -389,8 +349,8 @@ export default TaskEditForm;
 //                 type="text"
 //                 label="Task Name"
 //                 onBlur={handleBlur}
-//                 onChange={(e)=>setTaskname(e.target.value)}
-//                 value={taskname}
+//                 onChange={handleInputChange}
+//                 value={task.task_name}
 //                 name="task_name"
 //                 sx={{ gridColumn: "span 4" }}
 //               />
@@ -400,8 +360,8 @@ export default TaskEditForm;
 //                 type="date"
 //                 label="Start Date"
 //                 onBlur={handleBlur}
-//                 onChange={(e)=>setStartDate(e.target.value)}
-//                 value={startDate}
+//                 onChange={handleInputChange}
+//                 value={task.start_date}
 //                 name="start_date"
 //                 sx={{ gridColumn: "span 4" }}
 //               />
@@ -411,8 +371,8 @@ export default TaskEditForm;
 //                 type="date"
 //                 label="End Date"
 //                 onBlur={handleBlur}
-//                 onChange={(e)=>setEndDate(e.target.value)}
-//                 value={endDate}
+//                 onChange={handleInputChange}
+//                 value={task.end_date}
 //                 name="end_date"
 //                 sx={{ gridColumn: "span 4" }}
 //               />
@@ -422,8 +382,8 @@ export default TaskEditForm;
 //                 type="text"
 //                 label="Status"
 //                 onBlur={handleBlur}
-//                 onChange={(e)=>setStatus(e.target.value)}
-//                 value={status}
+//                 onChange={handleInputChange}
+//                 value={task.status}
 //                 name="status"
 //                 sx={{ gridColumn: "span 4" }}
 //               />
@@ -433,33 +393,22 @@ export default TaskEditForm;
 //                 type="date"
 //                 label="Issue Date"
 //                 onBlur={handleBlur}
-//                 onChange={(e)=>setIssueDate(e.target.value)}
-//                 value={issueDate}
+//                 onChange={handleInputChange}
+//                 value={task.issue_date}
 //                 name="issue_date"
 //                 sx={{ gridColumn: "span 4" }}
 //               />
 //               <TextField
 //                 fullWidth
 //                 variant="filled"
-//                 type="number"
-//                 label="User ID"
+//                 type="text"
+//                 label="Image"
+//                 accept="image/*"
 //                 onBlur={handleBlur}
-//                 onChange={(e)=>setUserId(e.target.value)}
-//                 value={userId}
-//                 name="user_id"
+//                 onChange={handleImageChange}
+//                 value={task.task_image} 
 //                 sx={{ gridColumn: "span 4" }}
 //               />
-//               <TextField
-              //   fullWidth
-              //   variant="filled"
-              //   type="text"
-              //   label="Image"
-              //   onBlur={handleBlur}
-              //   onChange={handleImageChange}
-              //   value={image}
-              //   name="image"
-              //   sx={{ gridColumn: "span 4" }}
-              // />
 //             </Box>
 //             <Box display="flex" justifyContent="end" mt="20px">
 //               <Button type="submit" color="secondary" variant="contained">

@@ -18,6 +18,7 @@ const RecieptEditForm = () => {
     amount: 0,// Default payment method ID
     issue_date: "",
   });
+ 
   const [clients, setClients] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [projects, setProjects] = useState([]);

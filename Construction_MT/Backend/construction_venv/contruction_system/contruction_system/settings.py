@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'Payment_Type.apps.PaymentTypeConfig',
     # 'Invoice.apps.InvoiceConfig',
     'companies.apps.CompaniesConfig',
+    'contact.apps.ContactConfig',
+    'service.apps.ServiceConfig',
     'rest_framework',
     'corsheaders'
     

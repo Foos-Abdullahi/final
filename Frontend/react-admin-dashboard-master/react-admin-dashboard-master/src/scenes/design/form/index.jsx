@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Snackbar, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import Header from "../../../components/Header";
@@ -12,7 +12,8 @@ const DesignForm = () => {
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [userId, setUserId] = useState("");
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   useEffect(() => {
     const user = window.sessionStorage.getItem("userid");
     if (user) {
@@ -47,12 +48,19 @@ const DesignForm = () => {
     console.log(amounts)
     console.log(issueDate)
     console.log(userId)
+    setSnackbarMessage("Material created successfully!");
+    setSnackbarOpen(true);
   };
 
   return (
     <Box m="20px">
       <Header title="CREATE Design" subtitle="Create a New Design" />
-
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
       <Formik
         onSubmit={sendForm}
         initialValues={{

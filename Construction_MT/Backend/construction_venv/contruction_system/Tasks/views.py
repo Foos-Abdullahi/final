@@ -4,6 +4,7 @@ from .serializer import TaskSerializer
 from .models import Tasks
 from django.db.models import Q
 from rest_framework import status
+import re
 
 @api_view(['GET'])
 def get_finished_tasks_by_project(request, project_id):
@@ -47,11 +48,21 @@ def Addnew(request):
         print(f"searlizer : {Serializer}")
     return  Response("New task is added")
 
-#Update
+
 @api_view(['PUT'])
-def Update_task(request,id):
-    tasks=Tasks.objects.get(id=id)
-    Serializer=TaskSerializer(instance=tasks,data=request.data)
-    if Serializer.is_valid():
-        Serializer.save()
-    return  Response('The task was updated')
+def Update_task(request, id):
+    try:
+        task = Tasks.objects.get(id=id)
+    except Tasks.DoesNotExist:
+        return Response("Task not found", status=status.HTTP_404_NOT_FOUND)
+
+    serializer = TaskSerializer(instance=task, data=request.data)
+    if serializer.is_valid():
+        # Modify the task image filename if it exists in the request data
+        if 'task_image' in request.FILES:
+            serializer.validated_data['task_image'] = re.sub(r'_[^_]*\.', '.',
+            request.FILES['task_image'].name)
+            
+        serializer.save()
+        return Response('The task was updated', status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

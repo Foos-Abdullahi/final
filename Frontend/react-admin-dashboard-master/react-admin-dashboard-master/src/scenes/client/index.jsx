@@ -43,6 +43,11 @@ const Client = () => {
       flex: 1,
     },
     {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+    },
+    {
       field: "client_image",
       headerName: "Client Image",
       flex: 1,
@@ -65,7 +70,7 @@ const Client = () => {
       flex: 1,
       renderCell: (params) => (
         <img
-          src={`/assets/${params.value}`} 
+          src={`/assets/ducoment/${params.value}`} 
           alt="DocumentImage"
           style={{ width: 50, height: 50 }}
         />

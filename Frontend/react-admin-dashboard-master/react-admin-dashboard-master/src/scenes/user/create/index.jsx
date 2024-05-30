@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -15,6 +15,8 @@ const CreateUser = () => {
   const [roleOptions, setRoleOptions] = useState([]);
   const [selectedRole, setSelectedRole] = useState("");
   const [issue_date, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     // Fetch employee options
@@ -70,12 +72,19 @@ const CreateUser = () => {
 
     const data = await res.json();
     console.log("Response data:", data);
+    setSnackbarMessage("Material created successfully!");
+    setSnackbarOpen(true);
   };
 
   return (
     <Box m="20px">
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
-
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
       <Formik
         onSubmit={sendForm}
         initialValues={initialValues}

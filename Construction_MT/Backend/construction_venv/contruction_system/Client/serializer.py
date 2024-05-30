@@ -3,5 +3,5 @@ from .models import Client
 
 class ClientSerializers(serializers.ModelSerializer):
     class Meta:
-        model=Client
-        fields='__all__'
+        model = Client
+        fields = '__all__'
