@@ -32,6 +32,7 @@ urlpatterns = [
     path('Design/',include('Design.urls')),
     path('Payment_Type/',include('Payment_Type.urls')),
     path('companies/',include('companies.urls')),
+    path('contact/',include('contact.urls')),
     # path('Invoice/',include('Invoice.urls')),
 ]
 

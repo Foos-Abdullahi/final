@@ -66,6 +66,15 @@ const ClientForm = () => {
     setSnackbarOpen(true);
   };
 
+  const handleClientFIle = (e) =>{
+    const file = e.target.files[0];
+    console.log(file.name);
+    if (file) {
+      setClientImage(file.name)
+      setDocumentImage(file.name)
+    }
+  }
+
   return (
     <Box m="20px">
       <Header title="CREATE CLIENT" subtitle="Create a New Client" />
@@ -104,7 +113,7 @@ const ClientForm = () => {
                 label="Document Image"
                 InputLabelProps={{ shrink: true }}
                 onBlur={handleBlur}
-                onChange={(e) => setDocumentImage(e.target.files[0])}
+                onChange={handleClientFIle}
                 error={!!touched.document_image && !!errors.document_image}
                 helperText={touched.document_image && errors.document_image}
                 sx={{ gridColumn: "span 4" }}
@@ -116,7 +125,7 @@ const ClientForm = () => {
                 label="Client Image"
                 InputLabelProps={{ shrink: true }}
                 onBlur={handleBlur}
-                onChange={(e) => setClientImage(e.target.files[0])}
+                onChange={handleClientFIle}
                 error={!!touched.clientImage && !!errors.clientImage}
                 helperText={touched.clientImage && errors.clientImage}
                 sx={{ gridColumn: "span 4" }}

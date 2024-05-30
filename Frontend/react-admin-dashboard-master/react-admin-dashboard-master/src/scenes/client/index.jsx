@@ -65,7 +65,7 @@ const Client = () => {
       flex: 1,
       renderCell: (params) => (
         <img
-          src={`/assets/${params.value}`} 
+          src={`/assets/ducoment/${params.value}`} 
           alt="DocumentImage"
           style={{ width: 50, height: 50 }}
         />
