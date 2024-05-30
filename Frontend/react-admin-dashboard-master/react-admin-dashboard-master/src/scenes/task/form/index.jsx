@@ -77,6 +77,11 @@ const TaskForm = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setTask_image(file.name);
+  };
+
   return (
     <Box m="20px">
       <Header title="CREATE Task" subtitle="Create a New Task" />
@@ -179,13 +184,15 @@ const TaskForm = () => {
                 name="issue_date"
                 sx={{ gridColumn: "span 4" }}
               />
-              <input
+              <TextField
                 fullWidth
                 variant="filled"
                 type="file"
                 label="Task Image"
+                accept="image/*"
                 onBlur={handleBlur}
-                onChange={(e) => setTask_image(e.target.files[0])}
+                onChange={handleImageChange}
+                name="task_image"
                 sx={{ gridColumn: "span 4" }}
               />
                     <input

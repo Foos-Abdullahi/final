@@ -58,11 +58,6 @@ def Update_task(request, id):
 
     serializer = TaskSerializer(instance=task, data=request.data)
     if serializer.is_valid():
-        # Modify the task image filename if it exists in the request data
-        if 'task_image' in request.FILES:
-            serializer.validated_data['task_image'] = re.sub(r'_[^_]*\.', '.',
-            request.FILES['task_image'].name)
-            
         serializer.save()
         return Response('The task was updated', status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

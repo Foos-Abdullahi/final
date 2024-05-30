@@ -51,7 +51,10 @@ const DesignForm = () => {
     setSnackbarMessage("Material created successfully!");
     setSnackbarOpen(true);
   };
-
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file.name);
+  };
   return (
     <Box m="20px">
       <Header title="CREATE Design" subtitle="Create a New Design" />
@@ -91,7 +94,7 @@ const DesignForm = () => {
                 type="file"
                 label="Image"
                 onBlur={handleBlur}
-                onChange={(e) => setImage(e.target.files[0])}
+                onChange={handleImageChange}
                 // value={images}
                 name="architecture"
                 error={!!touched.architecture && !!errors.architecture}

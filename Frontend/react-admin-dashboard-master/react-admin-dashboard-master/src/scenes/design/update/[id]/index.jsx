@@ -4,138 +4,142 @@ import { Formik } from 'formik';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Header from '../../../../components/Header';
 
-const PaymentMethodEdit = () => {
+const DesignEdit = () => {
+  const url = window.location.pathname;
+  const designId = url.split("/").pop();
+  
   const isNonMobile = useMediaQuery('(min-width:600px)');
-
-  const [DesignData, setDesignData] = useState({});
-  const [originalData, setOriginalData] = useState({});
-  const [EditDesignID, setEditDesignID] = useState('');
-//   const [Py_method_name, setPy_method_name] = useState("");
-  const [image, setimage] = useState("");
-  const [status, setstatus] = useState("");
-  const [amount, setamount] = useState("");
+  const [image, setImage] = useState(null);
+  const [status, setStatus] = useState("");
+  const [amount, setAmount] = useState("");
   const [issueDate, setIssueDate] = useState("");
 
-  useEffect(() => {
-    const fetchPaymentMethod = async () => {
-      try {
-        const path = window.location.pathname;
-        const id = path.substring(path.lastIndexOf('/') + 1);
-        const response = await fetch(`http://127.0.0.1:8000/Design/view/${id}/`);
-        if (!response.ok) {
-          console.log('No data');
-          return;
-        }
-        const data = await response.json();
-        setDesignData(data);
-        setOriginalData(data);
-        setEditDesignID(id)
-        console.log('Data:', data);
-      } catch (error) {
-        console.error('Error fetching Designs:', error);
-      }
-    };
-
-    fetchPaymentMethod();
-  }, []);
-  
-  const updatePaymentMethod = async () => {
-    alert(EditDesignID)
+  const fetchDesign = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/Design/update/${EditDesignID}/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          image: image || originalData.image,
-        status: status || originalData.status,
-        amount:amount || originalData.amount,
-          issue_date: issueDate || originalData.issue_date,
-        }),
-      });
-      console.log(image || originalData.image);
-      console.log(issueDate || originalData.issue_date);
-      if (response.ok) {
-        console.log('design updated successfully');
-        window.location.href = '/design';
-      } else {
-        console.error('Failed to update Design');
-        alert('Failed to update the Design. Please try again.');
+      const response = await fetch(`http://127.0.0.1:8000/Design/view/${designId}/`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch design details");
       }
+      const data = await response.json();
+      setImage(data.architecture);
+      setStatus(data.status);
+      setAmount(data.amount);
+      setIssueDate(data.issue_date);
+      
     } catch (error) {
-      console.error('Error updating Designs:', error);
-      alert('Error updating the Designs. Please try again.');
+      console.error("Error fetching design details:", error);
     }
   };
 
-  const handleFormSubmit = (values) => {
-    setDesignData(values);
-    updatePaymentMethod();
+  useEffect(() => {
+    fetchDesign();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const updateDesign = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('architecture', image);
+      formData.append('status', status);
+      formData.append('amount', amount);
+      formData.append('issue_date', issueDate);
+
+      const res = await fetch(`http://127.0.0.1:8000/Design/update/${designId}/`, {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        console.log(`Request failed with status ${res.status}`);
+        return;
+      }
+
+      const data = await res.json();
+      console.log("Response data:", data);
+      // window.location.href = "/design";
+    } catch (error) {
+      console.error("Error updating design:", error);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file.name);
   };
 
   return (
     <Box m="20px">
-      <Header title="EDIT Designs" subtitle="Edit an Existing Designs" />
+      <Header title="EDIT DESIGN" subtitle="Edit Design Details" />
 
-      <Formik onSubmit={handleFormSubmit} initialValues={DesignData}>
-        {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
+      <Formik initialValues={
+        { 
+          image: "",
+          status: "", 
+          amount: "", 
+          issue_date: "" 
+        }}
+        onSubmit={updateDesign}>
+        {({ handleBlur, handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <div>
+            <Box
+              display="grid"
+              gap="30px"
+              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              sx={{
+                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+              }}
+            >
               <TextField
                 fullWidth
+                required
                 variant="filled"
-                type="text"
-                label="image"
+                type="file"
+                label="Image"
                 onBlur={handleBlur}
-                onChange={(e) => setimage(e.target.value)}
-                value={image || originalData.image}
-                name="image"
-                error={touched.image && !!errors.image}
-                helperText={touched.image && errors.image}
+                onChange={handleImageChange}
+                name="architecture"
+                sx={{ gridColumn: "span 4" }}
               />
-
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="text"
-                label="status"
+                label="Status"
                 onBlur={handleBlur}
-                onChange={(e) => setstatus(e.target.value)}
-                value={status || originalData.status}
+                onChange={e => setStatus(e.target.value)}
+                value={status}
                 name="status"
-                error={touched.status && !!errors.status}
-                helperText={touched.status && errors.status}
+                sx={{ gridColumn: "span 4" }}
               />
-              
               <TextField
                 fullWidth
+                required
                 variant="filled"
-                type="text"
+                type="number"
                 label="Amount"
                 onBlur={handleBlur}
-                onChange={(e) => setamount(e.target.value)}
-                value={amount || originalData.amount}
+                onChange={e => setAmount(e.target.value)}
+                value={amount}
                 name="amount"
-                error={touched.amount && !!errors.amount}
-                helperText={touched.amount && errors.amount}
+                sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
+                required
                 variant="filled"
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={(e) => setIssueDate(e.target.value)}
-                value={issueDate || originalData.issue_date}
+                onChange={e => setIssueDate(e.target.value)}
+                value={issueDate}
                 name="issue_date"
-                error={touched.issue_date && !!errors.issue_date}
-                helperText={touched.issue_date && errors.issue_date}
+                sx={{ gridColumn: "span 4" }}
               />
-            </div>
+            </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Update Designs
+                Update Design
               </Button>
             </Box>
           </form>
@@ -145,4 +149,4 @@ const PaymentMethodEdit = () => {
   );
 };
 
-export default PaymentMethodEdit;
+export default DesignEdit;

@@ -4,7 +4,10 @@ from .serializers import PaymentSerializer
 from  .models import Payments
 from django.db.models import Q
 from Projects.models import Projects
+<<<<<<< HEAD
 
+=======
+>>>>>>> 61fd01d61b3fb74d14d550aac52b46d0601d2157
 from rest_framework import status
 from Projects.models import Projects
 
@@ -56,6 +59,10 @@ def create(request):
     if not user_id:
         print(f"Not userID {user_id}")
         return Response("User ID is required.")
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61fd01d61b3fb74d14d550aac52b46d0601d2157
     serializer = PaymentSerializer(data=request.data)
     print(f"Searilizer ID userID {user_id}")
     if serializer.is_valid():
@@ -67,7 +74,10 @@ def create(request):
         print("Amount:", amount)
         print("Project Budget:", project.BudgetRemain)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 61fd01d61b3fb74d14d550aac52b46d0601d2157
         project = Projects.objects.get(id=project_id)
         print("Amount:", amount)
         print("Project Budget:", project.BudgetRemain)
