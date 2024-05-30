@@ -51,14 +51,15 @@ const EmployeeEdit = () => {
     try {
       const formData = new FormData();
       formData.append('employee_name', employeeName);
+      formData.append('employee_Image', employeeImage);
       formData.append('position', position);
       formData.append('phone', phone);
       formData.append('email', Email);
       formData.append('salary', salary);
       formData.append('issue_date', issueDate);
-      if (employeeImage) {
-        formData.append('employee_image', employeeImage);
-      }
+      // if (employeeImage) {
+      //   formData.append('employee_image', employeeImage);
+      // }
 
       const res = await fetch(`http://127.0.0.1:8000/Employee/update/${employeeId}/`, {
         method: "PUT",
@@ -87,7 +88,7 @@ const EmployeeEdit = () => {
 
   const handleEmployeeImageChange = (e) => {
     const file = e.target.files[0];
-    setEmployeeImage(file);
+    setEmployeeImage(file.name);
   };
 
   return (

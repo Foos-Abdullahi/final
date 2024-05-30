@@ -34,7 +34,7 @@ import CreateUser from "../scenes/user/create";
 import CreatepaymentMethode from "../scenes/paymentMethod/create";
 import UpdatepaymentMethode from "../scenes/paymentMethod/update/[id]";
  import CreateDesign from "../scenes/design/form";
-import UpdateDesign from "../scenes/design/update/[id]";
+import DesignEdit from "../scenes/design/update/[id]";
 import CreateRole from "../scenes/role/create";
 import Createpy_type from "../scenes/paymentType/create";
 import Updatepy_type from "../scenes/paymentType/update/[id]";
@@ -123,7 +123,7 @@ function App() {
               <Route path="/role/update/:id" element={<UpdateRole />} />
               <Route path="/paymentType/create" element={<Createpy_type/>} />
               <Route path="/design/form" element={<CreateDesign />} />
-              <Route path="/design/update/:id" element={<UpdateDesign />} />
+              <Route path="/design/update/:id" element={<DesignEdit />} />
               <Route path="/paymentType/update/:id" element={<Updatepy_type />} />
               <Route path="/user/edit/:id" element={<EditUser/>}/>
               {/* <Route path="/user/edit/:id" element={<EditUser />} /> */}

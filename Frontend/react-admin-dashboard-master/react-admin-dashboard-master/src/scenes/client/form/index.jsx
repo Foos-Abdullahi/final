@@ -71,6 +71,13 @@ const ClientForm = () => {
     console.log(file.name);
     if (file) {
       setClientImage(file.name)
+    }
+  }
+  
+  const handleDocumentFIle = (e) =>{
+    const file = e.target.files[0];
+    console.log(file.name);
+    if (file) {
       setDocumentImage(file.name)
     }
   }
@@ -113,7 +120,7 @@ const ClientForm = () => {
                 label="Document Image"
                 InputLabelProps={{ shrink: true }}
                 onBlur={handleBlur}
-                onChange={handleClientFIle}
+                onChange={handleDocumentFIle}
                 error={!!touched.document_image && !!errors.document_image}
                 helperText={touched.document_image && errors.document_image}
                 sx={{ gridColumn: "span 4" }}

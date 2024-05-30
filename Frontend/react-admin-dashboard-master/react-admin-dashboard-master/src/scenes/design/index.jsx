@@ -46,7 +46,7 @@ const Designs = () => {
       flex: 1,
       renderCell: (params) => (
         <img
-          src={`/assets/design${params.value}`} 
+          src={`/assets/design/${params.value}`} 
           alt="Design"
           style={{ width: 50, height: 50 }}
         />

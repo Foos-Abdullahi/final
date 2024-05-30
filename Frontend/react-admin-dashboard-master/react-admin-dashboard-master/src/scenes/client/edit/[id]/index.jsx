@@ -246,16 +246,18 @@ const ClientEditForm = () => {
     try {
       const formData = new FormData();
       formData.append('client_name', clientName);
+      formData.append('document_image', documentImage);
+      formData.append('client_image', clientImage);
       formData.append('password', password);
       formData.append('phone', phone);
       formData.append('email', Email);
       formData.append('issue_date', issueDate);
-      if (documentImage) {
-        formData.append('document_image', documentImage);
-      }
-      if (clientImage) {
-        formData.append('client_image', clientImage);
-      }
+      // if (documentImage) {
+      //   formData.append('document_image', documentImage);
+      // }
+      // if (clientImage) {
+      //   formData.append('client_image', clientImage);
+      // }
 
       const res = await fetch(`http://127.0.0.1:8000/Client/update/${clientId}/`, {
         method: "PUT",
@@ -277,13 +279,16 @@ const ClientEditForm = () => {
 
   const handleDocumentImageChange = (e) => {
     const file = e.target.files[0];
-    setDocumentImage(file);
-  };
+    setDocumentImage(file.name);
 
+  };
   const handleClientImageChange = (e) => {
     const file = e.target.files[0];
-    setClientImage(file);
+    setClientImage(file.name);
+
+
   };
+  
 
   return (
     <Box m="20px">
@@ -317,7 +322,7 @@ const ClientEditForm = () => {
                 fullWidth
                 required
                 variant="filled"
-                type="password"
+                type="text"
                 label="Password"
                 onBlur={handleBlur}
                 onChange={e => setPassword(e.target.value)}

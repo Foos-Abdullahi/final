@@ -61,13 +61,14 @@ const TaskEditForm = () => {
       const formData = new FormData();
       formData.append('task_name', taskname);
       formData.append('project', selectproject);
+      formData.append('task_image', image);
       formData.append('start_date', startDate);
       formData.append('end_date', endDate);
       formData.append('status', status);
       formData.append('issue_date', issueDate);
-      if (image) {
-        formData.append('task_image', image);
-      }
+      // if (image) {
+      //   formData.append('task_image', image);
+      // }
 
       const res = await fetch(`http://127.0.0.1:8000/Tasks/update/${taskId}/`, {
         method: "PUT",
@@ -89,7 +90,7 @@ const TaskEditForm = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setImage(file);
+    setImage(file.name);
   };
 
   return (
@@ -180,13 +181,16 @@ const TaskEditForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
 
-              <input
+              <TextField
+                fullWidth
+                variant="filled"
                 type="file"
-                onChange={handleImageChange}
+                label="Employee Image"
                 accept="image/*"
-                // value={image? image : null}
-
-                style={{ gridColumn: "span 4" }}
+                onBlur={handleBlur}
+                onChange={handleImageChange}
+                name="task_image"
+                sx={{ gridColumn: "span 4" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">

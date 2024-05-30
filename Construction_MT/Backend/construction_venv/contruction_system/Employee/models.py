@@ -4,7 +4,7 @@ import datetime
 
 class Employee(models.Model):
     employee_name = models.CharField(max_length=100)
-    employee_Image = models.ImageField(max_length=100)
+    employee_Image = models.CharField(max_length=100)
     position = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     email = models.EmailField(unique=True, default=None) 
