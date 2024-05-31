@@ -20,6 +20,7 @@ const ProjecTDetail = () => {
   const [loading, setLoading] = useState(true);
   const [materials, setMaterials] = useState([]);
   const [project, setProject] = useState({});
+  const [invoices, setInvoices] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [design, setDesign] = useState({});
   const [total, setTotal] = useState(0);
@@ -54,7 +55,6 @@ const ProjecTDetail = () => {
         totalAmount += parseFloat(material.sub_total);
       });
       setTotal(totalAmount);
-
       const tasksResponse = await fetch(`http://127.0.0.1:8000/Tasks/`);
       const taskData = await tasksResponse.json();
       setTasks(taskData);

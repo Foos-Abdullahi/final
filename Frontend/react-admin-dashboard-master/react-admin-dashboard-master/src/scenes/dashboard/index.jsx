@@ -51,6 +51,21 @@ const Dashboard = () => {
         console.error("Error fetching Clinet data:", error);
       }
     };
+    const fetchPaymentMethod = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/invoice_reciept/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch project data");
+        }
+        // Calculate the total Amout
+        const invoiceData = await response.json();
+            const totalAmount = invoiceData
+              .reduce((sum, invoice) => sum + parseFloat(invoice.amount), 0);
+            setTotalPayment(totalAmount);
+      } catch (error) {
+        console.error("Error fetching project data:", error);
+      }
+    };
         // Fetch project data from your backend API
     const fetchProjects = async () => {
       try {
@@ -62,30 +77,31 @@ const Dashboard = () => {
         const finishedProjects = data.filter(project => project.status === "finish");
                 // Set the total number of project finished
         setTotalFinishedProjects(finishedProjects.length);
-        const finishedProjectIds = finishedProjects.map(project => project.id);
+        // const finishedProjectIds = finishedProjects.map(project => project.id);
     // Fetch invoice reciept data from your backend API
-        const fetchPaymentMethod = async () => {
-          try {
-            const response = await fetch("http://127.0.0.1:8000/invoice_reciept/");
-            if (!response.ok) {
-              throw new Error("Failed to fetch payment data");
-            }
-            const invoiceData = await response.json();
-                    // Set the total amount of invoice reciept
-            const totalAmount = invoiceData.filter(invoice => finishedProjectIds.includes(invoice.project))
-              .reduce((sum, invoice) => sum + parseFloat(invoice.amount), 0);
-            setTotalPayment(totalAmount);
-          } catch (error) {
-            console.error("Error fetching payment data:", error);
-          }
-        };
-        fetchPaymentMethod();
+        // const fetchPaymentMethod = async () => {
+        //   try {
+        //     const response = await fetch("http://127.0.0.1:8000/invoice_reciept/");
+        //     if (!response.ok) {
+        //       throw new Error("Failed to fetch payment data");
+        //     }
+        //     const invoiceData = await response.json();
+        //             // Set the total amount of invoice reciept
+        //     const totalAmount = invoiceData.filter(invoice => finishedProjectIds.includes(invoice.project))
+        //       .reduce((sum, invoice) => sum + parseFloat(invoice.amount), 0);
+        //     setTotalPayment(totalAmount);
+        //   } catch (error) {
+        //     console.error("Error fetching payment data:", error);
+        //   }
+        // };
+        // fetchPaymentMethod();
       } catch (error) {
         console.error("Error fetching project data:", error);
       }
     };
     fetchClinet();
     fetchEmployee();
+    fetchPaymentMethod();
     fetchProjects()
     const storedRole = window.sessionStorage.getItem("UserRole");
     if (storedRole) {
@@ -227,7 +243,6 @@ export default Dashboard;
     //     // Calculate the total Amout
     //     const invoiceData = await response.json();
     //         const totalAmount = invoiceData
-    //           .filter(invoice => finishedProjectIds.includes(invoice.projectId))
     //           .reduce((sum, invoice) => sum + parseFloat(invoice.amount), 0);
     //         setTotalPayment(totalAmount);
     //   } catch (error) {
