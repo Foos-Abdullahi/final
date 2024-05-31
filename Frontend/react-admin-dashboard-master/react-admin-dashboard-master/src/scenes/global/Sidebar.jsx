@@ -11,6 +11,7 @@ import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ReportIcon from "@mui/icons-material/Report";
+import DesignServicesOutlined from "@mui/icons-material/DesignServicesOutlined";
 import ProjectIcon from "@mui/icons-material/Engineering";
 import MaterialIcon from "@mui/icons-material/WorkOutline";
 import ClientIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -191,6 +192,13 @@ const Sidebar = () => {
               setSelected={setSelected}
             /> */}
              {/* Add icons for other titles */}
+             <Item
+              title="Service"
+              to="/service/form"
+              icon={<DesignServicesOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Item
               title="Project"
               to="/project"
