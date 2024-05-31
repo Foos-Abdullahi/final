@@ -1,7 +1,28 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
 
-const ProjectSingle = ({ title, category, image }) => {
+const ProjectSingle = ({ title }) => {
+	const [design, setDesign] = useState(null);
+
+	useEffect(() => {
+		fetchDesign();
+	}, []);
+
+	const fetchDesign = async () => {
+		try {
+			const response = await fetch("http://127.0.0.1:8000/Design/");
+			const data = await response.json();
+			const design = data.find((design) => design.title === title);
+			const designImage = data.find((design) => design.architecture);
+			const image = data[0]['architecture'];
+			setDesign(image);
+			console.log(image);
+		} catch (error) {
+			console.error("Error fetching design:", error);
+		}
+	};
+
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -14,20 +35,17 @@ const ProjectSingle = ({ title, category, image }) => {
 		>
 			<Link to="" aria-label="Single Project">
 				<div className="rounded-xl shadow-lg hover:shadow-xl cursor-pointer mb-10 sm:mb-0 bg-secondary-light dark:bg-ternary-dark">
-					<div>
+					{design && (
 						<img
-							src={image}
+							src={`https://raw.githubusercontent.com/Foos-Abdullahi/final/main/Frontend/react-admin-dashboard-master/react-admin-dashboard-master/public/assets/design${design}`}
 							className="rounded-t-xl border-none"
 							alt="Single Project"
 						/>
-					</div>
+					)}
 					<div className="text-center px-4 py-6">
 						<p className="font-general-medium text-lg md:text-xl text-ternary-dark dark:text-ternary-light mb-2">
 							{title}
 						</p>
-						<span className="text-lg text-ternary-dark dark:text-ternary-light">
-							{category}
-						</span>
 					</div>
 				</div>
 			</Link>

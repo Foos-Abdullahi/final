@@ -1,12 +1,28 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 // import { ProjectsContext } from '../../context/CompProjectscontext';
  //import UIImage2 from '../images/1.jpg';
 // import UIImage22 from './1.jpg';
 
 function ServicesGrid() {
-  const [projects] = useState([
+  const [services, setservice] = useState([]);
+	const [designs, setDesigns] = useState([]);
+
+	useEffect(() => {
+		fetchservice();
+	}, []);
+
+	const fetchservice = async () => {
+		try {
+			const response = await fetch("http://127.0.0.1:8000/service/");
+			const data = await response.json();
+			setservice(data);
+		} catch (error) {
+			console.error("Error fetching service:", error);
+		}
+	};
+  const [projectss] = useState([
     {
       title: "Project 1",
       img: "../images/1.jpg",
@@ -58,19 +74,24 @@ function ServicesGrid() {
             View All
           </a> */}
         </div>
-        <div className="text-center  projects-wrapper">
-          {projects.map((project, i) => (
+        <div className="text-center">
+				<p className="font-general-medium text-2xl sm:text-4xl mb-1 text-ternary-dark dark:text-ternary-light">
+					City Construction Services
+				</p>
+			</div>
+        <div className="mt-10 sm:mt-16 text-center  projects-wrapper">
+          {services.map((service, i) => (
             <div className="text-center project" key={i}>
-              <div className="text-center img-container">
-                <img src={project.img} alt={project.title} />
+              <div className="font-general-medium text-lg md:text-xl text-ternary-dark dark:text-ternary-light mb-2 text-center img-container">
+                <img src={service.img} alt={service.service_name} />
               </div>
               <div className="text-center description">
-                <h4 className="text-center font-general-medium text-2xl sm:text-4xl mb-1 text-ternary-dark dark:text-ternary-light">{project.title}</h4>
+                <h4 className="text-center font-general-medium text-2xl sm:text-4xl mb-1 text-ternary-dark dark:text-ternary-light">{service.title}</h4>
                 <div className="links">
-                  <a href={project.gLink} target="_blank" rel="noreferrer">
+                  <a href={service.gLink} target="_blank" rel="noreferrer">
                     <i className="fab fa-github"></i>
                   </a>
-                  <a href={project.lLink} target="_blank" rel="noreferrer">
+                  <a href={service.lLink} target="_blank" rel="noreferrer">
                     <i className="fa fa-globe"></i>
                   </a>
                 </div>
@@ -88,5 +109,6 @@ function ServicesGrid() {
     </section>
   );
 }
+
 
 export default ServicesGrid;
