@@ -1492,7 +1492,7 @@ Ensure the default browser behavior of the `hidden` attribute.
   justify-content: space-between;
 }
 .projects .title h3 {
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: 24px;
   line-height: 30px;
   font-weight: 900;
@@ -1506,7 +1506,7 @@ Ensure the default browser behavior of the `hidden` attribute.
     var(--red-dark) 21%,
     var(--red) 100%
   );
-  text-transform: uppercase;
+  text-transform: capitalize;
   border: 1px solid var(--red-dark);
   font-weight: 600;
   color: #fff;
@@ -1523,6 +1523,7 @@ Ensure the default browser behavior of the `hidden` attribute.
   
 }
 .projects-wrapper .project {
+  align-items: center;
   flex: 0 0 calc(50% - 10px);
   max-width: calc(50% - 10px);
   width: 100%;
@@ -1537,7 +1538,7 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1e1e1e;
+  background-color: #042939;
   padding: 60px 0px;
   overflow: hidden;
   box-shadow: 0 9px 10px rgba(0, 0, 0, 0.5);
@@ -1559,7 +1560,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .project .description {
   margin: 15px 0px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   border-bottom: 2px solid var(--red-dark);
   border-top: 2px solid var(--red-dark);
@@ -1568,7 +1569,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .project .description h4 {
   font-size: 20px;
   font-weight: 900;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 .project .links a {
   margin-right: 15px;
