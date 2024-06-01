@@ -1700,3 +1700,127 @@ Ensure the default browser behavior of the `hidden` attribute.
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
 } */
+
+/* Footer  styles css */
+.text-primary {
+  color: #00df9a;
+}
+
+.text-secondary {
+  color: #ffffff;
+}
+
+.bg-dark {
+  background-color: #000300;
+}
+
+/* Footer specific styles */
+.footer {
+  padding: 4rem 1rem;
+  color: #cccccc;
+  background-color: #102e48;
+}
+
+.footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer h1 {
+  font-size: 2rem;
+  color: #00df9a;
+  margin: 1rem 0;
+  margin-left: 0;
+}
+
+.footer p {
+  margin-top: 0.5rem;
+  justify-content: space-between;
+  margin-left: 0;
+  font-size: 1rem;
+  color: #cccccc;
+  max-width: 900px; /* Adjust width to ensure two lines */
+  line-height: 1.5; /* Adjust line height for better readability */
+}
+
+.footer .social-links {
+  display: flex;
+  justify-content: space-between;
+  max-width: 50px;
+  margin: 1.5rem 0;
+  margin-left: 0; 
+}
+
+.footer .social-links a {
+  color: #cccccc;
+  transition: color 0.3s ease;
+}
+
+.footer .social-links a:hover {
+  color: #00df9a;
+}
+
+.footer .footer-sections {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  margin-left: 20rem; /* section margin style */
+}
+
+.footer .footer-sections div {
+  flex: 1;
+  margin-right: 10rem;
+}
+
+.footer .footer-sections h6 {
+  font-size: 1.25rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.footer .footer-sections ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer .footer-sections ul li {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #cccccc;
+}
+
+.footer .footer-sections ul li:hover {
+  color: #00df9a;
+}
+
+/* Copyright section */
+.footer .copyright {
+  margin-top: 2rem;
+  border-top: 1px solid #4a4a4a;
+  padding-top: 1rem;
+  text-align: center;
+  color: #cccccc;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .footer .footer-sections {
+      flex-direction: column;
+      margin-left: 20px;
+  }
+
+  .footer .footer-sections div {
+      margin-bottom: 1.5rem;
+      margin-right: 0;
+  }
+}
+
+/* AppFooter.css */
+.logo {
+  width: 6rem; /* Equivalent to w-36 in Tailwind */
+  margin-right: 0rem; /* Adjust the left margin as needed */
+}
+
+.text-secondary-light {
+  color: #ffffff; /* Replace with your desired light color */
+}
