@@ -1569,7 +1569,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .project .description h4 {
   font-size: 20px;
   font-weight: 900;
-  text-transform: capitalize;
+  text-transform: lowercase;
 }
 .project .links a {
   margin-right: 15px;
