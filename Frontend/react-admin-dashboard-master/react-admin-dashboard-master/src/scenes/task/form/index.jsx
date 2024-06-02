@@ -15,13 +15,29 @@ const TaskForm = () => {
   const [issue_date,setIssue_date]=useState(new Date().toISOString().substr(0, 10));
   const [task_image,setTask_image]=useState([null]);
   const [userId, setUserId] = useState("");
+  const [userRole, setUserRole] = useState("");
 
+
+  
   useEffect(() => {
     const user = window.sessionStorage.getItem("userid");
+    const role = window.sessionStorage.getItem("UserRole");
     if (user) {
       setUserId(user);
     }
+    if (role) {
+      setUserRole(role);
+    }
   }, []);
+
+  useEffect(() => {
+    if (userRole === "project_manager") {
+      fetchProjectManagerProjects();
+    } else {
+      fetchProjects();
+    }
+  }, [userRole]);
+
   const fetchProjects = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Projects/");
@@ -30,28 +46,51 @@ const TaskForm = () => {
       }
       const data = await response.json();
       setProjects(data); // Assuming data is an array of projects with IDs and names
+      console.log("Projects: ",data);
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
   };
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
+  // useEffect(() => {
+  //   fetchProjects();
+  // }, []);
+  const fetchProjectManagerProjects = async () => {
+    try {
+      const projectManagerId = window.sessionStorage.getItem("userid");
+      if (!projectManagerId) {
+        console.error("Project manager ID not found in sessionStorage");
+        return;
+      }
+      const response = await fetch(`http://127.0.0.1:8000/Projects/get_project_managerBy_id/?pmId=${projectManagerId}`);
+      const data = await response.json();
+      setProjects(data);
+      // console.log("Projects for project manager:", data);
+    } catch (error) {
+      console.error("Error fetching project manager projects:", error);
+    }
+  };
   const sendForm = async () => {
+    // console.log("Response data:", data);
+      console.log("userId: ",userId);
+      console.log("project: ",selectproject);
+      console.log("taskname: ",taskname);
+      console.log("issue_date: ",issue_date);
+      console.log("task_image: ",task_image);
+      console.log("end_date: ",end_date);
     try {
       const formData = new FormData();
       formData.append("project", selectproject);
       formData.append("task_name", taskname);
+      formData.append("task_image", task_image);
       formData.append("start_date", startdate);
       formData.append("end_date", end_date);
       formData.append("status", status);
       formData.append("issue_date", issue_date);
       formData.append("user_id",userId); 
-      if (task_image) {
-        formData.append("task_image", task_image);
-      }
+      // if (task_image) {
+      //   formData.append("task_image", task_image);
+      // }
       const res = await fetch("http://127.0.0.1:8000/Tasks/addnew/", {
         method: "POST",
         body: formData,
@@ -112,23 +151,26 @@ const TaskForm = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              <TextField
-                select
-                fullWidth
-                variant="filled"
-                label="Project"
-                onBlur={handleBlur}
-                onChange={(e) => setSelectProject(e.target.value)}
-                value={selectproject}
-                name="project"
-                sx={{ gridColumn: "span 4" }}
-              >
-                {projects.map((project) => (
-                  <MenuItem key={project.id} value={project.id}>
-                    {project.project_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              {(userRole === "Admin" || userRole === "project_manager") && (
+                <TextField
+                              select
+                              fullWidth
+                              variant="filled"
+                              label="Project"
+                              onBlur={handleBlur}
+                              onChange={(e) => setSelectProject(e.target.value)}
+                              value={selectproject}
+                              name="project"
+                              sx={{ gridColumn: "span 4" }}
+                            >
+                              {projects.map((project) => (
+                                <MenuItem key={project.id} value={project.id}>
+                                  {project.project_name}
+                                </MenuItem>
+                              ))}
+                </TextField>
+              )}
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -196,7 +238,7 @@ const TaskForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
                     <input
-                type="hidden"
+                type="text"
                 name="user_id"
                 value={userId}
               />

@@ -24,6 +24,16 @@ def search(request):
     return Response(serializer.data)
 
 
+@api_view(["GET"])
+def get_usersBy_role_name(request):
+    role_name = request.query_params.get('role', None)
+    if role_name:
+        users = User.objects.filter(role_id__Role_name=role_name)
+        serialized_users = UserSearilizer(users, many=True)
+        return Response(serialized_users.data)
+    else:
+        return Response({"error": "Role Name not provided"}, status=400)
+
 @api_view(['GET'])
 def getAll(request):
     users = User.objects.all()

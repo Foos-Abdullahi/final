@@ -11,6 +11,8 @@ const CreateProject = () => {
   const [projectName, setProjectName] = useState("");
   const [clientOptions, setClientOptions] = useState([]);
   const [designOptions, setDesignOptions] = useState([]);
+  const [projectManagers, setProjectManagers] = useState([]);
+  const [selectedProjectManager, setSelectedProjectManager] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedDesign, setSelectedDesign] = useState("");
   const [status, setStatus] = useState("");
@@ -22,7 +24,6 @@ const CreateProject = () => {
   const [endDate, setEndDate] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const [userId, setUserId] = useState("");
-
   useEffect(() => {
     const user = window.sessionStorage.getItem("userid");
     if (user) {
@@ -33,6 +34,7 @@ const CreateProject = () => {
     // Fetch client and design options
     fetchClientOptions();
     fetchDesignOptions();
+    fetchProjectManagers();
   }, []);
 
   const fetchClientOptions = async () => {
@@ -48,6 +50,22 @@ const CreateProject = () => {
     }
   };
 
+
+  
+  const fetchProjectManagers = async () => {
+      try {
+          const response = await fetch(`http://127.0.0.1:8000/user/get_usersBy_role_name/?role=project_manager`);
+          if (!response.ok) {
+              throw new Error("Failed to fetch project managers");
+          }
+          const data = await response.json();
+          setProjectManagers(data);
+          console.log("lllllllllllllllll:",data);
+      } catch (error) {
+          console.error("Error fetching project managers:", error);
+      }
+  };
+  
   const fetchDesignOptions = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Design/");
@@ -80,6 +98,7 @@ const CreateProject = () => {
         project_No: projectNo,
         issue_date: issueDate,
         user_id: userId,
+        project_Manager: selectedProjectManager,
       }),
     });
 
@@ -127,6 +146,9 @@ const CreateProject = () => {
           start_date: "",
           end_date: "",
           issue_date: "",
+          user_id: "",
+          project_Manager:"",
+
         }}
       >
         {({
@@ -156,6 +178,25 @@ const CreateProject = () => {
                 name="project_name"
                 sx={{ gridColumn: "span 4" }}
               />
+
+              <TextField
+                fullWidth
+                required
+                select
+                variant="filled"
+                label="Project Manager"
+                onBlur={handleBlur}
+                onChange={(e) => setSelectedProjectManager(e.target.value)}
+                value={selectedProjectManager}
+                name="project_Manager"
+                sx={{ gridColumn: "span 4" }}
+                >
+                {projectManagers.map((manager) => (
+                <MenuItem key={manager.id} value={manager.id}>
+                  {manager.UserName}
+                </MenuItem>
+                ))}
+              </TextField>
               <TextField
                 fullWidth
                 required

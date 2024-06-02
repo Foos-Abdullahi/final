@@ -47,6 +47,7 @@ const Sidebar = () => {
   let session = window.sessionStorage; 
   const [userRole, setUserRole] = useState("");
   const [employees, setEmployees] = useState("");
+  const [Username, setUsername] = useState("");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -55,6 +56,8 @@ const Sidebar = () => {
     // Retrieve user role from session storage
     const storedRole = window.sessionStorage.getItem("UserRole");
     const EmpImage=window.sessionStorage.getItem('EmployeeImage')
+    const username=window.sessionStorage.getItem('UserName')
+    setUsername(username);
     setUserRole(storedRole);
     setEmployees(EmpImage);
   }, []);
@@ -128,7 +131,7 @@ const Sidebar = () => {
                   sx={{ m: "10px 0 0 0" }}
                 >
                   {/* Ed Roh */}
-                  {session.getItem("UserName")} 
+                  {Username} 
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   {/* VP Fancy Admin */}
@@ -148,34 +151,6 @@ const Sidebar = () => {
             selected={selected}
             setSelected={setSelected}
           />
-            {/* <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Data
-            </Typography>
-            <Item
-              title="Manage Team"
-              to="/team"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Contacts Information"
-              to="/contacts"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Invoices Balances"
-              to="/invoices"
-              icon={<ReceiptOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
 
             <Typography
               variant="h6"
@@ -310,11 +285,25 @@ const Sidebar = () => {
             </SubMenu>
             </>
             )}
-             {userRole === 'HR' &&(<>
+             {userRole === 'project_manager' &&(<>
               <Item
-              title="Employee"
-              to="/employee"
-              icon={<EmployeeIcon />}
+              title="Project"
+              to="/project"
+              icon={<ProjectIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Material"
+              to="/material"
+              icon={<MaterialIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+                         <Item
+              title="Task"
+              to="/task"
+              icon={<TaskIcon />}
               selected={selected}
               setSelected={setSelected}
             />

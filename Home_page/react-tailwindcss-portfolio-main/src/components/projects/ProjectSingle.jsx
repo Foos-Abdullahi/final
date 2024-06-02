@@ -33,7 +33,11 @@ const ProjectSingle = ({ title,imageSource }) => {
 		>
 			<Link to="" aria-label="Single Project">
 				<div className="rounded-xl shadow-lg hover:shadow-xl cursor-pointer mb-10 sm:mb-0 bg-secondary-light dark:bg-ternary-dark">
+<<<<<<< HEAD
 				{design && (
+=======
+					{design && (
+>>>>>>> 9a63c91427720704d79cb7842fba5f8c986a45ae
 						<img height={400}
 						width={400}
 							src={imageSource}

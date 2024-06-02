@@ -12,5 +12,8 @@ path('searchProjectNo/', views.searchProjectNo),
 path('searchDatesBetween/', views.search_dates_between),
 path('searchByClientID/', views.search_by_client_id),
 path('get_project_managerBy_id/', views.get_project_managerBy_id, name='get_project_managerBy_id'),
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9a63c91427720704d79cb7842fba5f8c986a45ae
 ]

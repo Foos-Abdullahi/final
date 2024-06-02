@@ -4,7 +4,6 @@ import CounterItem from './CounterItem';
 
 const AboutCounter = () => {
   const [totalEmployee, setTotalEmployee] = useState(0);
-//   const [totalFinishedProjects, setTotalFinishedProjects] = useState(0);
   const [totalFinishedProjects, setTotalFinishedProjects] = useState(0);
   const [totalClient, setTotalClient] = useState(0);
   const fetchEmployee = async () => {
