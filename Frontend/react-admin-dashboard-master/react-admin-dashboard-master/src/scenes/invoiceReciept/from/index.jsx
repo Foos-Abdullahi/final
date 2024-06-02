@@ -14,13 +14,16 @@ const ReciptForm = () => {
   const [selectproject,setSelectProject]= useState("");
   const [amount,setAmount]=useState("");
   const [issue_date,setIssue_date]=useState(new Date().toISOString().substr(0, 10));
-  const [userId, setUserId] = useState("");
+  const [empName, setEmpName] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
+
   useEffect(() => {
-    const user = window.sessionStorage.getItem("userid");
-    if (user) {
-      setUserId(user);
+    const empName = window.sessionStorage.getItem("EmployeeName");
+
+    if (empName) {
+      setEmpName(empName);
     }
   }, []);
   
@@ -81,7 +84,8 @@ const ReciptForm = () => {
           project: selectproject,
           amount: amount,
           issue_date: issue_date,
-          user_id: userId,
+          name: empName,
+          registration_type:"user"
         }),
       });
 
@@ -97,7 +101,7 @@ const ReciptForm = () => {
       console.log("selectpayment_method:",selectpayment_method);
       console.log("amount:",amount);
       console.log("issue_date:",issue_date);
-      console.log("user id:",userId);
+      console.log("emp Name:",empName);
       setSnackbarMessage("Material created successfully!");
       setSnackbarOpen(true);
       // window.history.back();
@@ -215,9 +219,9 @@ const ReciptForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
                   <input
-                type="hidden"
-                name="user_id"
-                value={userId}
+                type="text"
+                name="name"
+                value={empName}
               />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">

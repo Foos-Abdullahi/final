@@ -11,4 +11,6 @@ path('search/', views.search),
 path('searchProjectNo/', views.searchProjectNo),
 path('searchDatesBetween/', views.search_dates_between),
 path('searchByClientID/', views.search_by_client_id),
+path('get_project_managerBy_id/', views.get_project_managerBy_id, name='get_project_managerBy_id'),
+
 ]

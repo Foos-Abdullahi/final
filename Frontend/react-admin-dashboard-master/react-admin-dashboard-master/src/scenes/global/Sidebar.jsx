@@ -116,7 +116,7 @@ const Sidebar = () => {
                   width="100px"
                   height="100px"
                   // src={`../../assets/user.png`}
-                  src={`../../assets/employee${employees}`}
+                  src={`../../assets/employee/${employees}`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>

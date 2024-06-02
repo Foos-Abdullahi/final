@@ -12,13 +12,18 @@ const AllInvoiceReceipts = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [clients, SetClients] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
+    const storedRole = window.sessionStorage.getItem("UserRole");
+    setUserRole(storedRole);
      fetchProjects();
     fetchClients();
     fetchInvoiceReceipts();
     fetchPaymentMethods();
   }, []);
+
+  
 
   const fetchInvoiceReceipts = async () => {
     try {
@@ -61,7 +66,7 @@ const AllInvoiceReceipts = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const columns = [
+  const columns = userRole === "Admin" ? [
     { field: "id", headerName: "ID" },
     {
       field: "clients",
@@ -69,7 +74,81 @@ const AllInvoiceReceipts = () => {
       flex: 1,
       valueGetter: (params) => {
         const client = clients.find((Client) => Client.id === params.row.client);
-        console.log(client);
+        return client ? client.client_name : "";
+      },
+    },
+    {
+      field: "payment_method",
+      headerName: "Payment Method",
+      flex: 1,
+      valueGetter: (params) => {
+        const paymentMethod = paymentMethods.find((method) => method.id === params.row.payment_method);
+        return paymentMethod ? paymentMethod.Py_method_name : "";
+      },
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      flex: 1,
+      valueGetter: (params) => {
+        const proj= projects.find((pro) => pro.id === params.row.project);
+        return proj ? proj.project_name : "";
+      },
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography color={colors.greenAccent[500]}>${params.row.amount}</Typography>
+      ),
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      // Other fields for admin
+    },
+    {
+      field: "registration_type",
+      headerName: "Registration Type",
+      flex: 1,
+      // Other fields for admin
+    },
+    {
+      field: "issue_date",
+      headerName: "Issue Date",
+      flex: 1,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params) => (
+        <Box>
+          <IconButton
+            component={Link}
+            to={`/invoiceReciept/edit/${params.row.id}`}
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            component={Link}
+            to={`/invoiceReciept/reciept/${params.row.id}`} 
+          >
+            <Visibility />
+          </IconButton>
+        </Box>
+      ),
+    },
+  ] : userRole === "Cashier" ? [
+    { field: "id", headerName: "ID" },
+    {
+      field: "clients",
+      headerName: "Client",
+      flex: 1,
+      valueGetter: (params) => {
+        const client = clients.find((Client) => Client.id === params.row.client);
         return client ? client.client_name : "";
       },
     },
@@ -125,7 +204,8 @@ const AllInvoiceReceipts = () => {
         </Box>
       ),
     },
-  ];
+  ]:[];
+
 
   return (
     <Box m="20px">

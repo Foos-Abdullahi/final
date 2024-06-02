@@ -7,6 +7,16 @@ from django.utils import timezone
 from rest_framework import status
 
 # Create your views here.
+@api_view(["GET"])
+def get_project_managerBy_id(request):
+    project_manager_id = request.query_params.get('pmId', None)
+    if project_manager_id:
+        project_managers = Projects.objects.filter(project_Manager__id=project_manager_id)
+        serialized_projectManagers = ProjectsSerializers(project_managers, many=True)
+        return Response(serialized_projectManagers.data)
+    else:
+        return Response({"error": "Proejct Manager not provided"}, status=400)
+
 @api_view(['GET'])
 def search_dates_between(request):
     start_date = request.GET.get('start_date')

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 
-const ProjectSingle = ({ title }) => {
+const ProjectSingle = ({ title,imageSource }) => {
 	const [design, setDesign] = useState(null);
 
 	useEffect(() => {
@@ -13,8 +13,6 @@ const ProjectSingle = ({ title }) => {
 		try {
 			const response = await fetch("http://127.0.0.1:8000/Design/");
 			const data = await response.json();
-			const design = data.find((design) => design.title === title);
-			const designImage = data.find((design) => design.architecture);
 			const image = data[0]['architecture'];
 			setDesign(image);
 			console.log(image);
@@ -35,9 +33,10 @@ const ProjectSingle = ({ title }) => {
 		>
 			<Link to="" aria-label="Single Project">
 				<div className="rounded-xl shadow-lg hover:shadow-xl cursor-pointer mb-10 sm:mb-0 bg-secondary-light dark:bg-ternary-dark">
-					{design && (
-						<img
-							src={`https://raw.githubusercontent.com/Foos-Abdullahi/final/main/Frontend/react-admin-dashboard-master/react-admin-dashboard-master/public/assets/design${design}`}
+				{design && (
+						<img height={400}
+						width={400}
+							src={imageSource}
 							className="rounded-t-xl border-none"
 							alt="Single Project"
 						/>

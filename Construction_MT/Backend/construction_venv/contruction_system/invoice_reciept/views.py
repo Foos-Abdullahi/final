@@ -53,34 +53,30 @@ def delete(request,id):
 #add new
 @api_view(['POST'])
 def create(request):
-    user_id = request.data.get('user')
-    print(f"userID {user_id}")
-    if not user_id:
-        print(f"Not userID {user_id}")
-        return Response("User ID is required.")
+    # user_id = request.data.get('user')
+    # print(f"userID {user_id}")
+    # if not user_id:
+    #     print(f"Not userID {user_id}")
+    #     return Response("User ID is required.")
 
 
     serializer = PaymentSerializer(data=request.data)
-    print(f"Searilizer ID userID {user_id}")
+    # print(f"Searilizer ID userID {user_id}")
     if serializer.is_valid():
-        print(f"Searilizer ID userID {user_id}")
+        # print(f"Searilizer ID userID {user_id}")
         project_id = request.data.get('project')
         amount = float(request.data.get('amount', 0))
 
         project = Projects.objects.get(id=project_id)
         print("Amount:", amount)
         print("Project Budget:", project.BudgetRemain)
-
-
-
-
         project = Projects.objects.get(id=project_id)
         print("Amount:", amount)
         print("Project Budget:", project.BudgetRemain)
         if amount > project.BudgetRemain    :
             print("Payment amount exceeds project budget.")
             return Response("Payment amount exceeds project budget.")
-        serializer.save(user_id=user_id)
+        serializer.save()
         print(f"Searilizer ID userID {serializer}")
     return Response("payment is saved")
     

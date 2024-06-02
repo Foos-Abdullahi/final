@@ -11,6 +11,7 @@ class Payments(models.Model):
     client= models.ForeignKey(Client, on_delete=models.CASCADE,default=None)
     payment_method=models.ForeignKey(Payment_Methode,on_delete=models.CASCADE, default=None)
     amount=models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey(User,on_delete=models.CASCADE, default=None)
-    
+    # user = models.ForeignKey(User,on_delete=models.CASCADE, default=None)
+    name = models.CharField(max_length=100,default='')
+    registration_type = models.CharField(max_length=100,default='user')
     issue_date = models.DateField(default=datetime.date.today) 

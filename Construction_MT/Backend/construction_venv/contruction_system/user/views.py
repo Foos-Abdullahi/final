@@ -4,6 +4,16 @@ from .searilizer import UserSearilizer
 from .models import User
 from django.db.models import Q
 
+
+@api_view(["GET"])
+def get_usersBy_role_name(request):
+    role_name = request.query_params.get('role', None)
+    if role_name:
+        users = User.objects.filter(role_id__Role_name=role_name)
+        serialized_users = UserSearilizer(users, many=True)
+        return Response(serialized_users.data)
+    else:
+        return Response({"error": "Role Name not provided"}, status=400)
 @api_view(['GET'])
 def search(request):
     query_param = request.GET.get('query', '')
