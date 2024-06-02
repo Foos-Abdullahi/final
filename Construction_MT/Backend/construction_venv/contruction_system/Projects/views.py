@@ -63,7 +63,6 @@ def search(request):
     return Response(serializer.data)
 
 
-# Create your views here.
 #get all
 @api_view(['GET'])
 def getAll(request):

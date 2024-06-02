@@ -35,7 +35,6 @@ def get_materials_for_user(request):
     )
     serializer = MaterialSerializer(materials, many=True)
     return Response(serializer.data)
-# Create your views here.
 #get all
 @api_view(['GET'])
 def get_all(request):

@@ -15,12 +15,10 @@ const AllMaterial = () => {
   const [userRole, setUserRole] = useState("");
   const [userPromanager, setUserPromanager] = useState([]);
   useEffect(() => {
-    // Retrieve user role from session storage
     const storedRole = window.sessionStorage.getItem("UserRole");
     setUserRole(storedRole);
   }, []);
   useEffect(() => {
-    // Retrieve user role from session storage
     const storedRole = window.sessionStorage.getItem("UserRole");
     setUserRole(storedRole);
     fetchEmployees();
