@@ -12,6 +12,17 @@ def get_finished_tasks_by_project(request, project_id):
     serializer = TaskSerializer(tasks, many=True)
     return Response(serializer.data)
 
+
+
+@api_view(['GET'])
+def get_tasks_for_user(request):
+    UserName = request.GET.get('username', '')
+    tasks = Tasks.objects.filter(
+        project__project_Manager__UserName=UserName
+    )
+    serializer = TaskSerializer(tasks, many=True)
+    return Response(serializer.data)
+
 #get All
 @api_view(['GET'])
 def all_tasks(request):

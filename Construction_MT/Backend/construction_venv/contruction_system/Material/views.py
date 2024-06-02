@@ -15,6 +15,7 @@ def get_projects_by_Name(request):
         return Response(serialized_Material.data)
     else:
         return Response({"error": "Project Name not provided"}, status=400)
+    
 
 
 @api_view(['GET'])
@@ -26,6 +27,14 @@ def search(request):
     serializer = MaterialSerializer(material, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_materials_for_user(request):
+    UserName = request.GET.get('username', '')
+    materials = Material.objects.filter(
+        project__project_Manager__UserName=UserName
+    )
+    serializer = MaterialSerializer(materials, many=True)
+    return Response(serializer.data)
 # Create your views here.
 #get all
 @api_view(['GET'])

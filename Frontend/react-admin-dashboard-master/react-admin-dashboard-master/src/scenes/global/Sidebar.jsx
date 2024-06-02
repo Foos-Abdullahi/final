@@ -47,6 +47,7 @@ const Sidebar = () => {
   let session = window.sessionStorage; 
   const [userRole, setUserRole] = useState("");
   const [employees, setEmployees] = useState("");
+  const [Username, setUsername] = useState("");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -55,6 +56,8 @@ const Sidebar = () => {
     // Retrieve user role from session storage
     const storedRole = window.sessionStorage.getItem("UserRole");
     const EmpImage=window.sessionStorage.getItem('EmployeeImage')
+    const username=window.sessionStorage.getItem('UserName')
+    setUsername(username);
     setUserRole(storedRole);
     setEmployees(EmpImage);
   }, []);
@@ -116,7 +119,7 @@ const Sidebar = () => {
                   width="100px"
                   height="100px"
                   // src={`../../assets/user.png`}
-                  src={`../../assets/employee${employees}`}
+                  src={`../../assets/employee/${employees}`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -128,7 +131,7 @@ const Sidebar = () => {
                   sx={{ m: "10px 0 0 0" }}
                 >
                   {/* Ed Roh */}
-                  {session.getItem("UserName")} 
+                  {Username} 
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   {/* VP Fancy Admin */}
@@ -310,11 +313,25 @@ const Sidebar = () => {
             </SubMenu>
             </>
             )}
-             {userRole === 'HR' &&(<>
+             {userRole === 'project_manager' &&(<>
               <Item
-              title="Employee"
-              to="/employee"
-              icon={<EmployeeIcon />}
+              title="Project"
+              to="/project"
+              icon={<ProjectIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+             <Item
+              title="Material"
+              to="/material"
+              icon={<MaterialIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+                         <Item
+              title="Task"
+              to="/task"
+              icon={<TaskIcon />}
               selected={selected}
               setSelected={setSelected}
             />

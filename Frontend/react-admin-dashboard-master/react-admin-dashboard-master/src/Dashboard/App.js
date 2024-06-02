@@ -167,11 +167,18 @@ function App() {
               <Route path="/invoiceReciept/reciept/:id" element={< ReceiptPage/>} />
               </>
               )}
-              {userRole === 'HR' &&(<>
-                <Route path="/" element={<Navigate to="/employee" />} />
-                <Route path="/employee" element={<Employee />} />
-                <Route path="/employee/form"  element={<EmployeeForm />} />
-                <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
+              {userRole === 'project_manager' &&(<>
+                <Route path="/" element={<Navigate to="/project" />} />
+                <Route path="/project" element={<Project />} />
+              <Route path="/project/details/:id" element={<DetailProject />} />
+                <Route path="/material" element={<AllMaterail />} />
+              <Route path="/material/form" element={<MaterialForm/>} />
+              <Route path="/material/edit/:id" element={<MaterialEditForm/>} />
+              <Route path="/material/details/:id" element={<MaterialDetail/>} />
+              <Route path="/task" element={<AllTask />} />
+              <Route path="/task/form" element={<TaskForm />} />
+              <Route path="/task/edit/:id" element={<TaskEditForm />} />
+              <Route path="/task/details/:id" element={<TaskDetails />} />
               </>)}
               {userRole === 'Cashier' &&(
               <>

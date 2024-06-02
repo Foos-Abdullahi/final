@@ -7,5 +7,6 @@ urlpatterns = [
     path('addnew/',views.Addnew),
     path('update/<int:id>/',views.Update_task),
     # path('search/', views.search),
-    path('finished_tasks/<int:project_id>/', views.get_finished_tasks_by_project)
+    path('finished_tasks/<int:project_id>/', views.get_finished_tasks_by_project),
+    path('get_tasks_for_user/', views.get_tasks_for_user, name='get_tasks_for_user'),
     ]

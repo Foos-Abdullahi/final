@@ -12,7 +12,7 @@ const EmployeeForm = () => {
   const [phone, setPhone] = useState("");
   const [salary, setSalary] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
-  const [employeeImage, setEmployeeImage] = useState(null);
+  const [employeeImage, setEmployeeImage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -58,6 +58,13 @@ const EmployeeForm = () => {
     setSnackbarOpen(true);
   };
   
+  const handleEmployeeImage = (e) =>{
+    const file = e.target.files[0];
+    console.log(file.name);
+    if (file) {
+      setEmployeeImage(file.name)
+    }
+  }
 
   const validationSchema = yup.object().shape({
     employee_name: yup.string().required("Employee name is required"),
@@ -185,7 +192,7 @@ const EmployeeForm = () => {
               {/* Input field for uploading image */}
               <input
                 type="file"
-                onChange={(e) => setEmployeeImage(e.target.files[0])}
+                onChange={handleEmployeeImage}
                 accept="image/*"
                 style={{ gridColumn: "span 4" }}
               />

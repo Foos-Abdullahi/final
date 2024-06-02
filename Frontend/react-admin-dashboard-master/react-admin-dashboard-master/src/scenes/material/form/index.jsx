@@ -1,3 +1,266 @@
+// import { Box, Button, TextField, MenuItem, Snackbar } from "@mui/material";
+// import { Formik } from "formik";
+// import useMediaQuery from "@mui/material/useMediaQuery";
+// import Header from "../../../components/Header";
+// import React, { useState, useEffect } from "react";
+
+// const MaterialForm = () => {
+//   const isNonMobile = useMediaQuery("(min-width:600px)");
+//   const [material, setMaterial] = useState({
+//     project: 0, // Default project ID
+//     material_name: "",
+//     quantity: 0,
+//     unit_price: 0,
+//     sub_total: 0,
+//     issue_date: new Date().toISOString().substr(0, 10),
+//     user_id: "", // Add user_id to the state
+//   });
+//   const [projects, setProjects] = useState([]);
+//   const [selectproject,setSelectProject]=useState("");
+//   const [materialname,setMaterial_name]=useState("");
+//   const [quantity,setQuantity]=useState("");
+//   const [unit_price,setUnit_price]=useState("");
+//   const [sub_total,setSub_total]=useState("");
+//   const [issue_date,setIssue_date]=useState(new Date().toISOString().substr(0, 10));
+//   const [userRole, setUserRole] = useState("");
+//   const [userId, setUserId] = useState("");
+
+//   const [snackbarOpen, setSnackbarOpen] = useState(false);
+//   const [snackbarMessage, setSnackbarMessage] = useState("");
+//   useEffect(() => {
+//     const user = window.sessionStorage.getItem("userid");
+//     const role = window.sessionStorage.getItem("UserRole");
+//     if (user) {
+//       setUserId(user);
+//     }
+//     if (role) {
+//       setUserRole(role);
+//     }
+//   }, []);
+
+  
+//   const fetchAllProjects = async () => {
+//     try {
+//       const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
+//       if (!projectResponse.ok) {
+//         throw new Error("Failed to fetch projects");
+//       }
+//       const projectData = await projectResponse.json();
+//       setProjects(projectData);
+//     } catch (error) {
+//       console.error("Error fetching projects:", error);
+//     }
+//   };
+
+//   const fetchProjectManagerProjects = async () => {
+//     try {
+//       const projectManagerId = window.sessionStorage.getItem("userid");
+//       if (!projectManagerId) {
+//         console.error("Project manager ID not found in sessionStorage");
+//         return;
+//       }
+//       const response = await fetch(`http://127.0.0.1:8000/Projects/get_project_managerBy_id/?pmId=${projectManagerId}`);
+//       const data = await response.json();
+//       setProjects(data);
+//       console.log("Projects for project manager:", data);
+//     } catch (error) {
+//       console.error("Error fetching project manager projects:", error);
+//     }
+//   };
+//   useEffect(() => {
+//     fetchProjectManagerProjects();
+//     fetchAllProjects();
+//       }, []);
+//   const sendForm = async () => {
+//     try {
+//       const res = await fetch("http://127.0.0.1:8000/Material/create/", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           project: selectproject,
+//           material_name: materialname,
+//           quantity: quantity,
+//           unit_price: unit_price,
+//           sub_total: sub_total,
+//           issue_date: issue_date,
+//           user_id: userId,
+
+
+//         }),
+//       });
+//       if (!res.ok) {
+//         console.log(`Request failed with status ${res.status}`);
+//         return;
+//       }
+//       const data = await res.json();
+//       console.log("Response data material:", data);
+//       setSnackbarMessage("Material created successfully!");
+//       setSnackbarOpen(true);
+//     } catch (error) {
+//       console.error("Error sending form:", error);
+//       setSnackbarMessage("Error creating material.");
+//       setSnackbarOpen(true);
+//     }
+//   };
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     let subTotal = material.sub_total;
+//     if (name === "quantity") {
+//       setQuantity(value);
+//       setSub_total(value * unit_price);
+//     } else if (name === "unit_price") {
+//       setUnit_price(value);
+//       setSub_total(quantity * value);
+//     }
+//   };
+//   return (
+//     <Box m="20px">
+//       <Snackbar
+//         open={snackbarOpen}
+//         autoHideDuration={6000}
+//         onClose={() => setSnackbarOpen(false)}
+//         message={snackbarMessage}
+//       />
+//       <Header title="CREATE MATERIAL" subtitle="Create a New Material" />
+//       <Formik onSubmit={sendForm} initialValues={{
+//         material_name: "",
+//         quantity: "",
+//         unit_price: "",
+//         sub_total: "",
+//         project: "",
+//         issue_date: ""
+//       }}>
+//         {({
+//           values,
+//           errors,
+//           touched,
+//           handleBlur,
+//           handleSubmit,
+//         }) => (
+//           <form onSubmit={handleSubmit}>
+//             <Box
+//               display="grid"
+//               gap="30px"
+//               gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+//               sx={{
+//                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+//               }}
+//             >
+//               {(userRole === "Admin" || userRole === "project_manager") && (
+//               <TextField
+//                 select
+//                 fullWidth
+//                 variant="filled"
+//                 label="Project"
+//                 onBlur={handleBlur}
+//                 onChange={(e)=>setSelectProject(e.target.value)}
+//                 value={selectproject}
+//                 name="project"
+//                 sx={{ gridColumn: "span 4" }}
+//               >
+//                 {projects.map((project) => (
+//                   <MenuItem key={project.id} value={project.id}>
+//                     {project.project_name}
+//                   </MenuItem>
+//                 ))}
+//               </TextField>
+//               )}
+//               <TextField
+//                 fullWidth
+//                 variant="filled"
+//                 type="text"
+//                 label="Material Name"
+//                 onBlur={handleBlur}
+//                 onChange={(e)=>setMaterial_name(e.target.value)}
+//                 value={materialname}
+//                 name="material_name"
+//                 sx={{ gridColumn: "span 4" }}
+//               />
+//               <TextField
+//                 fullWidth
+//                 variant="filled"
+//                 type="number"
+//                 label="Quantity"
+//                 onBlur={handleBlur}
+//                 onChange={handleInputChange}
+//                 value={quantity}
+//                 name="quantity"
+//                 sx={{ gridColumn: "span 4" }}
+//               />
+//               <TextField
+//                 fullWidth
+//                 variant="filled"
+//                 type="number"
+//                 label="Unit Price"
+//                 onBlur={handleBlur}
+//                 onChange={handleInputChange}
+//                 value={unit_price}
+//                 name="unit_price"
+//                 sx={{ gridColumn: "span 4" }}
+//               />
+//               <TextField
+//                 fullWidth
+//                 variant="filled"
+//                 type="number"
+//                 label="Sub Total"
+//                 onBlur={handleBlur}
+//                 onChange={handleInputChange}
+//                 value={sub_total}
+//                 name="sub_total"
+//                 sx={{ gridColumn: "span 4" }}
+//               />
+//               <TextField
+//                 fullWidth
+//                 variant="filled"
+//                 type="date"
+//                 label="Issue Date"
+//                 onBlur={handleBlur}
+//                 onChange={(e)=>setIssue_date(e.target.value)}
+//                 value={issue_date}
+//                 name="issue_date"
+//                 sx={{ gridColumn: "span 4" }}
+//               />
+//                     <input
+//                 type="hidden"
+//                 name="user_id"
+//                 value={userId}
+//               />
+//             </Box>
+//             <Box display="flex" justifyContent="space-between" mt="20px">
+//               <Button onClick={() => window.history.back()} color="primary" variant="contained">
+//                 Back
+//               </Button>
+//               <Button type="submit" color="secondary" variant="contained">
+//                 Create Material
+//               </Button>
+//             </Box>
+//           </form>
+//         )}
+//       </Formik>
+//     </Box>
+//   );
+// };
+
+// export default MaterialForm;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { Box, Button, TextField, MenuItem, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -7,53 +270,66 @@ import React, { useState, useEffect } from "react";
 const MaterialForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [material, setMaterial] = useState({
-    project: 0, // Default project ID
+    project: 0,
     material_name: "",
     quantity: 0,
     unit_price: 0,
     sub_total: 0,
     issue_date: new Date().toISOString().substr(0, 10),
-    user_id: "", // Add user_id to the state
+    user_id: "",
   });
   const [projects, setProjects] = useState([]);
-  const [selectproject,setSelectProject]=useState("");
-  const [materialname,setMaterial_name]=useState("");
-  const [quantity,setQuantity]=useState("");
-  const [unit_price,setUnit_price]=useState("");
-  const [sub_total,setSub_total]=useState("");
-  const [issue_date,setIssue_date]=useState(new Date().toISOString().substr(0, 10));
-  const [userId, setUserId] = useState("");
-
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const user = window.sessionStorage.getItem("userid");
+    const role = window.sessionStorage.getItem("UserRole");
     if (user) {
-      setUserId(user);
+      setMaterial((prevMaterial) => ({ ...prevMaterial, user_id: user }));
+    }
+    if (role) {
+      setUserRole(role);
     }
   }, []);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
-        if (!projectResponse.ok) {
-          throw new Error("Failed to fetch projects");
-        }
-        const projectData = await projectResponse.json();
-        setProjects(projectData);
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
-    };
-    fetchProjects();
-
-    const storedUserId = window.sessionStorage.getItem("userid");
-    if (storedUserId) {
-      setMaterial((prevMaterial) => ({ ...prevMaterial, user_id: storedUserId }));
+    if (userRole === "project_manager") {
+      fetchProjectManagerProjects();
+    } else {
+      fetchAllProjects();
     }
-  }, []);
+  }, [userRole]);
+
+  const fetchAllProjects = async () => {
+    try {
+      const projectResponse = await fetch("http://127.0.0.1:8000/Projects/");
+      if (!projectResponse.ok) {
+        throw new Error("Failed to fetch projects");
+      }
+      const projectData = await projectResponse.json();
+      setProjects(projectData);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  };
+
+  const fetchProjectManagerProjects = async () => {
+    try {
+      const projectManagerId = window.sessionStorage.getItem("userid");
+      if (!projectManagerId) {
+        console.error("Project manager ID not found in sessionStorage");
+        return;
+      }
+      const response = await fetch(`http://127.0.0.1:8000/Projects/get_project_managerBy_id/?pmId=${projectManagerId}`);
+      const data = await response.json();
+      setProjects(data);
+      console.log("Projects for project manager:", data);
+    } catch (error) {
+      console.error("Error fetching project manager projects:", error);
+    }
+  };
 
   const sendForm = async () => {
     try {
@@ -62,17 +338,7 @@ const MaterialForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          project: selectproject,
-          material_name: materialname,
-          quantity: quantity,
-          unit_price: unit_price,
-          sub_total: sub_total,
-          issue_date: issue_date,
-          user_id: userId,
-
-
-        }),
+        body: JSON.stringify(material),
       });
       if (!res.ok) {
         console.log(`Request failed with status ${res.status}`);
@@ -91,15 +357,15 @@ const MaterialForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    let subTotal = material.sub_total;
-    if (name === "quantity") {
-      setQuantity(value);
-      setSub_total(value * unit_price);
-    } else if (name === "unit_price") {
-      setUnit_price(value);
-      setSub_total(quantity * value);
-    }
+    setMaterial((prevMaterial) => {
+      const updatedMaterial = { ...prevMaterial, [name]: value };
+      if (name === "quantity" || name === "unit_price") {
+        updatedMaterial.sub_total = updatedMaterial.quantity * updatedMaterial.unit_price;
+      }
+      return updatedMaterial;
+    });
   };
+
   return (
     <Box m="20px">
       <Snackbar
@@ -109,18 +375,11 @@ const MaterialForm = () => {
         message={snackbarMessage}
       />
       <Header title="CREATE MATERIAL" subtitle="Create a New Material" />
-      <Formik onSubmit={sendForm} initialValues={{
-        material_name: "",
-        quantity: "",
-        unit_price: "",
-        sub_total: "",
-        project: "",
-        issue_date: ""
-      }}>
+      <Formik
+        onSubmit={sendForm}
+        initialValues={material}
+      >
         {({
-          values,
-          errors,
-          touched,
           handleBlur,
           handleSubmit,
         }) => (
@@ -133,31 +392,33 @@ const MaterialForm = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              <TextField
-                select
-                fullWidth
-                variant="filled"
-                label="Project"
-                onBlur={handleBlur}
-                onChange={(e)=>setSelectProject(e.target.value)}
-                value={selectproject}
-                name="project"
-                sx={{ gridColumn: "span 4" }}
-              >
-                {projects.map((project) => (
-                  <MenuItem key={project.id} value={project.id}>
-                    {project.project_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              {(userRole === "Admin" || userRole === "project_manager") && (
+                <TextField
+                  select
+                  fullWidth
+                  variant="filled"
+                  label="Project"
+                  onBlur={handleBlur}
+                  onChange={handleInputChange}
+                  value={material.project}
+                  name="project"
+                  sx={{ gridColumn: "span 4" }}
+                >
+                  {projects.map((project) => (
+                    <MenuItem key={project.id} value={project.id}>
+                      {project.project_name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
                 label="Material Name"
                 onBlur={handleBlur}
-                onChange={(e)=>setMaterial_name(e.target.value)}
-                value={materialname}
+                onChange={handleInputChange}
+                value={material.material_name}
                 name="material_name"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -168,7 +429,7 @@ const MaterialForm = () => {
                 label="Quantity"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
-                value={quantity}
+                value={material.quantity}
                 name="quantity"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -179,7 +440,7 @@ const MaterialForm = () => {
                 label="Unit Price"
                 onBlur={handleBlur}
                 onChange={handleInputChange}
-                value={unit_price}
+                value={material.unit_price}
                 name="unit_price"
                 sx={{ gridColumn: "span 4" }}
               />
@@ -188,11 +449,12 @@ const MaterialForm = () => {
                 variant="filled"
                 type="number"
                 label="Sub Total"
-                onBlur={handleBlur}
-                onChange={handleInputChange}
-                value={sub_total}
+                value={material.sub_total}
                 name="sub_total"
                 sx={{ gridColumn: "span 4" }}
+                InputProps={{
+                  readOnly: true,
+                }}
               />
               <TextField
                 fullWidth
@@ -200,15 +462,15 @@ const MaterialForm = () => {
                 type="date"
                 label="Issue Date"
                 onBlur={handleBlur}
-                onChange={(e)=>setIssue_date(e.target.value)}
-                value={issue_date}
+                onChange={handleInputChange}
+                value={material.issue_date}
                 name="issue_date"
                 sx={{ gridColumn: "span 4" }}
               />
-                    <input
-                type="hidden"
+             <input
+                type="text"
                 name="user_id"
-                value={userId}
+                value={material.user_id}
               />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">

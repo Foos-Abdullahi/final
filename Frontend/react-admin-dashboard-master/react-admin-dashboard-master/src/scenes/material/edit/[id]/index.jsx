@@ -16,13 +16,25 @@ const MaterialEditForm = () => {
   const [sub_total,setSub_total]=useState("");
   const [issue_date,setIssue_date]=useState("");
   const [userId, setUserId] = useState("");
+  const [userRole, setUserRole] = useState("");
+
   useEffect(() => {
     const user = window.sessionStorage.getItem("userid");
+    const role = window.sessionStorage.getItem("UserRole");
     if (user) {
       setUserId(user);
     }
+    if (role) {
+      setUserRole(role);
+    }
   }, []);
-
+  useEffect(() => {
+    if (userRole === "project_manager") {
+      fetchProjectManagerProjects();
+    } else {
+      fetchProjects();
+    }
+  }, [userRole]);
   // const [projects, setProjects] = useState([]);
 
   const fetchProjects = async () => {
@@ -35,6 +47,21 @@ const MaterialEditForm = () => {
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
+    }
+  };
+  const fetchProjectManagerProjects = async () => {
+    try {
+      const projectManagerId = window.sessionStorage.getItem("userid");
+      if (!projectManagerId) {
+        console.error("Project manager ID not found in sessionStorage");
+        return;
+      }
+      const response = await fetch(`http://127.0.0.1:8000/Projects/get_project_managerBy_id/?pmId=${projectManagerId}`);
+      const data = await response.json();
+      setProjects(data);
+      console.log("Projects for project manager:", data);
+    } catch (error) {
+      console.error("Error fetching project manager projects:", error);
     }
   };
 
@@ -59,7 +86,6 @@ const MaterialEditForm = () => {
         console.error("Error fetching material details:", error);
       }
     };
-    fetchProjects();
     fetchMaterial();
   }, [materialId]);
 
@@ -122,23 +148,25 @@ const MaterialEditForm = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              <TextField
-                select
-                fullWidth
-                variant="filled"
-                label="Project"
-                onBlur={handleBlur}
-                onChange={(e)=>setSelectProject(e.target.value)}
-                value={selectproject}
-                name="project"
-                sx={{ gridColumn: "span 4" }}
-              >
-                {projects.map((project) => (
-                  <MenuItem key={project.id} value={project.id}>
-                    {project.project_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              {(userRole === "Admin" || userRole === "project_manager") && (
+                <TextField
+                  select
+                  fullWidth
+                  variant="filled"
+                  label="Project"
+                  onBlur={handleBlur}
+                  onChange={handleInputChange}
+                  value={selectproject}
+                  name="project"
+                  sx={{ gridColumn: "span 4" }}
+                >
+                  {projects.map((project) => (
+                    <MenuItem key={project.id} value={project.id}>
+                      {project.project_name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
               <TextField
                 fullWidth
                 variant="filled"

@@ -28,8 +28,8 @@ const DesignForm = () => {
     formData.append("architecture", images); 
     formData.append("status", statuses);
     formData.append("amount", amounts);
+    formData.append("user", userId);
     formData.append("issue_date", issueDate);
-    formData.append("user_id", userId);
 
     const res = await fetch("http://127.0.0.1:8000/Design/create/", {
       method: "POST",
@@ -76,7 +76,6 @@ const DesignForm = () => {
           errors,
           touched,
           handleBlur,
-          handleChange,
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
@@ -105,7 +104,7 @@ const DesignForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Status"
+                label="status"
                 onBlur={handleBlur}
                 onChange={(e) => setstatus(e.target.value)}
                 value={statuses}
@@ -140,13 +139,8 @@ const DesignForm = () => {
                 helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
-                <input
-                type="hidden"
-                name="user_id"
-                value={userId}
-              />
                {/* Hidden user_id field */}
-               <input type="text" name="user_id" value={userId} />
+               <input type="hidden" name="user" value={userId} />
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button onClick={() => window.history.back()} color="primary" variant="contained">

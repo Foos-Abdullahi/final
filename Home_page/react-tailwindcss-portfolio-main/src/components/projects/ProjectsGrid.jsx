@@ -51,22 +51,14 @@ const ProjectsGrid = () => {
 					const design = designs.find((d) => d.id === project.design);
 					const imageSource = design ? `https://raw.githubusercontent.com/Foos-Abdullahi/final/main/Frontend/react-admin-dashboard-master/react-admin-dashboard-master/public/assets/design/${design.architecture}` : '../assets/design/placeholder.jpg';
 					
-					console.log(imageSource);
+					console.log("this is image source:",imageSource);
+					console.log("this is design:",design);
 
 					return (
 						<ProjectSingle
 							key={project.id}
 							title={project.project_name}
-							renderCell={() => (
-								<img
-									src={imageSource}
-									alt="Design"
-									onError={(e) => {
-										console.error(`Error loading image: ${e.target.src}`);
-										e.target.src = '../assets/design/placeholder.jpg';
-									}}
-								/>
-							)}
+							imageSource={imageSource}
 						/>
 					);
 				})}

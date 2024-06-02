@@ -84,6 +84,7 @@ const Designs = () => {
         <IconButton
           color="secondary"
           component={Link}
+          
           to={`/design/update/${params.row.id}`}
         >
           <EditIcon />

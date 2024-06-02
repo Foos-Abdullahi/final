@@ -13,11 +13,18 @@ const AllTask = () => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [users, setUser] = useState([]);
-
+  const [userRole, setUserRole] = useState("");
+  const [userPromanager, setUserPromanager] = useState([]);
+  useEffect(() => {
+    // Retrieve user role from session storage
+    const storedRole = window.sessionStorage.getItem("UserRole");
+    setUserRole(storedRole);
+  }, []);
   useEffect(() => {
     fetchTask();
     fetchProjects();
     fetchUser();
+    fetchProjectManagerProjects();
   }, []);
 
   const fetchTask = async () => {
@@ -41,6 +48,23 @@ const AllTask = () => {
       console.error('Error fetching payment methods:', error);
     }
   };
+  const fetchProjectManagerProjects = async () => {
+    try {
+      const userName = window.sessionStorage.getItem("UserName");
+      if (!userName) {
+        console.error("Project manager ID not found in sessionStorage");
+        return;
+      }
+      const response = await fetch(
+        `http://127.0.0.1:8000/Tasks/get_tasks_for_user/?username=${userName}`
+      );
+      const data = await response.json();
+      setUserPromanager(data);
+      console.log("Project manager projects:", data);
+    } catch (error) {
+      console.error("Error fetching project manager projects:", error);
+    }
+  };
   const fetchUser = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/user/");
@@ -52,7 +76,8 @@ const AllTask = () => {
   };
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const columns = [
+  const columns = userRole === "Admin" || userRole === "project_manager"
+  ? [
     { field: "id", headerName: "ID" },
     {
       field: "project",
@@ -133,7 +158,8 @@ const AllTask = () => {
         </Box>
       ),
     },
-  ];
+  ]:
+  [];
   
 
   return (
@@ -188,7 +214,9 @@ const AllTask = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={tasks} columns={columns} />
+        <DataGrid  checkboxSelection
+          rows={userRole === "project_manager" ? userPromanager : tasks}
+          columns={columns} />
       </Box>
     </Box>
   );
