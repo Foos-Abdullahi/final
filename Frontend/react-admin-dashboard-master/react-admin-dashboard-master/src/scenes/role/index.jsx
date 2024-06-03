@@ -29,7 +29,14 @@ const Role = () => {
   const colors = tokens(theme.palette.mode);
 
   const columns = [
-    { field: "id", headerName: "ID" },
+    {
+      field: "count",
+      headerName: "ID",
+      flex: 0.5,
+      renderCell: (params) => {
+        return params.api.getRowIndex(params.id) + 1;
+      },
+    },
     {
       field: "Role_name",
       headerName: "Role Name",

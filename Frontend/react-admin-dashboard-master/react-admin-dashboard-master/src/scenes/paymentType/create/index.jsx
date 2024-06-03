@@ -111,7 +111,7 @@ const PaymentMethodForm = () => {
                 value={userId}
               />
                {/* Hidden user_id field */}
-               <input type="text" name="user_id" value={userId} />
+               {/* <input type="hide" name="user_id" value={userId} /> */}
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button onClick={() => window.history.back()} color="primary" variant="contained">

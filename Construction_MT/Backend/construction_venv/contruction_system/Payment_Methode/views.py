@@ -27,31 +27,60 @@ def getById(request,id):
     serializers = Py_MethodeSerializer(pyment_methode,many=False)
     return Response(serializers.data)
 
-
 @api_view(['POST'])
 def create(request):
-    user_id = request.data.get('user_id')
+    user_id = request.data.get('user')
     if not user_id:
         return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
-    # Extract Py_method_name from request data
+
     pymentmethod = request.data.get('Py_method_name', None)
-    # Check if an pymentmethod with the provided Py_method_name already exists
     if Payment_Methode.objects.filter(Py_method_name=pymentmethod).exists():
-        return Response("this Py_method already exists")
-    # Proceed with creating the Py_method_name if not already exists
+        return Response({"detail": "This payment method already exists."}, status=status.HTTP_400_BAD_REQUEST)
+
     serializer = Py_MethodeSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save(user_id = user_id)
-        return Response("pymentmethod is saved")
+        serializer.save(user_id=user_id)
+        return Response({"detail": "Payment method is saved."}, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT'])
 def update(request, id):
-    pyment_methode=Payment_Methode.objects.get(id=id)
+    try:
+        pyment_methode = Payment_Methode.objects.get(id=id)
+    except Payment_Methode.DoesNotExist:
+        return Response({"detail": "Payment method not found."}, status=status.HTTP_404_NOT_FOUND)
+
     serializers = Py_MethodeSerializer(instance=pyment_methode, data=request.data)
     if serializers.is_valid():
         serializers.save()
-    return Response('payment_methode is updated')
+        return Response({"detail": "Payment method is updated."}, status=status.HTTP_200_OK)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# @api_view(['POST'])
+# def create(request):
+#     user_id = request.data.get('user')
+#     if not user_id:
+#         return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+#     pymentmethod = request.data.get('Py_method_name', None)
+#     if Payment_Methode.objects.filter(Py_method_name=pymentmethod).exists():
+#         return Response("this Py_method already exists")
+#     # Proceed with creating the Py_method_name if not already exists
+#     serializer = Py_MethodeSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save(user_id = user_id)
+#         return Response("pymentmethod is saved")
+
+
+# @api_view(['PUT'])
+# def update(request, id):
+#     pyment_methode=Payment_Methode.objects.get(id=id)
+#     serializers = Py_MethodeSerializer(instance=pyment_methode, data=request.data)
+#     if serializers.is_valid():
+#         serializers.save()
+#     return Response('payment_methode is updated')
 
 @api_view(['DELETE'])
 def delete(request, id):

@@ -2,6 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .searilizer import ServiceSerializers
 from .models import Service
+from rest_framework import status
+
 
 # Create your views here.
 #get all
@@ -21,9 +23,12 @@ def getById(request, id):
 #create
 @api_view(['POST'])
 def create(request):
+    # user_id = request.data.get('user')
+    # if not user_id:
+    #     return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     serializer = ServiceSerializers(data=request.data)
     if serializer.is_valid():
-        serializer.save()      
+        serializer.save() 
     return Response("service is saved")
 
 #update

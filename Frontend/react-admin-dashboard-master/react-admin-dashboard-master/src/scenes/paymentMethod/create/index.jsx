@@ -7,7 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 const PaymentMethodForm = () => {
   const [paymentMethodName, setPaymentMethodName] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
-  const [paymentMethodImage, setPaymentMethodImage] = useState(null); // New state for the image
+  const [paymentMethodImage, setPaymentMethodImage] = useState(""); // New state for the image
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for snackbar
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [userId, setUserId] = useState("");
@@ -39,13 +39,15 @@ const PaymentMethodForm = () => {
       return;
     }
   
-    // Proceed with creating the payment method if not already exists
-    const formData = new FormData(); // Create FormData object
-    formData.append("pay_method_image", paymentMethodImage); // Append image data
+    console.log(paymentMethodName);
+    console.log(paymentMethodImage);
+    console.log(issueDate);
+    console.log(userId);
+    const formData = new FormData();
+    formData.append("pay_method_image", paymentMethodImage); 
     formData.append("Py_method_name", paymentMethodName);
     formData.append("issue_date", issueDate);
-    formData.append("user_id", userId);
-    formData.append("user_id", userId); // Append user ID
+    formData.append("user", userId);
     const res = await fetch("http://127.0.0.1:8000/Payment_Methode/create/", {
       method: "POST",
       body: formData, // Send FormData instead of JSON
@@ -66,6 +68,11 @@ const PaymentMethodForm = () => {
     console.log(issueDate);
     console.log(userId);
     // window.location.href = "/paymentMethod";
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setPaymentMethodImage(file.name);
   };
 
   return (
@@ -121,19 +128,30 @@ const PaymentMethodForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
               {/* Input field for uploading image */}
-              <input
+              <TextField
+                fullWidth
+                variant="filled"
+                type="file"
+                label="Invoice Reciept"
+                accept="image/*"
+                onBlur={handleBlur}
+                onChange={handleImageChange}
+                name="pay_method_image"
+                sx={{ gridColumn: "span 4" }}
+              />
+              {/* <input
                 type="file"
                 onChange={(e) => setPaymentMethodImage(e.target.files[0])}
                 accept="image/*"
                 style={{ gridColumn: "span 4" }}
-              />
+              /> */}
                   <input
                 type="hidden"
-                name="user_id"
+                name="user"
                 value={userId}
               />
                {/* Hidden user_id field */}
-               <input type="text" name="user_id" value={userId} />
+               {/* <input type="text" name="user_id" value={userId} /> */}
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button color="primary" variant="contained" onClick={() => window.location.href = "/paymentMethod"}>

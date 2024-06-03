@@ -24,7 +24,7 @@ const Topbar = () => {
     <Box display="flex" justifyContent="space-between" p={2}>
       {/* ICONS */}
       <Box display="flex">
-        <IconButton>
+        {/* <IconButton>
           <LightModeOutlinedIcon />
         </IconButton>
         <IconButton>
@@ -32,7 +32,7 @@ const Topbar = () => {
         </IconButton>
         <IconButton>
           <SettingsOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton onClick={handleOpenPopover}>
           <PersonOutlinedIcon />
         </IconButton>

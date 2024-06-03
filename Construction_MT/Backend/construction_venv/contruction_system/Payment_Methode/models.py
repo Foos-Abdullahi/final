@@ -4,7 +4,7 @@ from user.models import User
 # Create your models here.
 
 class Payment_Methode(models.Model):
-    pay_method_image = models.ImageField(max_length=100)
+    pay_method_image = models.CharField(max_length=100)
     Py_method_name = models.CharField(max_length=100)
     user = models.ForeignKey(User,on_delete=models.CASCADE, default=None)
     issue_date = models.DateField(default=datetime.date.today)

@@ -67,7 +67,14 @@ const AllInvoiceReceipts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = userRole === "Admin" ? [
-    { field: "id", headerName: "ID" },
+    {
+      field: "count",
+      headerName: "ID",
+      flex: 0.5,
+      renderCell: (params) => {
+        return params.api.getRowIndex(params.id) + 1;
+      },
+    },
     {
       field: "clients",
       headerName: "Client",

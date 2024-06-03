@@ -30,7 +30,14 @@ const Client = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
-    { field: "id", headerName: "ID" },
+    {
+      field: "count",
+      headerName: "ID",
+      flex: 0.5,
+      renderCell: (params) => {
+        return params.api.getRowIndex(params.id) + 1;
+      },
+    },
     {
       field: "client_name",
       headerName: "Name",
@@ -90,9 +97,9 @@ const Client = () => {
           <IconButton component={Link} to={`/client/edit/${params.row.id}`}>
             <EditIcon />
           </IconButton>
-          <IconButton component={Link} to={`/client/details/${params.row.id}`}>
+          {/* <IconButton component={Link} to={`/client/details/${params.row.id}`}>
             <VisibilityIcon />
-          </IconButton>
+          </IconButton> */}
         </Box>
         // <>
         //   <IconButton

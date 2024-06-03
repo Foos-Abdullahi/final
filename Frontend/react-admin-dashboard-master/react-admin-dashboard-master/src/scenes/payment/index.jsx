@@ -4,6 +4,8 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+
 import PaymentType from "../paymentType";
 
 const Payment = () => {
@@ -59,19 +61,26 @@ const Payment = () => {
   const colors = tokens(theme.palette.mode);
 
   const columns = [
-    { field: "id", headerName: "ID" },
     {
-      field: "project",
-      headerName: "Project",
-      flex: 1,
-      valueGetter: (params) => {
-        const project = projects.find(Project => Project.id === params.row.project);
-        return project ? project.project_name : '';
+      field: "count",
+      headerName: "ID",
+      flex: 0.5,
+      renderCell: (params) => {
+        return params.api.getRowIndex(params.id) + 1;
       },
     },
     {
       field: "payment_Type",
       headerName: "Payment Type",
+      flex: 1,
+      valueGetter: (params) => {
+        const payment_type = PaymentTypes.find(PaymentType => PaymentType.id === params.row.payment_Type);
+        return payment_type ? payment_type.Py_Type_name : '';
+      },
+    },
+    {
+      field: "expense_description",
+      headerName: "Discription",
       flex: 1,
       valueGetter: (params) => {
         const payment_type = PaymentTypes.find(PaymentType => PaymentType.id === params.row.payment_Type);
@@ -97,6 +106,20 @@ const Payment = () => {
         return user ? user.UserName : '';
       },
     },
+    {
+      field: "Edit",
+      headerName: "Action",
+      width: 100,
+      renderCell: (params) => (
+        <IconButton
+          color="secondary"
+          component={Link}
+          to={`/payment/edit/${params.row.id}`}
+        >
+          <EditIcon />
+        </IconButton>
+      ),
+    }
   ];
 
   return (

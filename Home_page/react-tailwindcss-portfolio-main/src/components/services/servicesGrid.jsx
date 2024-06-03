@@ -32,7 +32,7 @@ function ServicesGrid() {
             <div className="text-center project" key={i}>
               <div className="font-general-medium text-lg md:text-xl text-ternary-dark dark:text-ternary-light mb-2 text-center capitalize img-container">
                 <img
-                  src={`https://raw.githubusercontent.com/Foos-Abdullahi/final/main/Home_page/react-tailwindcss-portfolio-main/src/images/services${service.service_Image}`}
+                  src={`https://raw.githubusercontent.com/Foos-Abdullahi/final/main/Home_page/react-tailwindcss-portfolio-main/src/images/services/${service.service_Image}`}
                   alt={service.service_name}
                 />
               </div>
