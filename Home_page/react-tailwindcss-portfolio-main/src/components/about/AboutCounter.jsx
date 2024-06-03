@@ -88,11 +88,11 @@ const AboutCounter = () => {
           measurement=""
         />
 
-        <CounterItem
+        {/* <CounterItem
           title="AWARDS WON"
           counter={<span id="feedbackCounter" />}
           measurement=""
-        />
+        /> */}
 
         <CounterItem
           title="QUALIFIED STAFF"
