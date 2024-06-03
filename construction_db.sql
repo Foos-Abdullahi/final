@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2024 at 06:48 AM
+-- Generation Time: Jun 03, 2024 at 06:53 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -717,7 +717,7 @@ CREATE TABLE `tasks_tasks` (
 --
 
 INSERT INTO `tasks_tasks` (`id`, `task_name`, `task_image`, `start_date`, `end_date`, `status`, `issue_date`, `project_id`, `user_id`) VALUES
-(1, 'start', '/start.png', '2024-05-21', '2024-05-28', 'finished', '2024-05-21', 1, 1),
+(1, 'start', 'start.png', '2024-05-21', '2024-05-28', 'finished', '2024-05-21', 1, 1),
 (2, 'floor1', 'floor1.png', '2024-05-21', '2024-05-28', 'finished', '2024-05-30', 1, 1);
 
 -- --------------------------------------------------------
