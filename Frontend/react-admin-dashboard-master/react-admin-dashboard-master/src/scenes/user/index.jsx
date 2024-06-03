@@ -408,7 +408,7 @@ const User = () => {
               <Card sx={{ height: "100%", bgcolor: '#1F2A40' }}>
                 <CardContent>
                   <Box display="flex" justifyContent="center" mb={2}>
-                    <Avatar alt="Employee Image" src={`/assets/employee${employees.find((emp) => emp.id === user.employee_id)?.employee_Image || "Unknown"}`} sx={{ width: 80, height: 80 }} />
+                    <Avatar alt="Employee Image" src={`/assets/employee/${employees.find((emp) => emp.id === user.employee_id)?.employee_Image || "Unknown"}`} sx={{ width: 80, height: 80 }} />
                   </Box>
                   <Typography variant="body2" align="center"><strong>{employees.find((emp) => emp.id === user.employee_id)?.employee_name || "Unknown"}</strong> </Typography>
                   {/* <Typography variant="h6" align="center" gutterBottom>{user.UserName}</Typography> */}

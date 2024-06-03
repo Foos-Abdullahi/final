@@ -89,7 +89,14 @@ const Projects = () => {
  const columns =
    userRole === "Admin"
      ? [
-      { field: "id", headerName: "ID" },
+      {
+        field: "count",
+        headerName: "ID",
+        flex: 0.5,
+        renderCell: (params) => {
+          return params.api.getRowIndex(params.id) + 1;
+        },
+      },
       { field: "project_name", headerName: "Project Name", flex: 1 },
       {
         field: "client_name",
@@ -143,7 +150,14 @@ const Projects = () => {
        ]
      : userRole === "project_manager"
      ? [
-      { field: "id", headerName: "ID" },
+      {
+        field: "count",
+        headerName: "ID",
+        flex: 0.5,
+        renderCell: (params) => {
+          return params.api.getRowIndex(params.id) + 1;
+        },
+      },
       { field: "project_name", headerName: "Project Name", flex: 1 },
       { field: "status", headerName: "Status", flex: 1 },
       {

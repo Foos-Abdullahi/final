@@ -215,7 +215,7 @@ const Profile = () => {
                 )}
               </Box>
             </CardContent>
-          <Avatar alt="Profile" src={`/assets/employee${employees.find((emp) => emp.id === user.employee_id)?.employee_Image || "Unknown"}`} sx={{ width: 120, height: 120, marginBottom: 2, position: 'relative', bottom: '280px', left: '43%' }} />
+          <Avatar alt="Profile" src={`/assets/employee/${employees.find((emp) => emp.id === user.employee_id)?.employee_Image || "Unknown"}`} sx={{ width: 120, height: 120, marginBottom: 2, position: 'relative', bottom: '280px', left: '43%' }} />
         </Box>
       </Box>
     </Box>

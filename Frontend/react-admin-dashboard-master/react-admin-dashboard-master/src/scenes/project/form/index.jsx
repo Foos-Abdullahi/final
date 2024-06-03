@@ -330,7 +330,7 @@ const CreateProject = () => {
                 sx={{ gridColumn: "span 4" }}
               />
                <input
-                type="text"
+                type="hidden"
                 name="user_id"
                 value={userId}
               />

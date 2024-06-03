@@ -102,7 +102,7 @@ const ReciptForm = () => {
       console.log("amount:",amount);
       console.log("issue_date:",issue_date);
       console.log("emp Name:",empName);
-      setSnackbarMessage("Material created successfully!");
+      setSnackbarMessage("Reciept created successfully!");
       setSnackbarOpen(true);
       // window.history.back();
     } catch (error) {
@@ -219,7 +219,7 @@ const ReciptForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
                   <input
-                type="text"
+                type="hidden"
                 name="name"
                 value={empName}
               />

@@ -48,7 +48,7 @@ const DesignForm = () => {
     console.log(amounts)
     console.log(issueDate)
     console.log(userId)
-    setSnackbarMessage("Material created successfully!");
+    setSnackbarMessage("Design created successfully!");
     setSnackbarOpen(true);
   };
   const handleImageChange = (e) => {

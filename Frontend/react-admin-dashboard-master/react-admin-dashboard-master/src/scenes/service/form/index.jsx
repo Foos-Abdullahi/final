@@ -9,23 +9,23 @@ const ServiceForm = () => {
   const [serviceName, setServiceName] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().substr(0, 10));
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const [userId, setUserId] = useState("");
+  // const [userId, setUserId] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  useEffect(() => {
-    const user = window.sessionStorage.getItem("userid");
-    if (user) {
-      setUserId(user);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const user = window.sessionStorage.getItem("userid");
+  //   if (user) {
+  //     setUserId(user);
+  //   }
+  // }, []);
 
   const sendForm = async () => {
     const formData = new FormData();
     formData.append("service_name", serviceName);
-    formData.append("service_image", serviceImage);
+    formData.append("service_Image", serviceImage);
     formData.append("issue_date", issueDate);
-    formData.append("user_id", userId);
+    // formData.append("user", userId);
 
     const res = await fetch("http://127.0.0.1:8000/service/create/", {
       method: "POST",
@@ -41,7 +41,7 @@ const ServiceForm = () => {
     console.log(serviceName);
     console.log(serviceImage);
     console.log(issueDate);
-    console.log(userId);
+    // console.log(userId);
     setSnackbarMessage("Service created successfully!");
     setSnackbarOpen(true);
   };
@@ -122,11 +122,11 @@ const ServiceForm = () => {
                 helperText={touched.issue_date && errors.issue_date}
                 sx={{ gridColumn: "span 4" }}
               />
-              <input
+              {/* <input
                 type="hidden"
-                name="user_id"
+                name="user"
                 value={userId}
-              />
+              /> */}
             </Box>
             <Box display="flex" justifyContent="space-between" mt="20px">
               <Button onClick={() => window.history.back()} color="primary" variant="contained">

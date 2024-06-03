@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Snackbar } from "@mui/material";
 import { Formik } from "formik";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
@@ -17,7 +17,8 @@ const TaskForm = () => {
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
 
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   
   useEffect(() => {
     const user = window.sessionStorage.getItem("userid");
@@ -51,10 +52,6 @@ const TaskForm = () => {
       console.error("Error fetching projects:", error);
     }
   };
-
-  // useEffect(() => {
-  //   fetchProjects();
-  // }, []);
   const fetchProjectManagerProjects = async () => {
     try {
       const projectManagerId = window.sessionStorage.getItem("userid");
@@ -65,13 +62,11 @@ const TaskForm = () => {
       const response = await fetch(`http://127.0.0.1:8000/Projects/get_project_managerBy_id/?pmId=${projectManagerId}`);
       const data = await response.json();
       setProjects(data);
-      // console.log("Projects for project manager:", data);
     } catch (error) {
       console.error("Error fetching project manager projects:", error);
     }
   };
   const sendForm = async () => {
-    // console.log("Response data:", data);
       console.log("userId: ",userId);
       console.log("project: ",selectproject);
       console.log("taskname: ",taskname);
@@ -87,10 +82,7 @@ const TaskForm = () => {
       formData.append("end_date", end_date);
       formData.append("status", status);
       formData.append("issue_date", issue_date);
-      formData.append("user_id",userId); 
-      // if (task_image) {
-      //   formData.append("task_image", task_image);
-      // }
+      formData.append("user",userId); 
       const res = await fetch("http://127.0.0.1:8000/Tasks/addnew/", {
         method: "POST",
         body: formData,
@@ -110,7 +102,8 @@ const TaskForm = () => {
       console.log("issue_date: ",issue_date);
       console.log("task_image: ",task_image);
       console.log("end_date: ",end_date);
-
+      setSnackbarMessage("Task created successfully!");
+      setSnackbarOpen(true);
     } catch (error) {
       console.error("Error sending form:", error);
     }
@@ -123,6 +116,12 @@ const TaskForm = () => {
 
   return (
     <Box m="20px">
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
       <Header title="CREATE Task" subtitle="Create a New Task" />
 
       <Formik onSubmit={sendForm} initialValues={{
@@ -238,8 +237,8 @@ const TaskForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
                     <input
-                type="text"
-                name="user_id"
+                type="hidden"
+                name="user"
                 value={userId}
               />
             </Box>

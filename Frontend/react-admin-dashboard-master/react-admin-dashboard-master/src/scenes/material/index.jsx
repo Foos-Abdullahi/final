@@ -81,7 +81,14 @@ const AllMaterial = () => {
   const columns =
     userRole === "Admin" || userRole === "project_manager"
       ? [
-          { field: "id", headerName: "ID" },
+        {
+          field: "count",
+          headerName: "ID",
+          flex: 0.5,
+          renderCell: (params) => {
+            return params.api.getRowIndex(params.id) + 1;
+          },
+        },
           {
             field: "project",
             headerName: "Project",

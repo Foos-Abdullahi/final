@@ -71,6 +71,7 @@ import DetailProject from "../scenes/project/details/[id]";
 import TaskDetails from "../scenes/task/details/[id]";
 import MaterialDetail from "../scenes/material/details/[id]";
 import ServiceForm from "../scenes/service/form";
+import EditPayment from "../scenes/payment/edit/[id]";
 // foof ciro tables================================;
 
 
@@ -110,6 +111,7 @@ function App() {
               {/* <Route path="/project/details/:id" element={<DetailProject />} /> */}
               <Route path="/payment" element={<Payment />} />
               <Route path="/payment/create" element={<CreatePayment />} />
+              <Route path="/payment/edit/:id" element={<EditPayment />} />
               <Route path="/design" element={<Design />} />
               <Route path="/design/form" element={<DesignForm />} />
               <Route path="/employee" element={<Employee />} />
