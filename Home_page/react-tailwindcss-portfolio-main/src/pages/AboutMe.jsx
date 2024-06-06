@@ -3,6 +3,8 @@ import AboutCounter from '../components/about/AboutCounter';
 import AboutClients from '../components/about/AboutClients';
 import { AboutMeProvider } from '../context/AboutMeContext';
 import { motion } from 'framer-motion';
+import MobileGrid from '../components/mobile/MobileGrid';
+
 
 const About = () => {
 	return (
@@ -14,7 +16,9 @@ const About = () => {
 				className="container mx-auto"
 			>
 				<AboutMeBio />
+				
 			</motion.div>
+			<MobileGrid/>
 
 			{/** Counter without paddings */}
 			<motion.div
