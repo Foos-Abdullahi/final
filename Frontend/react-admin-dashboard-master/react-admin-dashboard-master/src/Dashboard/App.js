@@ -72,6 +72,8 @@ import TaskDetails from "../scenes/task/details/[id]";
 import MaterialDetail from "../scenes/material/details/[id]";
 import ServiceForm from "../scenes/service/form";
 import EditPayment from "../scenes/payment/edit/[id]";
+import ForgotPassword from "../Authentication/ForgotPassword";
+import NotificationsPage from "../scenes/Notifications/NotificationsPage";
 // foof ciro tables================================;
 
 
@@ -167,13 +169,19 @@ function App() {
               <Route path="/invoiceReciept/from" element={< ReciptForm/>} />
               <Route path="/invoiceReciept/edit/:id" element={< RecieptEditForm/>} />
               <Route path="/invoiceReciept/reciept/:id" element={< ReceiptPage/>} />
+              <Route path="/ForgotPassword" element={< ForgotPassword/>} />
+              <Route path="/Notifications" element={< NotificationsPage/>} />
+              
               </>
               )}
               {userRole === 'project_manager' &&(<>
-                <Route path="/" element={<Navigate to="/project" />} />
-                <Route path="/project" element={<Project />} />
+              <Route path="/" element={<Navigate to="/project" />} />
+              <Route path="/project" element={<Project />} />
+              <Route path="/Report" element={<ClientReport />} />
+              <Route path="/Report/projectReport" element={<ProjectList />} />
               <Route path="/project/details/:id" element={<DetailProject />} />
-                <Route path="/material" element={<AllMaterail />} />
+              <Route path="/Report/prReport/:id" element={<ProjecTDetail />} />
+              <Route path="/material" element={<AllMaterail />} />
               <Route path="/material/form" element={<MaterialForm/>} />
               <Route path="/material/edit/:id" element={<MaterialEditForm/>} />
               <Route path="/material/details/:id" element={<MaterialDetail/>} />
@@ -181,6 +189,7 @@ function App() {
               <Route path="/task/form" element={<TaskForm />} />
               <Route path="/task/edit/:id" element={<TaskEditForm />} />
               <Route path="/task/details/:id" element={<TaskDetails />} />
+              <Route path="/user/profile/:id" element={<Profile />} />
               </>)}
               {userRole === 'Cashier' &&(
               <>

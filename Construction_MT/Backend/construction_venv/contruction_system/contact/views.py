@@ -7,10 +7,10 @@ from .models import Contact
 #get all
 @api_view(['GET'])
 def getAll(request):
-    contact=Contact.objects.all()
-    serializers=ContactSerializers(contact,many=True)
+    contact = Contact.objects.all().order_by('-id')  # Ordering by 'id' in descending order
+    serializers = ContactSerializers(contact, many=True)
     return Response(serializers.data)
-    
+
 # get by id 
 @api_view(['GET'])
 def getById(request, id):

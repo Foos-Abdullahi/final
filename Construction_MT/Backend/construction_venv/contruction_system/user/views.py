@@ -14,6 +14,17 @@ def get_usersBy_role_name(request):
         return Response(serialized_users.data)
     else:
         return Response({"error": "Role Name not provided"}, status=400)
+    
+
+@api_view(['GET'])
+def get_userprofile_for_user(request):
+    UserName = request.GET.get('username', '')
+    materials = User.objects.filter(
+        user_profile_UserName=UserName
+    )
+    serializer = UserSearilizer(materials, many=True)
+    return Response(serializer.data)
+
 @api_view(['GET'])
 def search(request):
     query_param = request.GET.get('query', '')

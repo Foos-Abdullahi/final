@@ -5,10 +5,6 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ReportIcon from "@mui/icons-material/Report";
 import DesignServicesOutlined from "@mui/icons-material/DesignServicesOutlined";
@@ -44,7 +40,6 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const Sidebar = () => {
-  let session = window.sessionStorage; 
   const [userRole, setUserRole] = useState("");
   const [employees, setEmployees] = useState("");
   const [Username, setUsername] = useState("");
@@ -304,6 +299,13 @@ const Sidebar = () => {
               title="Task"
               to="/task"
               icon={<TaskIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+              <Item
+              title="Project Report"
+              to="/Report/projectReport"
+              icon={<ReportIcon />}
               selected={selected}
               setSelected={setSelected}
             />
