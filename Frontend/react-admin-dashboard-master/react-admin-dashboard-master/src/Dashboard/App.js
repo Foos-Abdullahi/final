@@ -72,7 +72,6 @@ import TaskDetails from "../scenes/task/details/[id]";
 import MaterialDetail from "../scenes/material/details/[id]";
 import ServiceForm from "../scenes/service/form";
 import EditPayment from "../scenes/payment/edit/[id]";
-import ForgotPassword from "../Authentication/ForgotPassword";
 import NotificationsPage from "../scenes/Notifications/NotificationsPage";
 // foof ciro tables================================;
 
@@ -169,7 +168,6 @@ function App() {
               <Route path="/invoiceReciept/from" element={< ReciptForm/>} />
               <Route path="/invoiceReciept/edit/:id" element={< RecieptEditForm/>} />
               <Route path="/invoiceReciept/reciept/:id" element={< ReceiptPage/>} />
-              <Route path="/ForgotPassword" element={< ForgotPassword/>} />
               <Route path="/Notifications" element={< NotificationsPage/>} />
               
               </>
