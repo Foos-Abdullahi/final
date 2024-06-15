@@ -1,0 +1,94 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.city_construction_app"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="34" />
+10    <!--
+11         The INTERNET permission is required for development. Specifically,
+12         the Flutter tool needs it to communicate with the running application
+13         to allow setting breakpoints, to provide hot reload, etc.
+14    -->
+15    <uses-permission android:name="android.permission.INTERNET" />
+15-->D:\uct\GarduationProject\final\mobile_app\city_construction_app\android\app\src\debug\AndroidManifest.xml:6:5-66
+15-->D:\uct\GarduationProject\final\mobile_app\city_construction_app\android\app\src\debug\AndroidManifest.xml:6:22-64
+16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+16-->[com.google.android.exoplayer:exoplayer-core:2.18.7] C:\Users\maank\.gradle\caches\transforms-3\37c64b3e556ebfb813f8878ccf31d867\transformed\jetified-exoplayer-core-2.18.7\AndroidManifest.xml:24:5-79
+16-->[com.google.android.exoplayer:exoplayer-core:2.18.7] C:\Users\maank\.gradle\caches\transforms-3\37c64b3e556ebfb813f8878ccf31d867\transformed\jetified-exoplayer-core-2.18.7\AndroidManifest.xml:24:22-76
+17
+18    <application
+19        android:name="android.app.Application"
+20        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+20-->[androidx.core:core:1.7.0] C:\Users\maank\.gradle\caches\transforms-3\5ed8f607f32ec152d02f0e10c84a05e7\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
+21        android:debuggable="true"
+22        android:icon="@mipmap/ic_launcher"
+23        android:label="city_construction_app" >
+24        <activity
+25            android:name="com.example.city_construction_app.MainActivity"
+26            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+27            android:exported="true"
+28            android:hardwareAccelerated="true"
+29            android:launchMode="singleTop"
+30            android:theme="@style/LaunchTheme"
+31            android:windowSoftInputMode="adjustResize" >
+32
+33            <!--
+34                 Specifies an Android theme to apply to this Activity as soon as
+35                 the Android process has started. This theme is visible to the user
+36                 while the Flutter UI initializes. After that, this theme continues
+37                 to determine the Window background behind the Flutter UI.
+38            -->
+39            <meta-data
+40                android:name="io.flutter.embedding.android.NormalTheme"
+41                android:resource="@style/NormalTheme" />
+42
+43            <intent-filter>
+44                <action android:name="android.intent.action.MAIN" />
+45
+46                <category android:name="android.intent.category.LAUNCHER" />
+47            </intent-filter>
+48        </activity>
+49        <!--
+50             Don't delete the meta-data below.
+51             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+52        -->
+53        <meta-data
+54            android:name="flutterEmbedding"
+55            android:value="2" />
+56
+57        <provider
+57-->[:printing] D:\uct\GarduationProject\final\mobile_app\city_construction_app\build\printing\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-18:20
+58            android:name="net.nfet.flutter.printing.PrintFileProvider"
+58-->[:printing] D:\uct\GarduationProject\final\mobile_app\city_construction_app\build\printing\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-71
+59            android:authorities="com.example.city_construction_app.flutter.printing"
+59-->[:printing] D:\uct\GarduationProject\final\mobile_app\city_construction_app\build\printing\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-68
+60            android:exported="false"
+60-->[:printing] D:\uct\GarduationProject\final\mobile_app\city_construction_app\build\printing\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-37
+61            android:grantUriPermissions="true" >
+61-->[:printing] D:\uct\GarduationProject\final\mobile_app\city_construction_app\build\printing\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-47
+62            <meta-data
+62-->[:printing] D:\uct\GarduationProject\final\mobile_app\city_construction_app\build\printing\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-17:71
+63                android:name="android.support.FILE_PROVIDER_PATHS"
+63-->[:printing] D:\uct\GarduationProject\final\mobile_app\city_construction_app\build\printing\intermediates\merged_manifest\debug\AndroidManifest.xml:16:17-67
+64                android:resource="@xml/flutter_printing_file_paths" />
+64-->[:printing] D:\uct\GarduationProject\final\mobile_app\city_construction_app\build\printing\intermediates\merged_manifest\debug\AndroidManifest.xml:17:17-68
+65        </provider>
+66
+67        <uses-library
+67-->[androidx.window:window:1.0.0-beta04] C:\Users\maank\.gradle\caches\transforms-3\78fbd64af62dbdf102ba7c817970421b\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+68            android:name="androidx.window.extensions"
+68-->[androidx.window:window:1.0.0-beta04] C:\Users\maank\.gradle\caches\transforms-3\78fbd64af62dbdf102ba7c817970421b\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+69            android:required="false" />
+69-->[androidx.window:window:1.0.0-beta04] C:\Users\maank\.gradle\caches\transforms-3\78fbd64af62dbdf102ba7c817970421b\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+70        <uses-library
+70-->[androidx.window:window:1.0.0-beta04] C:\Users\maank\.gradle\caches\transforms-3\78fbd64af62dbdf102ba7c817970421b\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+71            android:name="androidx.window.sidecar"
+71-->[androidx.window:window:1.0.0-beta04] C:\Users\maank\.gradle\caches\transforms-3\78fbd64af62dbdf102ba7c817970421b\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+72            android:required="false" />
+72-->[androidx.window:window:1.0.0-beta04] C:\Users\maank\.gradle\caches\transforms-3\78fbd64af62dbdf102ba7c817970421b\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+73    </application>
+74
+75</manifest>

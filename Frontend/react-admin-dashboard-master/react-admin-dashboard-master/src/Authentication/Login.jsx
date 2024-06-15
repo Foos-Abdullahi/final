@@ -11,7 +11,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [checkingLogin, setCheckingLogin] = useState(true); // Add state to track if login status is being checked
 
   useEffect(() => {
@@ -132,13 +131,6 @@ const Login = () => {
             >
               {loading ? <CircularProgress size={24} /> : "Login"}
             </Button>
-            <Box mt={1}>
-              <Typography variant="body2">
-                <Link href="#" color="textPrimary" onClick={() => setShowForgotPassword(true)}>
-                  Forgot Password?
-                </Link>
-              </Typography>
-            </Box>
           </Box>
         </form>
         <Box mt={2} textAlign="center">

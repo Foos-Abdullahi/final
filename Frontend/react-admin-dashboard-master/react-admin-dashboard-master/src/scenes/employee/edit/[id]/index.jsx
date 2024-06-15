@@ -57,9 +57,6 @@ const EmployeeEdit = () => {
       formData.append('email', Email);
       formData.append('salary', salary);
       formData.append('issue_date', issueDate);
-      // if (employeeImage) {
-      //   formData.append('employee_image', employeeImage);
-      // }
 
       const res = await fetch(`http://127.0.0.1:8000/Employee/update/${employeeId}/`, {
         method: "PUT",
@@ -80,7 +77,7 @@ const EmployeeEdit = () => {
       console.log(Email );
       console.log(salary);
       console.log(issueDate);
-      // window.location.href = "/employee";
+      window.history.back();
     } catch (error) {
       console.error("Error updating employee:", error);
     }
