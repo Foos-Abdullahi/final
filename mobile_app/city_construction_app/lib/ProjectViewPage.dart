@@ -175,7 +175,7 @@ class _ProjectViewsState extends State<ProjectViews> {
                                 ),
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               width: 100,
                               height: 60,
                               child: TextButton.icon(

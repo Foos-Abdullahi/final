@@ -8,4 +8,5 @@ urlpatterns = [
     path("delete/<int:id>/", views.delete),
     path('search/', views.search),
     path('get_invoices_by_ProjectNO/', views.get_invoices_by_ProjectNO, name='get_invoices_by_ProjectNO'),
+    path('get_invoices_client_by_ProjectName/', views.get_invoices_client_by_ProjectName, name='get_invoices_client_by_ProjectName'),
 ]

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, avoid_print, deprecated_member_use, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, avoid_print, deprecated_member_use, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, file_names, non_constant_identifier_names
 import 'dart:convert';
 
 import 'package:city_construction_app/DashboardPage.dart';

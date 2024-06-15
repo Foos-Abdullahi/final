@@ -29,7 +29,7 @@ const ReciptForm = () => {
   
   useEffect(() => {
     fetchClient();
-    fetchProjects();
+    // fetchProjects();
     fetchPaymentMethod();
   }, []);
 
@@ -37,12 +37,12 @@ const ReciptForm = () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Client/");
       if (!response.ok) {
-        throw new Error("Failed to fetch design options");
+        throw new Error("Failed to fetch client options");
       }
       const data = await response.json();
       setClientOption(data);
     } catch (error) {
-      console.error("Error fetching design options:", error);
+      console.error("Error fetching client options:", error);
     }
   };
 
@@ -50,24 +50,25 @@ const ReciptForm = () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/Payment_Methode/");
       if (!response.ok) {
-        throw new Error("Failed to fetch design options");
+        throw new Error("Failed to fetch payment method options");
       }
       const data = await response.json();
       setPaymentMethodOption(data);
     } catch (error) {
-      console.error("Error fetching design options:", error);
+      console.error("Error fetching payment method options:", error);
     }
   };
-  const fetchProjects = async () => {
+
+  const fetchProjectsByClientID = async (clientId) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/Projects/");
+      const response = await fetch(`http://127.0.0.1:8000/Projects/get_invoices_client_by_ProjectName/?clientId=${clientId}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch design options");
+        throw new Error("Failed to fetch projects");
       }
       const data = await response.json();
       setProjectOption(data);
     } catch (error) {
-      console.error("Error fetching design options:", error);
+      console.error("Error fetching projects:", error);
     }
   };
 
@@ -151,7 +152,12 @@ const ReciptForm = () => {
                 variant="filled"
                 label="Client"
                 onBlur={handleBlur}
-                onChange={(e) => setSelectClient(e.target.value )}
+                onChange={(e) => {
+                  const clientId = e.target.value;
+                  setSelectClient(clientId);
+                  fetchProjectsByClientID(clientId);
+                }}
+
                 value={selectclient}
                 name="client"
                 sx={{ gridColumn: "span 4" }}

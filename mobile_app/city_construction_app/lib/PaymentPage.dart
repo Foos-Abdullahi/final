@@ -183,7 +183,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     AddInvoiceReciept();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Color.fromARGB(255, 47, 181, 146),
+                    backgroundColor: Color.fromARGB(255, 47, 181, 146),
                   ),
                   child: Text('Submit'),
                 ),

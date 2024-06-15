@@ -5,7 +5,7 @@ import 'package:city_construction_app/DashboardPage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'ForgotPassword.dart';
-import 'ProjectListPage.dart';
+// import 'ProjectListPage.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -27,7 +27,8 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> _checkClient(String user, String pass) async {
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:8000/Client/'));
+      final response =
+          await http.get(Uri.parse('http://10.0.2.2:8000/Client/'));
       if (response.statusCode == 200) {
         final clientList = jsonDecode(response.body);
         for (var client in clientList) {
@@ -39,9 +40,10 @@ class _SignInPageState extends State<SignInPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DashboardPage(
-                        clientId: clientId,
-                      )),
+                builder: (context) => DashboardPage(
+                  clientId: clientId,
+                ),
+              ),
             );
             return;
           }
@@ -178,7 +180,7 @@ class _SignInPageState extends State<SignInPage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromARGB(255, 47, 181, 146),
+                        backgroundColor: Color.fromARGB(255, 47, 181, 146),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

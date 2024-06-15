@@ -8,6 +8,15 @@ from rest_framework import status
 
 # Create your views here.
 @api_view(["GET"])
+def get_invoices_client_by_ProjectName(request):
+    client_name = request.query_params.get('clientId', None)
+    if client_name:
+        projects = Projects.objects.filter(client__id=client_name)
+        serialized_projects = ProjectsSerializers(projects, many=True)
+        return Response(serialized_projects.data)
+    else:
+        return Response({"error": "Client ID not provided"}, status=400)
+@api_view(["GET"])
 def get_project_managerBy_id(request):
     project_manager_id = request.query_params.get('pmId', None)
     if project_manager_id:

@@ -4,9 +4,6 @@ from .serializers import PaymentSerializer
 from  .models import Payments
 from django.db.models import Q
 from Projects.models import Projects
-
-
-
 from rest_framework import status
 from Projects.models import Projects
 
@@ -20,6 +17,16 @@ def search(request):
     )
     serializer = PaymentSerializer(payment, many=True)
     return Response(serializer.data)
+@api_view(["GET"])
+def get_invoices_client_by_ProjectName(request):
+    client_name = request.query_params.get('clientName', None)
+    if client_name:
+        invoices = Payments.objects.filter(client__client_name=client_name)
+        serialized_invoices = PaymentSerializer(invoices, many=True)
+        return Response(serialized_invoices.data)
+    else:
+        return Response({"error": "Client Name not provided"}, status=400)
+
 @api_view(["GET"])
 def get_invoices_by_ProjectNO(request):
     phone_number = request.query_params.get('prNo', None)

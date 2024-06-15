@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, avoid_unnecessary_containers, file_names
 import 'package:city_construction_app/SignInPage.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +62,7 @@ class WelcomePage extends StatelessWidget {
                     );
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 47, 181, 146),
+                          backgroundColor: Color.fromARGB(255, 47, 181, 146),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
